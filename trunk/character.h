@@ -25,6 +25,8 @@ class Character
         double getDefense();
         int getLevel();
         string getTexture();
+        int getHeight();
+        int getWidth();
         
         //setters
         void setName(string n);
@@ -35,6 +37,8 @@ class Character
         void setLevel(int l);
         void incrementLevel();
         void setTexture(string text);
+        void setHeight(int h);
+        void setWidth(int w);
        
     protected:
         
@@ -59,4 +63,9 @@ class Character
         //the base texture for this character
         string texture;
         
+        //the height of the character in grid units
+        int height;
+        
+        //the width of the character in grid units
+        int width;        
 };

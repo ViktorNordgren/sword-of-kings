@@ -88,6 +88,16 @@ string Character::getTexture()
     return texture;   
 }
 
+int  Character::getHeight()
+{
+    return height;   
+}
+
+int  Character::getWidth()
+{
+    return width;
+}
+
 /* 
 * Setters
 */
@@ -131,4 +141,13 @@ void Character::setTexture(string text)
     texture = text;
 }
 
+void Character::setHeight(int h)
+{
+    height = h;   
+}
+
+void Character::setWidth(int w)
+{
+    width = w;
+}
 
