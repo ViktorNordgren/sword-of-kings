@@ -17,4 +17,8 @@ class Hero : public Character
     protected:
         bool hasSwordOfKings;
         
+    private:
+        static const int DEFAULT_HERO_HEIGHT = 5;
+        static const int DEFAULT_HERO_WIDTH = 3;
+        
 };

@@ -5,6 +5,7 @@
 #include <GL/glut.h>
 
 #include "common.h"
+#include "hero.h"
 #include "engine.h"
 
 /***************************************
@@ -20,6 +21,12 @@ const int Engine::ENGINE_ID;
 */
 Engine::Engine()
 {
+    heroPositionX = 0;
+    heroPositionY = 0;
+    heroDirection = FACING_EAST;
+    
+    // Create hero
+    hero = new Hero("Hero", 1, "heropicture.bmp");
 }
 
 /*
@@ -27,6 +34,42 @@ Engine::Engine()
 */
 Engine::~Engine()
 {
+    delete hero;
+}
+
+/*
+* Process normal keyboard inputs
+*/
+void Engine::processNormalKeys(unsigned char key, int x, int y)
+{
+	switch (key)
+	{
+        // Equivalent to pressing Left arrow key
+		case 'a':
+		case 'A':
+			heroPositionX--;
+			break;
+			
+        // Equivalent to pressing Right arrow key
+		case 'd':
+		case 'D':
+			heroPositionX++;
+			break;
+			
+        // Equivalent to pressing Up arrow key
+		case 'w':
+		case 'W':
+			heroPositionY++;
+			break;
+			
+        // Equivalent to pressing Down arrow key
+		case 's':
+		case 'S':
+			heroPositionY--;
+			break;
+    }
+    
+    glutPostRedisplay();
 }
 
 /*
@@ -34,18 +77,54 @@ Engine::~Engine()
 */
 void Engine::processSpecialKeys(int key, int x, int y)
 {
+    // Redirect arrow keys to their ASDW counterparts in processNormalKeys.
+    // This is done to prevent duplication of key-handling logic/code.
     switch(key)
 	{
 		case GLUT_KEY_RIGHT:
-			//processNormalKeys('r', x, y);
+			processNormalKeys('d', x, y);
 			break;
 		case GLUT_KEY_LEFT:
-			//processNormalKeys('l', x, y);
+			processNormalKeys('a', x, y);
+			break;
+		case GLUT_KEY_UP:
+			processNormalKeys('w', x, y);
 			break;
 		case GLUT_KEY_DOWN:
-			//processNormalKeys('d', x, y);
+			processNormalKeys('s', x, y);
 			break;
 	}
+}
+
+/*
+* Draws the hero
+*/
+void Engine::drawHero()
+{
+    glColor3f(1.0, 1.0, 1.0); // Temp
+    // Texure will depend on heroDirection state. (east, west, etc.)
+    
+    // To draw the hero, as with all characters, use the Grid system as our
+    // 2D orthogonal view (since we deal with the grid when drawing characters,
+    // not actual pixel dimentions.)
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	
+	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+	glBegin(GL_POLYGON);
+		glVertex2f(heroPositionX, heroPositionY);
+		glVertex2f(heroPositionX, heroPositionY + hero->getHeight());
+		glVertex2f(heroPositionX + hero->getWidth(), heroPositionY + hero->getHeight());
+		glVertex2f(heroPositionX + hero->getWidth(), heroPositionY);
+	glEnd();
+
+    glMatrixMode(GL_PROJECTION);
+	glPopMatrix(); 
 }
 
 /*
@@ -55,7 +134,8 @@ void Engine::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	// DRAW STUFF HERE.
+    // Draw hero
+    drawHero();
 
 	glutSwapBuffers();
 }
@@ -81,7 +161,7 @@ void Engine::initializeOpenGLProjectionSettings()
     // Set projection mode
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0.0, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 0.0);
+	gluOrtho2D(0.0, DEFAULT_WINDOW_WIDTH, 0.0, DEFAULT_WINDOW_HEIGHT);
 	
 	// Set model view matrix
 	glMatrixMode(GL_MODELVIEW);
@@ -93,9 +173,9 @@ void Engine::initializeOpenGLProjectionSettings()
 */
 void Engine::initializeOpenGLCallbacks()
 {
-	//glutKeyboardFunc(processNormalKeys);
+	glutKeyboardFunc( processNormalKeysDispach );
 	glutSpecialFunc( processSpecialKeysDispach );
-	//glutMouseFunc(NULL);
+	glutMouseFunc(NULL);
 	//glutReshapeFunc(reshapeHandler);
 	//glutIdleFunc (idleHandler);
 }

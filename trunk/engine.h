@@ -18,9 +18,27 @@ class Engine
     void display();
     
     // Static Special keyboard callback dispacher
-    static void processSpecialKeysDispach(int key, int x, int y) { engine_id_to_engine[ENGINE_ID]->processSpecialKeys(key, x, y); };
+    static void processSpecialKeysDispach (int key, int x, int y) { engine_id_to_engine[ENGINE_ID]->processSpecialKeys(key, x, y); };
     // Speical keyboard input callback
     void processSpecialKeys(int key, int x, int y);
+    
+    // Static normal keyboard callback dispacher
+    static void processNormalKeysDispach (unsigned char key, int x, int y) { engine_id_to_engine[ENGINE_ID]->processNormalKeys(key, x, y); };
+    // Normal keyboard input callback
+    void processNormalKeys(unsigned char key, int x, int y);
+    
+    // Draws Hero
+    void drawHero();
+    
+    // Possible hero orientation
+    enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };
+    HeroDirection heroDirection;
+    
+    // Grid location of Hero, indexed from bottom left of grid
+    int heroPositionX, heroPositionY;
+    
+    // The Hero
+    Hero * hero;
     
     public:
         // Default constructor
