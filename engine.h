@@ -3,6 +3,7 @@
 */
 
 #include <map>
+#include "hero.h"
 
 class Engine
 {

@@ -11,6 +11,7 @@
 
 Area::Area()
 {
+    
 }
 
 Area::Area(string mainText, string imMask, int n, int s, int e, int w)
@@ -28,6 +29,11 @@ Area::~Area()
 }
 
 //getters
+int Area::getID()
+{
+    return id;
+}
+
 string Area::getMainTexture()
 {
     return mainTexture;
@@ -78,8 +84,18 @@ Point Area::getEntryWest()
     return entryWest;
 }
 
+vector<NPC*> Area::getNPCs()
+{
+    return npcs;   
+}
+
 
 //setters
+void Area::setID(int i)
+{
+    id = i;
+}
+
 void Area::setNorth(int n)
 {
     north = n;   
@@ -117,4 +133,10 @@ void Area::setEntryEast(Point entryE)
 void Area::setEntryWest(Point entryW)
 {
     entryWest = entryW;
+}
+
+//add an npc
+void Area::addNPC(NPC* npc)
+{
+    npcs.push_back(npc);   
 }
