@@ -2,8 +2,6 @@
 * Engine.cpp
 */
 
-#include <GL/glut.h>
-
 #include "common.h"
 #include "engine.h"
 
@@ -196,8 +194,8 @@ void Engine::drawAreaBackground()
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f, 0.0f,  0.0f);
         glTexCoord2f(1.0f, 0.0f); glVertex3f(DEFAULT_WINDOW_WIDTH, 0.0f,  0.0f);
-        glTexCoord2f(1.0f, 1.0f); glVertex3f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT,  0.0f);
-        glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f, DEFAULT_WINDOW_HEIGHT,  0.0f);
+        glTexCoord2f(1.0f, 2.0f / 3.0f); glVertex3f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT,  0.0f);
+        glTexCoord2f(0.0f, 2.0f / 3.0f); glVertex3f(0.0f, DEFAULT_WINDOW_HEIGHT,  0.0f);
     glEnd();
 }
 
@@ -262,6 +260,13 @@ void Engine::initializeOpenGLSettings()
 	
 	// Enable texture mapping
 	glEnable(GL_TEXTURE_2D);
+	
+	glShadeModel(GL_SMOOTH);
+	
+	glClearDepth(1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 /*

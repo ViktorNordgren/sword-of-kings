@@ -2,6 +2,8 @@
 * Engine.h
 */
 
+#include <GL/glut.h>
+
 #include <map>
 #include "hero.h"
 
