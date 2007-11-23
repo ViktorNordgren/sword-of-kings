@@ -20,14 +20,17 @@ const int Engine::ENGINE_ID;
 */
 Engine::Engine()
 {
-    heroPositionX = 0;
-    heroPositionY = 0;
-    heroDirection = FACING_EAST;
-    
     // Create hero
     hero = new Hero("Hero", 1, "heropicture.bmp");
     
-    // Create area
+    heroPositionX = 0;
+    heroPositionY = 0;
+    heroAnimationY = 0;
+    heroAnimationX = 0;
+    heroDirection = FACING_EAST;
+    heroIsMoving = false;
+    
+    // Create and load default area
     currentArea = new Area();
     loadArea(1);
 }
@@ -152,6 +155,8 @@ bool Engine::loadTGA(TextureImage* texture, string filename)
 */
 void Engine::loadArea(int id)
 {
+    delete currentArea;
+    currentArea = new Area();
     Parser::getArea(currentArea, id);
     loadBackgroundTexture();
     loadAreaMask();
@@ -164,7 +169,7 @@ bool Engine::canHeroMoveRight()
 {   
     // The grid block to the right is solid, cannot walk past it.
     int newRightPosition = heroPositionX + hero->getWidth();
-    if ((int)(mask.pix1d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 1)) <= 0)
+    if ((int)(mask.pix4d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
         return false; 
     
     return true;
@@ -177,7 +182,7 @@ bool Engine::canHeroMoveLeft()
 {       
     // The grid block to the left is solid, cannot walk past it.
     int newLeftPosition = heroPositionX - 1;
-    if ((int)(mask.pix1d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 1)) <= 0)
+    if ((int)(mask.pix4d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
         return false; 
     
     return true;
@@ -190,7 +195,7 @@ bool Engine::canHeroMoveUp()
 {       
     // The grid block above is solid, cannot walk past it.
     int newUpPosition = heroPositionY + 1;
-    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0, 1)) <= 0)
+    if ((int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0, 255)) <= 0)
         return false; 
         
     return true;
@@ -202,8 +207,10 @@ bool Engine::canHeroMoveUp()
 bool Engine::canHeroMoveDown()
 {
     // The grid block below is solid, cannot walk past it.
-    int newDownPosition = heroPositionY;
-    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0, 1)) <= 0)
+    int newDownPosition = heroPositionY - 1;
+    //cout << "new down position: " << newDownPosition << endl;
+    //cout << "colour at new position: " << (int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0, 255)) << endl;
+    if ((int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0, 255)) <= 0)
         return false; 
         
     return true;
@@ -215,7 +222,7 @@ bool Engine::canHeroMoveDown()
 void Engine::moveHeroRight()
 {
     // If we are at the right edge of the map, load the area to the east if possible.
-    if (heroPositionX + hero->getWidth() >= GRID_WIDTH)
+    if (heroPositionX + hero->getWidth() >= GRID_WIDTH && !heroIsMoving)
     {
         if (currentArea->canMoveEast())
         {
@@ -225,9 +232,10 @@ void Engine::moveHeroRight()
             heroPositionY = startingPoint.y;
         }
     }
-    else
+    else if (!heroIsMoving)
     {
-        heroPositionX++;
+        heroIsMoving = true;
+        glutTimerFunc(0, heroMovementTimerDispach, FACING_EAST);
     }
 }
 
@@ -237,7 +245,7 @@ void Engine::moveHeroRight()
 void Engine::moveHeroLeft()
 {
     // If we are at the left edge of the map, load the area to the west if possible.
-    if (heroPositionX <= 0)
+    if (heroPositionX <= 0 && !heroIsMoving)
     {
         if (currentArea->canMoveWest())
         {
@@ -247,9 +255,10 @@ void Engine::moveHeroLeft()
             heroPositionY = startingPoint.y;
         }
     }
-    else
+    else if (!heroIsMoving)
     {
-        heroPositionX--;
+        heroIsMoving = true;
+        glutTimerFunc(0, heroMovementTimerDispach, FACING_WEST);
     }
 }
 
@@ -259,7 +268,7 @@ void Engine::moveHeroLeft()
 void Engine::moveHeroUp()
 {
     // If we are at the top edge of the map, load the area to the north if possible.
-    if (heroPositionY + hero->getHeight() >= GRID_HEIGHT)
+    if (heroPositionY + hero->getHeight() >= GRID_HEIGHT && !heroIsMoving)
     {
         if (currentArea->canMoveNorth())
         {
@@ -269,9 +278,10 @@ void Engine::moveHeroUp()
             heroPositionY = startingPoint.y;
         }
     }
-    else
+    else if (!heroIsMoving)
     {
-        heroPositionY++;
+        heroIsMoving = true;
+        glutTimerFunc(0, heroMovementTimerDispach, FACING_NORTH);
     }
 }
 
@@ -281,7 +291,7 @@ void Engine::moveHeroUp()
 void Engine::moveHeroDown()
 {
     // If we are at the bottom edge of the map, load the area to the south if possible.
-    if (heroPositionY <= 0)
+    if (heroPositionY <= 0 && !heroIsMoving)
     {
         if (currentArea->canMoveSouth())
         {
@@ -291,10 +301,86 @@ void Engine::moveHeroDown()
             heroPositionY = startingPoint.y;
         }
     }
-    else
+    else if (!heroIsMoving)
     {
-        heroPositionY--;
+        heroIsMoving = true;
+        glutTimerFunc(0, heroMovementTimerDispach, FACING_SOUTH);
     }
+}
+
+/*
+* Hero movement animation timer
+*/
+void Engine::heroMovementTimer (int value)
+{
+    switch (value)
+    {
+        case FACING_EAST:
+            
+            if (heroAnimationX < 1.0 - HERO_MOVEMENT_DISTANCE)
+            {
+                heroAnimationX += HERO_MOVEMENT_DISTANCE;
+                
+                glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
+            }
+            else
+            {
+                heroPositionX++;
+                heroIsMoving = false;
+                heroAnimationX = 0;
+            }
+            break;
+        
+        case FACING_WEST:
+            
+            if (-heroAnimationX < 1.0 - HERO_MOVEMENT_DISTANCE)
+            {
+                heroAnimationX -= HERO_MOVEMENT_DISTANCE;
+                
+                glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
+            }
+            else
+            {
+                heroPositionX--;
+                heroIsMoving = false;
+                heroAnimationX = 0;
+            }
+            break;
+        
+        case FACING_NORTH:
+            
+            if (heroAnimationY < 1.0 - HERO_MOVEMENT_DISTANCE)
+            {
+                heroAnimationY += HERO_MOVEMENT_DISTANCE;
+                
+                glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
+            }
+            else
+            {
+                heroPositionY++;
+                heroIsMoving = false;
+                heroAnimationY = 0;
+            }
+            break;
+        
+        case FACING_SOUTH:
+            
+            if (-heroAnimationY < 1.0 - HERO_MOVEMENT_DISTANCE)
+            {
+                heroAnimationY -= HERO_MOVEMENT_DISTANCE;
+                
+                glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
+            }
+            else
+            {
+                heroPositionY--;
+                heroIsMoving = false;
+                heroAnimationY = 0;
+            }
+            break;
+    }
+    
+    glutPostRedisplay();
 }
 
 /*
@@ -404,10 +490,10 @@ void Engine::drawHero()
     glLoadIdentity();
 
 	glBegin(GL_POLYGON);
-		glVertex2f(heroPositionX, heroPositionY);
-		glVertex2f(heroPositionX, heroPositionY + hero->getHeight());
-		glVertex2f(heroPositionX + hero->getWidth(), heroPositionY + hero->getHeight());
-		glVertex2f(heroPositionX + hero->getWidth(), heroPositionY);
+		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY);
+		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY + hero->getHeight());
+		glVertex2f(heroPositionX + heroAnimationX + hero->getWidth(), heroPositionY + heroAnimationY + hero->getHeight());
+		glVertex2f(heroPositionX + heroAnimationX + hero->getWidth(), heroPositionY + heroAnimationY);
 	glEnd();
 
     glMatrixMode(GL_PROJECTION);
