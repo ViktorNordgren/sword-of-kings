@@ -1,0 +1,4 @@
+1
+ID 1
+BG textures/area/1.tga
+MASK textures/area/mask/1.png

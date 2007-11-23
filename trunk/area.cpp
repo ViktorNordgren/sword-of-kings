@@ -135,6 +135,16 @@ void Area::setEntryWest(Point entryW)
     entryWest = entryW;
 }
 
+void Area::setMainTexture(string texture)
+{
+    mainTexture = texture;
+}
+
+void Area::setImageMask(string mask)
+{
+    imageMask = mask;
+}
+
 //add an npc
 void Area::addNPC(NPC* npc)
 {

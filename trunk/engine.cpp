@@ -5,6 +5,8 @@
 #include "common.h"
 #include "engine.h"
 
+#include <iostream>
+
 /***************************************
 * Class Engine
 ***************************************/
@@ -24,6 +26,11 @@ Engine::Engine()
     
     // Create hero
     hero = new Hero("Hero", 1, "heropicture.bmp");
+    
+    // Create area
+    currentArea = new Area();
+    Parser::getArea(currentArea, "1");
+    
 }
 
 /*
@@ -35,11 +42,19 @@ Engine::~Engine()
 }
 
 /*
+* Loads the current area's clipping mask
+*/
+bool Engine::loadAreaMask()
+{
+    mask  = CImg<double>::get_load_png(currentArea->getImageMask().c_str());
+}
+
+/*
 * Loads textures
 */
 bool Engine::loadTextures()
 {
-    if (!loadTGA(&textures[0], "textures/area/001.tga"))
+    if (!loadTGA(&textures[0], currentArea->getMainTexture()))
     {
         return false;
     }
@@ -50,7 +65,7 @@ bool Engine::loadTextures()
 /*
 * Loads a TGA texture
 */
-bool Engine::loadTGA(TextureImage* texture, char * filename)
+bool Engine::loadTGA(TextureImage* texture, string filename)
 {
     GLubyte TGAheader[12] = {0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     GLubyte TGAcompare[12];
@@ -60,7 +75,7 @@ bool Engine::loadTGA(TextureImage* texture, char * filename)
     GLuint temp;
     GLuint type = GL_RGBA;
     
-    FILE * file = fopen(filename, "rb");
+    FILE * file = fopen(filename.c_str(), "rb");
     
     if (file == NULL || fread(TGAcompare, 1, sizeof(TGAcompare), file) != sizeof(TGAcompare) ||
         memcmp(TGAheader, TGAcompare, sizeof(TGAheader)) != 0 ||
@@ -124,6 +139,82 @@ bool Engine::loadTGA(TextureImage* texture, char * filename)
     return true;
 }
 
+/*
+* Determine if hero can move right
+*/
+bool Engine::canHeroMoveRight()
+{
+    /*
+    heroPositionX = 0;
+    heroPositionY = 0;
+    GRID_WIDTH
+    GRID_HEGIHT
+    hero->getWidth()
+    hero->getHeight()
+    */
+    
+    // We've hit the right edge of the map
+    if (heroPositionX + hero->getWidth() >= GRID_WIDTH)
+        return false; 
+    
+    // The grid block to the right is solid, cannot walk past it.
+    int newRightPosition = heroPositionX + hero->getWidth();
+    if ((int)(mask.pix1d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0)) <= 0)
+        return false; 
+    
+    return true;
+}
+
+/*
+* Determine if hero can move left
+*/
+bool Engine::canHeroMoveLeft()
+{
+    // We've hit the left edge of the map
+    if (heroPositionX <= 0)
+        return false; 
+        
+    // The grid block to the left is solid, cannot walk past it.
+    int newLeftPosition = heroPositionX - 1;
+    if ((int)(mask.pix1d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0)) <= 0)
+        return false; 
+    
+    return true;
+}
+
+/*
+* Determine if hero can move up
+*/
+bool Engine::canHeroMoveUp()
+{
+    // We've hit the top edge of the map
+    if (heroPositionY + hero->getHeight() >= GRID_HEIGHT)
+        return false; 
+        
+    // The grid block above is solid, cannot walk past it.
+    int newUpPosition = heroPositionY + 1;
+    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0)) <= 0)
+        return false; 
+        
+    return true;
+}
+
+/*
+* Determine if hero can move down
+*/
+bool Engine::canHeroMoveDown()
+{
+    // We've hit the bottom edge of the map
+    if (heroPositionY <= 0)
+        return false; 
+        
+    // The grid block below is solid, cannot walk past it.
+    int newDownPosition = heroPositionY - 1;
+    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0)) <= 0)
+        return false; 
+        
+    return true;
+}
 
 /*
 * Process normal keyboard inputs
@@ -135,25 +226,37 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Left arrow key
 		case 'a':
 		case 'A':
-			heroPositionX--;
+            if (canHeroMoveLeft())
+            {
+                heroPositionX--;
+            }
 			break;
 			
         // Equivalent to pressing Right arrow key
 		case 'd':
 		case 'D':
-			heroPositionX++;
+            if (canHeroMoveRight())
+            {
+                heroPositionX++;
+            }
 			break;
 			
         // Equivalent to pressing Up arrow key
 		case 'w':
 		case 'W':
-			heroPositionY++;
-			break;
+            if (canHeroMoveUp())
+            {
+                heroPositionY++;
+            }
+            break;
 			
         // Equivalent to pressing Down arrow key
 		case 's':
 		case 'S':
-			heroPositionY--;
+            if (canHeroMoveDown())
+            {
+                heroPositionY--;
+            }
 			break;
     }
     
@@ -325,6 +428,8 @@ void Engine::run(int argc, char** argv)
 	{
        return;
     }
+    
+    loadAreaMask();
 
 	glutMainLoop();
 }

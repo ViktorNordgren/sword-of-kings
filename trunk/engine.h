@@ -4,8 +4,13 @@
 
 #include <GL/glut.h>
 
+#define cimg_use_png
+#include "CImg.h"
+using namespace cimg_library;
+
 #include <map>
 #include "hero.h"
+#include "parser.h"
 
 typedef struct
 {
@@ -42,8 +47,11 @@ class Engine
     // Loads textures
     bool loadTextures();
     
+    // Loads current area's mask
+    bool loadAreaMask();
+    
     // Loads a bmp texture
-    bool loadTGA(TextureImage*, char *);
+    bool loadTGA(TextureImage*, string);
     
     // Draws Hero
     void drawHero();
@@ -60,20 +68,33 @@ class Engine
     // The Hero
     Hero * hero;
     
+    // The current area
+    Area * currentArea;
+    
     // Loaded textures
     TextureImage textures[1];
+    
+    // Current area Mask
+    CImg<int> mask;
+    
+    // Functions which determine if the hero may move in a certain direction
+    bool canHeroMoveRight();
+    bool canHeroMoveLeft();
+    bool canHeroMoveUp();
+    bool canHeroMoveDown();
+    
+    // Initilize openGL settings
+    void initializeOpenGLSettings();
+    // Initialize openGL projection settings
+    void initializeOpenGLProjectionSettings();
+    // Initialize openGL callback functions
+    void initializeOpenGLCallbacks();
     
     public:
         // Default constructor
         Engine();
         // Default destructor
         ~Engine();
-        // Initilize openGL settings
-        void initializeOpenGLSettings();
-        // Initialize openGL projection settings
-        void initializeOpenGLProjectionSettings();
-        // Initialize openGL callback functions
-        void initializeOpenGLCallbacks();
         // Start Engine
         void run(int, char**);
 };

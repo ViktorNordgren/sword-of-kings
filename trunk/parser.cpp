@@ -156,6 +156,14 @@ bool Parser::getArea(Area* area, string areaName)
                 {
                     area->setID(atoi(tokens[1].c_str()));
                 }
+                else if(name.compare("BG") == 0)
+                {
+                    area->setMainTexture(tokens[1]);
+                }
+                else if(name.compare("MASK") == 0)
+                {
+                    area->setImageMask(tokens[1]);
+                }
                 else if(name.compare("NORTH") == 0)
                 {
                     area->setNorth(atoi(tokens[1].c_str()));
