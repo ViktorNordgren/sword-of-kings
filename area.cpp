@@ -11,7 +11,10 @@
 
 Area::Area()
 {
-    
+    north = -1;
+    south = -1;
+    east = -1;
+    west = -1;
 }
 
 Area::Area(string mainText, string imMask, int n, int s, int e, int w)
@@ -150,3 +153,25 @@ void Area::addNPC(NPC* npc)
 {
     npcs.push_back(npc);   
 }
+
+//test if areas exist around here
+bool Area::canMoveNorth()
+{
+    return north != -1;   
+}
+
+bool Area::canMoveSouth()
+{
+    return south != -1;   
+}
+
+bool Area::canMoveEast()
+{
+    return east != -1;   
+}
+
+bool Area::canMoveWest()
+{
+    return west != -1;   
+}
+
