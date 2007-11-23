@@ -34,4 +34,10 @@ static const string ENEMY_FILE_PATH = "enemies.txt";
 static const string AREA_FILE_PATH = "areas.txt";
 static const string NPC_FILE_PATH = "npc.txt";
 
+/*
+* Hero movement
+*/
+static const int HERO_MOVEMENT_DELAY = 15;
+static const double HERO_MOVEMENT_DISTANCE = 0.2;
+
 #endif

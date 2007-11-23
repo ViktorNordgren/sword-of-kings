@@ -37,12 +37,17 @@ class Engine
     // Static Special keyboard callback dispacher
     static void processSpecialKeysDispach (int key, int x, int y) { engine_id_to_engine[ENGINE_ID]->processSpecialKeys(key, x, y); };
     // Speical keyboard input callback
-    void processSpecialKeys(int key, int x, int y);
+    void processSpecialKeys(int, int, int);
     
     // Static normal keyboard callback dispacher
     static void processNormalKeysDispach (unsigned char key, int x, int y) { engine_id_to_engine[ENGINE_ID]->processNormalKeys(key, x, y); };
     // Normal keyboard input callback
-    void processNormalKeys(unsigned char key, int x, int y);
+    void processNormalKeys(unsigned char, int, int);
+    
+    // Static hero movement animation dispacher
+    static void heroMovementTimerDispach (int value) { engine_id_to_engine[ENGINE_ID]->heroMovementTimer(value); };
+    // Hero movement animation timer
+    void heroMovementTimer (int);
     
     // Loads an area by ID
     void loadArea(int);
@@ -63,13 +68,6 @@ class Engine
     void drawHero();
     // Draws area background
     void drawAreaBackground();
-    
-    // Possible hero orientation
-    enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };
-    HeroDirection heroDirection;
-    
-    // Grid location of Hero, indexed from bottom left of grid
-    int heroPositionX, heroPositionY;
     
     // The Hero
     Hero * hero;
@@ -95,6 +93,19 @@ class Engine
     void moveHeroLeft();
     void moveHeroUp();
     void moveHeroDown();
+    
+    // When hero is moving, user inputs are disabled
+    bool heroIsMoving;
+    
+    // Possible hero orientations
+    enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };
+    HeroDirection heroDirection;
+    
+    // Grid location of Hero, indexed from bottom left of grid
+    int heroPositionX, heroPositionY;
+    
+    // Fractional grid location of Hero, used in movement animation between cells
+    double heroAnimationX, heroAnimationY;
     
     // Initilize openGL settings
     void initializeOpenGLSettings();
