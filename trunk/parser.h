@@ -14,7 +14,7 @@ class Parser
 {
     public:
         static bool getEnemy(Enemy* enemy, string enemyName);
-        static bool getArea(Area* area, string areaName);
+        static bool getArea(Area* area, int areaID);
         static bool getNPC(NPC* npc, string npcName);
         
         

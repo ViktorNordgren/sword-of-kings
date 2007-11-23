@@ -111,7 +111,7 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
 	}
 }
 
-bool Parser::getArea(Area* area, string areaName)
+bool Parser::getArea(Area* area, int areaID)
 {
     string line;
 	ifstream areaFile(AREA_FILE_PATH.c_str());
@@ -144,7 +144,7 @@ bool Parser::getArea(Area* area, string areaName)
             if(!inWantedObject)
             {
                 //if this is the object we want
-                if(name.compare(areaName) == 0)
+                if(atoi(name.c_str()) == areaID)
                 {
                     inWantedObject = true;
                 }
