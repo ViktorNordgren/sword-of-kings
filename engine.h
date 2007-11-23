@@ -5,6 +5,15 @@
 #include <map>
 #include "hero.h"
 
+typedef struct
+{
+    GLubyte *imageData;
+    GLuint bpp;
+    GLuint width;
+    GLuint height;
+    GLuint texID;
+} TextureImage;
+
 class Engine
 {
     // ID for referencing Engine object from static callback functions
@@ -28,8 +37,16 @@ class Engine
     // Normal keyboard input callback
     void processNormalKeys(unsigned char key, int x, int y);
     
+    // Loads textures
+    bool loadTextures();
+    
+    // Loads a bmp texture
+    bool loadTGA(TextureImage*, char *);
+    
     // Draws Hero
     void drawHero();
+    // Draws area background
+    void drawAreaBackground();
     
     // Possible hero orientation
     enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };
@@ -40,6 +57,9 @@ class Engine
     
     // The Hero
     Hero * hero;
+    
+    // Loaded textures
+    TextureImage textures[1];
     
     public:
         // Default constructor
