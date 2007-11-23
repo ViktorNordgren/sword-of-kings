@@ -3,10 +3,15 @@
 */
 
 #include "character.h"
+#include <string>
+using namespace std;
+
+
 
 class Hero : public Character
 {
     public:
+        Hero();
         Hero(string n, int hitpoints, double att, double def, int lev, string text);
         Hero(string n, int lev, string text);
         //getters
@@ -16,9 +21,6 @@ class Hero : public Character
 
     protected:
         bool hasSwordOfKings;
-        
-    private:
-        static const int DEFAULT_HERO_HEIGHT = 5;
-        static const int DEFAULT_HERO_WIDTH = 3;
+               
         
 };

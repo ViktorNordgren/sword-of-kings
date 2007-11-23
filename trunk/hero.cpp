@@ -3,12 +3,24 @@
 */
 
 #include "hero.h"
-
+#include "common_game.h"
 
 /*
 * Class Hero
 */
 
+Hero::Hero()
+{
+    hasSwordOfKings = false;
+    height = DEFAULT_HERO_HEIGHT;
+    width = DEFAULT_HERO_WIDTH;
+    name = "";
+    totalHitPoints = DEFAULT_HERO_HITPOINTS;
+    attack = DEFAULT_HERO_ATTACK;
+    defense = DEFAULT_HERO_DEFENSE;
+    level = DEFAULT_HERO_LEVEL;
+    texture = DEFAULT_HERO_TEXTURE;
+}
 
 /*
 * This constuctor can be used to specify all values of a character

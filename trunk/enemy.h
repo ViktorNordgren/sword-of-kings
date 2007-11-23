@@ -8,6 +8,7 @@
 class Enemy : public Character
 {
     public:
+        Enemy();
         Enemy(string n, int hitpoints, double att, double def, int lev, string text, EnemyType enemType);
         Enemy(string n, int lev, string text, EnemyType enemType);
         //getters

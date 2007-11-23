@@ -1,7 +1,8 @@
 /*
 * Character.h
 */
-
+#ifndef _DEFINED_character
+#define _DEFINED_character
 #include <string>
 using namespace std;
 
@@ -69,3 +70,4 @@ class Character
         //the width of the character in grid units
         int width;        
 };
+#endif

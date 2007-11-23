@@ -9,6 +9,10 @@
 * Class Enemy
 */
 
+Enemy::Enemy()
+{
+    
+}
 
 /*
 * This constuctor can be used to specify all values of a character

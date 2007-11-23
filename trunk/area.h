@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 #include "common_game.h"
+#include "npc.h"
+
 using namespace std;
 
 class Area
@@ -17,6 +19,7 @@ class Area
         ~Area();
         
         //getters
+        int getID();
         string getMainTexture();
         string getImageMask();
         int getNorth();
@@ -27,8 +30,10 @@ class Area
         Point getEntrySouth();
         Point getEntryEast();
         Point getEntryWest();
+        vector<NPC*> getNPCs();
                 
         //setters
+        void setID(int i);
         void setNorth(int n);
         void setWest(int w);
         void setSouth(int s);
@@ -37,8 +42,13 @@ class Area
         void setEntrySouth(Point entryS);
         void setEntryEast(Point entryE);
         void setEntryWest(Point entryW);
+        
+        //add an npc
+        void addNPC(NPC* npc);
 
     protected:
+        //the id of this area
+        int id;
         //the main image to display
         string mainTexture;
         //invisible image to do collision
@@ -53,6 +63,8 @@ class Area
         Point entrySouth;
         Point entryEast;
         Point entryWest;
+        //the list of NPCs in this area
+        vector<NPC*> npcs;
         
         
         
