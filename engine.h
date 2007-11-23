@@ -44,8 +44,14 @@ class Engine
     // Normal keyboard input callback
     void processNormalKeys(unsigned char key, int x, int y);
     
-    // Loads textures
+    // Loads an area by ID
+    void loadArea(int);
+    
+    // Loader for all textures
     bool loadTextures();
+    
+    // Loads background texture
+    bool loadBackgroundTexture();
     
     // Loads current area's mask
     bool loadAreaMask();
@@ -71,8 +77,9 @@ class Engine
     // The current area
     Area * currentArea;
     
-    // Loaded textures
-    TextureImage textures[1];
+    
+    // Current loaded backgrounnd texture
+    TextureImage backgroundTexture[1];
     
     // Current area Mask
     CImg<int> mask;
@@ -82,6 +89,12 @@ class Engine
     bool canHeroMoveLeft();
     bool canHeroMoveUp();
     bool canHeroMoveDown();
+    
+    // Functions which move hero in a certain direction
+    void moveHeroRight();
+    void moveHeroLeft();
+    void moveHeroUp();
+    void moveHeroDown();
     
     // Initilize openGL settings
     void initializeOpenGLSettings();

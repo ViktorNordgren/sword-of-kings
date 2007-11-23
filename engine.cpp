@@ -29,8 +29,7 @@ Engine::Engine()
     
     // Create area
     currentArea = new Area();
-    Parser::getArea(currentArea, "1");
-    
+    loadArea(1);
 }
 
 /*
@@ -39,6 +38,7 @@ Engine::Engine()
 Engine::~Engine()
 {
     delete hero;
+    delete currentArea;
 }
 
 /*
@@ -54,7 +54,15 @@ bool Engine::loadAreaMask()
 */
 bool Engine::loadTextures()
 {
-    if (!loadTGA(&textures[0], currentArea->getMainTexture()))
+    return loadBackgroundTexture();
+}
+
+/*
+* Loads background texture
+*/
+bool Engine::loadBackgroundTexture()
+{
+    if (!loadTGA(&backgroundTexture[0], currentArea->getMainTexture()))
     {
         return false;
     }
@@ -140,26 +148,23 @@ bool Engine::loadTGA(TextureImage* texture, string filename)
 }
 
 /*
+* Loads an area by ID
+*/
+void Engine::loadArea(int id)
+{
+    Parser::getArea(currentArea, id);
+    loadBackgroundTexture();
+    loadAreaMask();
+}
+
+/*
 * Determine if hero can move right
 */
 bool Engine::canHeroMoveRight()
-{
-    /*
-    heroPositionX = 0;
-    heroPositionY = 0;
-    GRID_WIDTH
-    GRID_HEGIHT
-    hero->getWidth()
-    hero->getHeight()
-    */
-    
-    // We've hit the right edge of the map
-    if (heroPositionX + hero->getWidth() >= GRID_WIDTH)
-        return false; 
-    
+{   
     // The grid block to the right is solid, cannot walk past it.
     int newRightPosition = heroPositionX + hero->getWidth();
-    if ((int)(mask.pix1d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0)) <= 0)
+    if ((int)(mask.pix1d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 1)) <= 0)
         return false; 
     
     return true;
@@ -169,14 +174,10 @@ bool Engine::canHeroMoveRight()
 * Determine if hero can move left
 */
 bool Engine::canHeroMoveLeft()
-{
-    // We've hit the left edge of the map
-    if (heroPositionX <= 0)
-        return false; 
-        
+{       
     // The grid block to the left is solid, cannot walk past it.
     int newLeftPosition = heroPositionX - 1;
-    if ((int)(mask.pix1d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0)) <= 0)
+    if ((int)(mask.pix1d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 1)) <= 0)
         return false; 
     
     return true;
@@ -186,14 +187,10 @@ bool Engine::canHeroMoveLeft()
 * Determine if hero can move up
 */
 bool Engine::canHeroMoveUp()
-{
-    // We've hit the top edge of the map
-    if (heroPositionY + hero->getHeight() >= GRID_HEIGHT)
-        return false; 
-        
+{       
     // The grid block above is solid, cannot walk past it.
     int newUpPosition = heroPositionY + 1;
-    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0)) <= 0)
+    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0, 1)) <= 0)
         return false; 
         
     return true;
@@ -204,16 +201,100 @@ bool Engine::canHeroMoveUp()
 */
 bool Engine::canHeroMoveDown()
 {
-    // We've hit the bottom edge of the map
-    if (heroPositionY <= 0)
-        return false; 
-        
     // The grid block below is solid, cannot walk past it.
-    int newDownPosition = heroPositionY - 1;
-    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0)) <= 0)
+    int newDownPosition = heroPositionY;
+    if ((int)(mask.pix1d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0, 1)) <= 0)
         return false; 
         
     return true;
+}
+
+/*
+* Move hero 1 unit right
+*/
+void Engine::moveHeroRight()
+{
+    // If we are at the right edge of the map, load the area to the east if possible.
+    if (heroPositionX + hero->getWidth() >= GRID_WIDTH)
+    {
+        if (currentArea->canMoveEast())
+        {
+            loadArea(currentArea->getEast());
+            Point startingPoint = currentArea->getEntryWest();
+            heroPositionX = startingPoint.x;
+            heroPositionY = startingPoint.y;
+        }
+    }
+    else
+    {
+        heroPositionX++;
+    }
+}
+
+/*
+* Move hero 1 unit left
+*/
+void Engine::moveHeroLeft()
+{
+    // If we are at the left edge of the map, load the area to the west if possible.
+    if (heroPositionX <= 0)
+    {
+        if (currentArea->canMoveWest())
+        {
+            loadArea(currentArea->getWest());
+            Point startingPoint = currentArea->getEntryEast();
+            heroPositionX = startingPoint.x;
+            heroPositionY = startingPoint.y;
+        }
+    }
+    else
+    {
+        heroPositionX--;
+    }
+}
+
+/*
+* Move hero 1 unit up
+*/
+void Engine::moveHeroUp()
+{
+    // If we are at the top edge of the map, load the area to the north if possible.
+    if (heroPositionY + hero->getHeight() >= GRID_HEIGHT)
+    {
+        if (currentArea->canMoveNorth())
+        {
+            loadArea(currentArea->getNorth());
+            Point startingPoint = currentArea->getEntrySouth();
+            heroPositionX = startingPoint.x;
+            heroPositionY = startingPoint.y;
+        }
+    }
+    else
+    {
+        heroPositionY++;
+    }
+}
+
+/*
+* Move hero 1 unit down
+*/
+void Engine::moveHeroDown()
+{
+    // If we are at the bottom edge of the map, load the area to the south if possible.
+    if (heroPositionY <= 0)
+    {
+        if (currentArea->canMoveSouth())
+        {
+            loadArea(currentArea->getSouth());
+            Point startingPoint = currentArea->getEntryNorth();
+            heroPositionX = startingPoint.x;
+            heroPositionY = startingPoint.y;
+        }
+    }
+    else
+    {
+        heroPositionY--;
+    }
 }
 
 /*
@@ -228,7 +309,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 'A':
             if (canHeroMoveLeft())
             {
-                heroPositionX--;
+               moveHeroLeft();
             }
 			break;
 			
@@ -237,7 +318,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 'D':
             if (canHeroMoveRight())
             {
-                heroPositionX++;
+               moveHeroRight();
             }
 			break;
 			
@@ -246,7 +327,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 'W':
             if (canHeroMoveUp())
             {
-                heroPositionY++;
+                moveHeroUp();
             }
             break;
 			
@@ -255,7 +336,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 'S':
             if (canHeroMoveDown())
             {
-                heroPositionY--;
+               moveHeroDown();
             }
 			break;
     }
@@ -292,7 +373,7 @@ void Engine::processSpecialKeys(int key, int x, int y)
 */
 void Engine::drawAreaBackground()
 {
-    glBindTexture(GL_TEXTURE_2D, textures[0].texID);
+    glBindTexture(GL_TEXTURE_2D, backgroundTexture[0].texID);
     
     glBegin(GL_QUADS);
         glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f, 0.0f,  0.0f);
