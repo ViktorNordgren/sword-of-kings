@@ -1,7 +1,7 @@
 [Project]
 FileName=sword-of-kings.dev
 Name=sword-of-kings
-UnitCount=17
+UnitCount=18
 Type=1
 Ver=1
 ObjFiles=
@@ -12,7 +12,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=
-Linker=-lglut32_@@_-lglu32_@@_-lopengl32_@@_-lwinmm_@@_-lgdi32_@@_
+Linker=-lglut32_@@_-lglu32_@@_-lopengl32_@@_-lwinmm_@@_-lgdi32_@@_-lpng_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -211,6 +211,16 @@ BuildCmd=
 FileName=area.h
 CompileCpp=1
 Folder=sword-of-kings
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit18]
+FileName=CImg.h
+CompileCpp=1
+Folder=
 Compile=1
 Link=1
 Priority=1000

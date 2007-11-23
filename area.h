@@ -42,6 +42,8 @@ class Area
         void setEntrySouth(Point entryS);
         void setEntryEast(Point entryE);
         void setEntryWest(Point entryW);
+        void setMainTexture(string);
+        void setImageMask(string);
         
         //add an npc
         void addNPC(NPC* npc);
