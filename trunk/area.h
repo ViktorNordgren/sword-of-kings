@@ -47,6 +47,12 @@ class Area
         
         //add an npc
         void addNPC(NPC* npc);
+        
+        //test if areas exist around here
+        bool canMoveNorth();
+        bool canMoveSouth();
+        bool canMoveEast();
+        bool canMoveWest();
 
     protected:
         //the id of this area
