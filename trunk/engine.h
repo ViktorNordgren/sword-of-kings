@@ -54,7 +54,8 @@ class Engine
     
     // Loader for all textures
     bool loadTextures();
-    
+    // Loads hero textures
+    bool loadHeroTextures();
     // Loads background texture
     bool loadBackgroundTexture();
     
@@ -78,6 +79,8 @@ class Engine
     
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];
+    // Hero textures
+    TextureImage heroTextures[12];
     
     // Current area Mask
     CImg<int> mask;
@@ -100,6 +103,11 @@ class Engine
     // Possible hero orientations
     enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };
     HeroDirection heroDirection;
+    
+    // Possible hero stances
+    enum HeroStance { NORMAL_STANCE, RIGHT_STANCE, LEFT_STANCE };
+    HeroStance heroStance;
+    HeroStance nextStance;
     
     // Grid location of Hero, indexed from bottom left of grid
     int heroPositionX, heroPositionY;

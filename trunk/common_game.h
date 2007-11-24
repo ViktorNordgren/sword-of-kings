@@ -49,7 +49,8 @@ static const string NPC_FILE_PATH = "npc.txt";
 /*
 * Hero movement
 */
-static const int HERO_MOVEMENT_DELAY = 15;
-static const double HERO_MOVEMENT_DISTANCE = 0.2;
+static const int HERO_MOVEMENT_DELAY = 10;
+static const double HERO_MOVEMENT_DISTANCE = 0.1;
+static const int HERO_MOVEMENT_AMOUNT = 1;
 
 #endif

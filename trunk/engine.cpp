@@ -27,7 +27,9 @@ Engine::Engine()
     heroPositionY = 0;
     heroAnimationY = 0;
     heroAnimationX = 0;
-    heroDirection = FACING_EAST;
+    heroDirection = FACING_SOUTH;
+    heroStance = NORMAL_STANCE;
+    nextStance = RIGHT_STANCE;
     heroIsMoving = false;
     
     // Create and load default area
@@ -57,7 +59,30 @@ bool Engine::loadAreaMask()
 */
 bool Engine::loadTextures()
 {
-    return loadBackgroundTexture();
+    loadHeroTextures();
+    
+    return (loadBackgroundTexture());
+}
+
+/*
+* Loads hero textures
+*/
+bool Engine::loadHeroTextures()
+{
+    loadTGA(&heroTextures[0], hero->getSouthNormalTexture());
+    loadTGA(&heroTextures[1], hero->getSouthRightTexture());
+    loadTGA(&heroTextures[2], hero->getSouthLeftTexture());
+    loadTGA(&heroTextures[3], hero->getNorthNormalTexture());
+    loadTGA(&heroTextures[4], hero->getNorthRightTexture());
+    loadTGA(&heroTextures[5], hero->getNorthLeftTexture());
+    loadTGA(&heroTextures[6], hero->getEastNormalTexture());
+    loadTGA(&heroTextures[7], hero->getEastRightTexture());
+    loadTGA(&heroTextures[8], hero->getEastLeftTexture());
+    loadTGA(&heroTextures[9], hero->getWestNormalTexture());
+    loadTGA(&heroTextures[10], hero->getWestRightTexture());
+    loadTGA(&heroTextures[11], hero->getWestLeftTexture());
+
+    return true;
 }
 
 /*
@@ -221,6 +246,8 @@ bool Engine::canHeroMoveDown()
 */
 void Engine::moveHeroRight()
 {
+    heroDirection = FACING_EAST;
+    
     // If we are at the right edge of the map, load the area to the east if possible.
     if (heroPositionX + hero->getWidth() >= GRID_WIDTH && !heroIsMoving)
     {
@@ -244,6 +271,8 @@ void Engine::moveHeroRight()
 */
 void Engine::moveHeroLeft()
 {
+    heroDirection = FACING_WEST;
+    
     // If we are at the left edge of the map, load the area to the west if possible.
     if (heroPositionX <= 0 && !heroIsMoving)
     {
@@ -267,6 +296,8 @@ void Engine::moveHeroLeft()
 */
 void Engine::moveHeroUp()
 {
+    heroDirection = FACING_NORTH;
+    
     // If we are at the top edge of the map, load the area to the north if possible.
     if (heroPositionY + hero->getHeight() >= GRID_HEIGHT && !heroIsMoving)
     {
@@ -290,6 +321,8 @@ void Engine::moveHeroUp()
 */
 void Engine::moveHeroDown()
 {
+    heroDirection = FACING_SOUTH;
+    
     // If we are at the bottom edge of the map, load the area to the south if possible.
     if (heroPositionY <= 0 && !heroIsMoving)
     {
@@ -317,14 +350,21 @@ void Engine::heroMovementTimer (int value)
     {
         case FACING_EAST:
             
-            if (heroAnimationX < 1.0 - HERO_MOVEMENT_DISTANCE)
+            if (heroAnimationX < HERO_MOVEMENT_AMOUNT - HERO_MOVEMENT_DISTANCE)
             {
                 heroAnimationX += HERO_MOVEMENT_DISTANCE;
+                
+                if (heroAnimationX >= HERO_MOVEMENT_AMOUNT / 3.0)
+                {
+                    heroStance = nextStance;
+                }
                 
                 glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
             }
             else
             {
+                nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
+                heroStance = NORMAL_STANCE;
                 heroPositionX++;
                 heroIsMoving = false;
                 heroAnimationX = 0;
@@ -333,14 +373,21 @@ void Engine::heroMovementTimer (int value)
         
         case FACING_WEST:
             
-            if (-heroAnimationX < 1.0 - HERO_MOVEMENT_DISTANCE)
+            if (-heroAnimationX < HERO_MOVEMENT_AMOUNT - HERO_MOVEMENT_DISTANCE)
             {
                 heroAnimationX -= HERO_MOVEMENT_DISTANCE;
+                
+                if (-heroAnimationX >= HERO_MOVEMENT_AMOUNT / 3.0)
+                {
+                    heroStance = nextStance;
+                }
                 
                 glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
             }
             else
             {
+                nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
+                heroStance = NORMAL_STANCE;
                 heroPositionX--;
                 heroIsMoving = false;
                 heroAnimationX = 0;
@@ -349,14 +396,21 @@ void Engine::heroMovementTimer (int value)
         
         case FACING_NORTH:
             
-            if (heroAnimationY < 1.0 - HERO_MOVEMENT_DISTANCE)
+            if (heroAnimationY < HERO_MOVEMENT_AMOUNT - HERO_MOVEMENT_DISTANCE)
             {
                 heroAnimationY += HERO_MOVEMENT_DISTANCE;
+                
+                if (heroAnimationY >= HERO_MOVEMENT_AMOUNT / 3.0)
+                {
+                    heroStance = nextStance;
+                }
                 
                 glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
             }
             else
             {
+                nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
+                heroStance = NORMAL_STANCE;
                 heroPositionY++;
                 heroIsMoving = false;
                 heroAnimationY = 0;
@@ -365,14 +419,21 @@ void Engine::heroMovementTimer (int value)
         
         case FACING_SOUTH:
             
-            if (-heroAnimationY < 1.0 - HERO_MOVEMENT_DISTANCE)
+            if (-heroAnimationY < HERO_MOVEMENT_AMOUNT - HERO_MOVEMENT_DISTANCE)
             {
                 heroAnimationY -= HERO_MOVEMENT_DISTANCE;
+                
+                if (-heroAnimationY >= HERO_MOVEMENT_AMOUNT / 3.0)
+                {
+                    heroStance = nextStance;
+                }
                 
                 glutTimerFunc (HERO_MOVEMENT_DELAY, heroMovementTimerDispach, value);
             }
             else
             {
+                nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
+                heroStance = NORMAL_STANCE;
                 heroPositionY--;
                 heroIsMoving = false;
                 heroAnimationY = 0;
@@ -474,8 +535,6 @@ void Engine::drawAreaBackground()
 */
 void Engine::drawHero()
 {
-    glColor3f(1.0, 1.0, 1.0); // Temp
-    // Texure will depend on heroDirection state. (east, west, etc.)
     
     // To draw the hero, as with all characters, use the Grid system as our
     // 2D orthogonal view (since we deal with the grid when drawing characters,
@@ -488,12 +547,85 @@ void Engine::drawHero()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    // The hero's direction and footing determines which texture we shall use.
+    // There are 12 possible textures, stored in the heroTextures array.
+    switch (heroDirection)
+    {
+        case FACING_SOUTH:
+            
+            switch (heroStance)
+            {
+                case NORMAL_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[0].texID);
+                    break;
+                case RIGHT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[1].texID);
+                    break;
+                case LEFT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[2].texID);
+                    break;
+            }
+            break;
+            
+        case FACING_NORTH:
+            
+            switch (heroStance)
+            {
+                case NORMAL_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[3].texID);
+                    break;
+                case RIGHT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[4].texID);
+                    break;
+                case LEFT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[5].texID);
+                    break;
+            }
+            break;
+            
+        case FACING_EAST:
+            
+            switch (heroStance)
+            {
+                case NORMAL_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[6].texID);
+                    break;
+                case RIGHT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[7].texID);
+                    break;
+                case LEFT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[8].texID);
+                    break;
+            }
+            break;
+            
+        case FACING_WEST:
+            
+            switch (heroStance)
+            {
+                case NORMAL_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[9].texID);
+                    break;
+                case RIGHT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[10].texID);
+                    break;
+                case LEFT_STANCE:
+                    glBindTexture(GL_TEXTURE_2D, heroTextures[11].texID);
+                    break;
+            }
+            break;
+    }
 
 	glBegin(GL_POLYGON);
+	   glTexCoord2f(0.0f, 0.0f);
 		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY);
-		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY + hero->getHeight());
-		glVertex2f(heroPositionX + heroAnimationX + hero->getWidth(), heroPositionY + heroAnimationY + hero->getHeight());
+		glTexCoord2f(1.0f, 0.0f);
 		glVertex2f(heroPositionX + heroAnimationX + hero->getWidth(), heroPositionY + heroAnimationY);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(heroPositionX + heroAnimationX + hero->getWidth(), heroPositionY + heroAnimationY + hero->getHeight());
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY + hero->getHeight());
 	glEnd();
 
     glMatrixMode(GL_PROJECTION);
@@ -531,6 +663,7 @@ void Engine::initializeOpenGLSettings()
 	// Enable texture mapping
 	glEnable(GL_TEXTURE_2D);
 	
+	// Shading model
 	glShadeModel(GL_SMOOTH);
 	
 	glClearDepth(1.0f);
