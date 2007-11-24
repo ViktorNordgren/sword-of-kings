@@ -237,13 +237,9 @@ bool Parser::getNPC(NPC* npc, string npcName)
 			getline(npcFile, line);
 			
 			//tokenize the string
-            string buf; // Have a buffer string
-            stringstream ss(line); // Insert the string into a stream
             vector<string> tokens; // Create vector to hold our words
+            tokenize(line, tokens);
             
-            
-            while (ss >> buf)
-                tokens.push_back(buf);
             string name = "";
             
             if(tokens.size() > 0)
@@ -284,4 +280,26 @@ bool Parser::getNPC(NPC* npc, string npcName)
 		}
 		npcFile.close();
 	}
+}
+
+void Parser::tokenize(const string& str, vector<string>& tokens, const string& delimiters)
+{
+    // Delimiters cannot be found within quotation marks
+    string quotationMark = "\"";
+    // Find first quotation mark
+    string::size_type lastQuot = str.find_first_of(quotationMark, 0);
+    // Skip delimiters at beginning.
+    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+    // Find first "non-delimiter".
+    string::size_type pos = str.find_first_of(delimiters, lastPos);
+
+    while (string::npos != pos || string::npos != lastPos)
+    {
+        // Found a token, add it to the vector.
+        tokens.push_back(str.substr(lastPos, pos - lastPos));
+        // Skip delimiters.  Note the "not_of"
+        lastPos = str.find_first_not_of(delimiters, pos);
+        // Find next "non-delimiter"
+        pos = str.find_first_of(delimiters, lastPos);
+    }
 }

@@ -17,5 +17,7 @@ class Parser
         static bool getArea(Area* area, int areaID);
         static bool getNPC(NPC* npc, string npcName);
         
+        static void tokenize(const string&, vector<string>&, const string& = " ");
+        
         
 };

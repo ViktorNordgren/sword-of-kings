@@ -192,7 +192,9 @@ void Engine::loadArea(int id)
 * Determine if hero can move right
 */
 bool Engine::canHeroMoveRight()
-{   
+{
+    heroDirection = FACING_EAST;
+    
     // The grid block to the right is solid, cannot walk past it.
     int newRightPosition = heroPositionX + hero->getWidth();
     if ((int)(mask.pix4d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
@@ -206,6 +208,8 @@ bool Engine::canHeroMoveRight()
 */
 bool Engine::canHeroMoveLeft()
 {       
+    heroDirection = FACING_WEST;
+    
     // The grid block to the left is solid, cannot walk past it.
     int newLeftPosition = heroPositionX - 1;
     if ((int)(mask.pix4d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
@@ -218,7 +222,9 @@ bool Engine::canHeroMoveLeft()
 * Determine if hero can move up
 */
 bool Engine::canHeroMoveUp()
-{       
+{
+    heroDirection = FACING_NORTH;    
+    
     // The grid block above is solid, cannot walk past it.
     int newUpPosition = heroPositionY + 1;
     if ((int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0, 255)) <= 0)
@@ -232,6 +238,8 @@ bool Engine::canHeroMoveUp()
 */
 bool Engine::canHeroMoveDown()
 {
+    heroDirection = FACING_SOUTH;    
+    
     // The grid block below is solid, cannot walk past it.
     int newDownPosition = heroPositionY - 1;
     //cout << "new down position: " << newDownPosition << endl;
@@ -667,9 +675,6 @@ void Engine::initializeOpenGLSettings()
 	
 	// Enable texture mapping
 	glEnable(GL_TEXTURE_2D);
-	
-	// Shading model
-	glShadeModel(GL_SMOOTH);
 	
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
