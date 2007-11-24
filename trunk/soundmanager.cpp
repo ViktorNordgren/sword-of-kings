@@ -51,5 +51,5 @@ void SoundManager::stopMusic()
 
 void SoundManager::playSound(SoundEffect s)
 {
-    Mix_PlayChannel(s, soundEffects[s], 0);
+    Mix_PlayChannel(-1, soundEffects[s], 0);
 }
