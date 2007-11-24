@@ -32,7 +32,6 @@ Engine::Engine()
     nextStance = RIGHT_STANCE;
     heroIsMoving = false;
     soundManager = new SoundManager();
-    soundManager->playMusic();
     // Create and load default area
     currentArea = new Area();
     loadArea(1);
@@ -45,6 +44,7 @@ Engine::~Engine()
 {
     delete hero;
     delete currentArea;
+    delete soundManager;
 }
 
 /*
@@ -740,6 +740,8 @@ void Engine::run(int argc, char** argv)
     }
     
     loadAreaMask();
+    
+    soundManager->playMusic();
 
 	glutMainLoop();
 }
