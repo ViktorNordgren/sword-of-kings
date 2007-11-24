@@ -124,15 +124,10 @@ bool Parser::getArea(Area* area, int areaID)
 		{
             //get the current line
 			getline(areaFile, line);
-			
-			//tokenize the string
-            string buf; // Have a buffer string
-            stringstream ss(line); // Insert the string into a stream
+
             vector<string> tokens; // Create vector to hold our words
+            tokenize(line, tokens);
             
-            
-            while (ss >> buf)
-                tokens.push_back(buf);
             string name = "";
             
             if(tokens.size() > 0)
@@ -207,6 +202,14 @@ bool Parser::getArea(Area* area, int areaID)
                     entry.x = atoi(tokens[1].c_str());
                     entry.y = atoi(tokens[2].c_str());
                     area->setEntryWest(entry);
+                }
+                else if(name.compare("SPEECH") == 0)
+                {
+                    string test = tokens[1];
+                    string test2 = tokens[2];
+                    string test3 = tokens[3];
+                    cout << "TEST!" << endl;
+                    //cout << "SPEECH IS: " << tokens[1] << endl;
                 }
                 else if(name.compare("NPC") == 0)
                 {
@@ -284,22 +287,55 @@ bool Parser::getNPC(NPC* npc, string npcName)
 
 void Parser::tokenize(const string& str, vector<string>& tokens, const string& delimiters)
 {
+    if (str.length() < 1)
+    {
+        return;
+    }
+    
     // Delimiters cannot be found within quotation marks
     string quotationMark = "\"";
     // Find first quotation mark
     string::size_type lastQuot = str.find_first_of(quotationMark, 0);
     // Skip delimiters at beginning.
     string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-    // Find first "non-delimiter".
-    string::size_type pos = str.find_first_of(delimiters, lastPos);
+    
+    string::size_type pos;
+    
+    if ( lastQuot <= lastPos )
+    {
+        lastPos = lastQuot + (string::size_type)(1);
+        pos = str.find_first_of(quotationMark, lastPos);
+    }
+    else
+    {
+        // Find first "non-delimiter".
+        pos = str.find_first_of(delimiters, lastPos);
+    }
 
     while (string::npos != pos || string::npos != lastPos)
     {
         // Found a token, add it to the vector.
         tokens.push_back(str.substr(lastPos, pos - lastPos));
+        
+        if (pos >= str.length() - 1)
+        {
+            break;
+        }
+        
         // Skip delimiters.  Note the "not_of"
-        lastPos = str.find_first_not_of(delimiters, pos);
-        // Find next "non-delimiter"
-        pos = str.find_first_of(delimiters, lastPos);
+        lastPos = str.find_first_not_of(delimiters, pos + 1);
+        // Find next quotation mark
+        string::size_type lastQuot = str.find_first_of(quotationMark, pos + 1);
+        
+        if ( lastQuot <= lastPos )
+        {
+            lastPos = lastQuot + (string::size_type)(1);
+            pos = str.find_first_of(quotationMark, lastPos);
+        }
+        else
+        {
+            // Find first "non-delimiter".
+            pos = str.find_first_of(delimiters, lastPos);
+        }
     }
 }
