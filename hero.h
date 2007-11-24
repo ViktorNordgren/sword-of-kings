@@ -16,6 +16,18 @@ class Hero : public Character
         Hero(string n, int lev, string text);
         //getters
         bool getHasSwordOfKings();
+        string getNorthNormalTexture();
+        string getNorthRightTexture();
+        string getNorthLeftTexture();
+        string getSouthNormalTexture();
+        string getSouthRightTexture();
+        string getSouthLeftTexture();
+        string getEastNormalTexture();
+        string getEastRightTexture();
+        string getEastLeftTexture();
+        string getWestNormalTexture();
+        string getWestRightTexture();
+        string getWestLeftTexture();
         //setters
         void setHasSwordOfKings(bool hasSword);
 
