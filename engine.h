@@ -11,6 +11,8 @@ using namespace cimg_library;
 #include <map>
 #include "hero.h"
 #include "parser.h"
+#include "soundmanager.h"
+#include "common_sound.h"
 
 typedef struct
 {
@@ -121,6 +123,9 @@ class Engine
     void initializeOpenGLProjectionSettings();
     // Initialize openGL callback functions
     void initializeOpenGLCallbacks();
+    
+    //sound effect manager
+    SoundManager* soundManager;
     
     public:
         // Default constructor

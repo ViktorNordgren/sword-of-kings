@@ -31,7 +31,8 @@ Engine::Engine()
     heroStance = NORMAL_STANCE;
     nextStance = RIGHT_STANCE;
     heroIsMoving = false;
-    
+    soundManager = new SoundManager();
+    soundManager->playMusic();
     // Create and load default area
     currentArea = new Area();
     loadArea(1);
@@ -247,6 +248,7 @@ bool Engine::canHeroMoveDown()
 void Engine::moveHeroRight()
 {
     heroDirection = FACING_EAST;
+    soundManager->playSound(STEP);
     
     // If we are at the right edge of the map, load the area to the east if possible.
     if (heroPositionX + hero->getWidth() >= GRID_WIDTH && !heroIsMoving)
@@ -272,6 +274,7 @@ void Engine::moveHeroRight()
 void Engine::moveHeroLeft()
 {
     heroDirection = FACING_WEST;
+    soundManager->playSound(STEP);
     
     // If we are at the left edge of the map, load the area to the west if possible.
     if (heroPositionX <= 0 && !heroIsMoving)
@@ -297,6 +300,7 @@ void Engine::moveHeroLeft()
 void Engine::moveHeroUp()
 {
     heroDirection = FACING_NORTH;
+    soundManager->playSound(STEP);
     
     // If we are at the top edge of the map, load the area to the north if possible.
     if (heroPositionY + hero->getHeight() >= GRID_HEIGHT && !heroIsMoving)
@@ -322,6 +326,7 @@ void Engine::moveHeroUp()
 void Engine::moveHeroDown()
 {
     heroDirection = FACING_SOUTH;
+    soundManager->playSound(STEP);
     
     // If we are at the bottom edge of the map, load the area to the south if possible.
     if (heroPositionY <= 0 && !heroIsMoving)
