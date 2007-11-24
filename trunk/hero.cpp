@@ -19,7 +19,6 @@ Hero::Hero()
     attack = DEFAULT_HERO_ATTACK;
     defense = DEFAULT_HERO_DEFENSE;
     level = DEFAULT_HERO_LEVEL;
-    texture = DEFAULT_HERO_TEXTURE;
 }
 
 /*
@@ -49,6 +48,70 @@ bool Hero::getHasSwordOfKings()
 {
     return hasSwordOfKings;
 }
+
+/*
+* Texture Getters
+*/
+string Hero::getNorthNormalTexture()
+{
+    return HERO_NORTH_NORMAL_TEXTURE;
+}
+
+string Hero::getNorthRightTexture()
+{
+    return HERO_NORTH_RIGHT_TEXTURE;
+}
+
+string Hero::getNorthLeftTexture()
+{
+    return HERO_NORTH_LEFT_TEXTURE;
+}
+
+string Hero::getSouthNormalTexture()
+{
+    return HERO_SOUTH_NORMAL_TEXTURE;
+}
+
+string Hero::getSouthRightTexture()
+{
+    return HERO_SOUTH_RIGHT_TEXTURE;
+}
+
+string Hero::getSouthLeftTexture()
+{
+    return HERO_SOUTH_LEFT_TEXTURE;
+}
+
+string Hero::getEastNormalTexture()
+{
+    return HERO_EAST_NORMAL_TEXTURE;
+}
+
+string Hero::getEastRightTexture()
+{
+    return HERO_EAST_RIGHT_TEXTURE;
+}
+
+string Hero::getEastLeftTexture()
+{
+    return HERO_EAST_LEFT_TEXTURE;
+}
+
+string Hero::getWestNormalTexture()
+{
+    return HERO_WEST_NORMAL_TEXTURE;
+}
+
+string Hero::getWestRightTexture()
+{
+    return HERO_WEST_RIGHT_TEXTURE;
+}
+
+string Hero::getWestLeftTexture()
+{
+    return HERO_WEST_LEFT_TEXTURE;
+}
+
 
 /*
 * Setters
