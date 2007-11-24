@@ -194,7 +194,7 @@ void Engine::loadArea(int id)
 bool Engine::canHeroMoveRight()
 {
     heroDirection = FACING_EAST;
-    
+
     // The grid block to the right is solid, cannot walk past it.
     int newRightPosition = heroPositionX + hero->getWidth();
     if ((int)(mask.pix4d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
@@ -209,7 +209,7 @@ bool Engine::canHeroMoveRight()
 bool Engine::canHeroMoveLeft()
 {       
     heroDirection = FACING_WEST;
-    
+
     // The grid block to the left is solid, cannot walk past it.
     int newLeftPosition = heroPositionX - 1;
     if ((int)(mask.pix4d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
@@ -224,7 +224,7 @@ bool Engine::canHeroMoveLeft()
 bool Engine::canHeroMoveUp()
 {
     heroDirection = FACING_NORTH;    
-    
+
     // The grid block above is solid, cannot walk past it.
     int newUpPosition = heroPositionY + 1;
     if ((int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0, 255)) <= 0)
@@ -239,7 +239,7 @@ bool Engine::canHeroMoveUp()
 bool Engine::canHeroMoveDown()
 {
     heroDirection = FACING_SOUTH;    
-    
+
     // The grid block below is solid, cannot walk past it.
     int newDownPosition = heroPositionY - 1;
     //cout << "new down position: " << newDownPosition << endl;
@@ -256,7 +256,6 @@ bool Engine::canHeroMoveDown()
 void Engine::moveHeroRight()
 {
     heroDirection = FACING_EAST;
-    soundManager->playSound(STEP);
     
     // If we are at the right edge of the map, load the area to the east if possible.
     if (heroPositionX + hero->getWidth() >= GRID_WIDTH && !heroIsMoving)
@@ -273,6 +272,7 @@ void Engine::moveHeroRight()
     {
         heroIsMoving = true;
         glutTimerFunc(0, heroMovementTimerDispach, FACING_EAST);
+        soundManager->playSound(STEP);
     }
 }
 
@@ -282,7 +282,6 @@ void Engine::moveHeroRight()
 void Engine::moveHeroLeft()
 {
     heroDirection = FACING_WEST;
-    soundManager->playSound(STEP);
     
     // If we are at the left edge of the map, load the area to the west if possible.
     if (heroPositionX <= 0 && !heroIsMoving)
@@ -299,6 +298,7 @@ void Engine::moveHeroLeft()
     {
         heroIsMoving = true;
         glutTimerFunc(0, heroMovementTimerDispach, FACING_WEST);
+        soundManager->playSound(STEP);
     }
 }
 
@@ -308,7 +308,6 @@ void Engine::moveHeroLeft()
 void Engine::moveHeroUp()
 {
     heroDirection = FACING_NORTH;
-    soundManager->playSound(STEP);
     
     // If we are at the top edge of the map, load the area to the north if possible.
     if (heroPositionY + hero->getHeight() >= GRID_HEIGHT && !heroIsMoving)
@@ -324,6 +323,7 @@ void Engine::moveHeroUp()
     else if (!heroIsMoving)
     {
         heroIsMoving = true;
+        soundManager->playSound(STEP);
         glutTimerFunc(0, heroMovementTimerDispach, FACING_NORTH);
     }
 }
@@ -334,7 +334,6 @@ void Engine::moveHeroUp()
 void Engine::moveHeroDown()
 {
     heroDirection = FACING_SOUTH;
-    soundManager->playSound(STEP);
     
     // If we are at the bottom edge of the map, load the area to the south if possible.
     if (heroPositionY <= 0 && !heroIsMoving)
@@ -350,6 +349,7 @@ void Engine::moveHeroDown()
     else if (!heroIsMoving)
     {
         heroIsMoving = true;
+        soundManager->playSound(STEP);
         glutTimerFunc(0, heroMovementTimerDispach, FACING_SOUTH);
     }
 }
@@ -462,6 +462,7 @@ void Engine::heroMovementTimer (int value)
 */
 void Engine::processNormalKeys(unsigned char key, int x, int y)
 {
+    
 	switch (key)
 	{
         // Equivalent to pressing Left arrow key
@@ -653,7 +654,7 @@ void Engine::display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	// Draw Background
-	drawAreaBackground();
+//	drawAreaBackground();
 
     // Draw hero
     drawHero();
