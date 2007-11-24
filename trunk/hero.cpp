@@ -16,6 +16,7 @@ Hero::Hero()
     width = DEFAULT_HERO_WIDTH;
     name = "";
     totalHitPoints = DEFAULT_HERO_HITPOINTS;
+    remainingHitPoints = totalHitPoints;
     attack = DEFAULT_HERO_ATTACK;
     defense = DEFAULT_HERO_DEFENSE;
     level = DEFAULT_HERO_LEVEL;
