@@ -53,4 +53,16 @@ static const int HERO_MOVEMENT_DELAY = 10;
 static const double HERO_MOVEMENT_DISTANCE = 0.1;
 static const int HERO_MOVEMENT_AMOUNT = 1;
 
+/*
+* Conditions
+*/
+static const string SWORD_FOUND = "SWORD_FOUND";
+static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
+
+/*
+* Actions
+*/
+static const string GET_SWORD = "GET_SWORD";
+
+
 #endif
