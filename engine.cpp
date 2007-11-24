@@ -6,6 +6,9 @@
 #include "engine.h"
 
 #include <iostream>
+#include <sstream>
+
+using namespace std;
 
 /***************************************
 * Class Engine
@@ -21,7 +24,7 @@ const int Engine::ENGINE_ID;
 Engine::Engine()
 {
     // Create hero
-    hero = new Hero("Hero", 1, "heropicture.bmp");
+    hero = new Hero(/*"Hero", 1, "heropicture.bmp"*/);
     
     heroPositionX = 0;
     heroPositionY = 0;
@@ -553,8 +556,10 @@ void Engine::drawHero()
     // To draw the hero, as with all characters, use the Grid system as our
     // 2D orthogonal view (since we deal with the grid when drawing characters,
     // not actual pixel dimentions.)
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+	
+	
 	glLoadIdentity();
 	
 	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
@@ -646,6 +651,36 @@ void Engine::drawHero()
 	glPopMatrix(); 
 }
 
+void Engine::drawHUD()
+{
+    //display the score
+	std::stringstream ss;
+	std::string str;
+	ss << hero->getRemainingHitPoints() << "/" << hero->getTotalHitPoints();
+	ss >> str;
+	char health[9];
+	strcpy( health, str.c_str() );
+	glColor3f( 1.0, 1.0, 1.0 );
+	drawString(DEFAULT_WINDOW_WIDTH - 70, DEFAULT_WINDOW_HEIGHT - 20, GLUT_BITMAP_TIMES_ROMAN_24, "Life:");
+	drawString(DEFAULT_WINDOW_WIDTH - 70, DEFAULT_WINDOW_HEIGHT - 50, GLUT_BITMAP_TIMES_ROMAN_24, health);
+}
+
+//this is a method to make the output of strings much simpler
+void Engine::drawString(float x, float y, void *font, char *string)
+{  
+    // Enable texture mapping
+	glDisable(GL_TEXTURE_2D);
+	char *currChar;
+	glRasterPos2f(x, y);
+	//loop through the string and output each char
+	for (currChar=string; *currChar != '\0'; currChar++) 
+	{
+		glutBitmapCharacter(font, *currChar);
+	}
+	glEnable(GL_TEXTURE_2D);
+        
+}
+
 /*
 *	The main display function.
 */
@@ -658,6 +693,8 @@ void Engine::display()
 
     // Draw hero
     drawHero();
+    
+    drawHUD();
 
 	glutSwapBuffers();
 }

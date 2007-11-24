@@ -71,6 +71,10 @@ class Engine
     void drawHero();
     // Draws area background
     void drawAreaBackground();
+    // Draws the HUD
+    void drawHUD();
+    // Helper method to draw a string on the screen
+    void drawString( float x, float y, void *font, char *string ); 
     
     // The Hero
     Hero * hero;
