@@ -56,6 +56,8 @@ class Engine
     
     // Loader for all textures
     bool loadTextures();
+    // Loads npc textures
+    bool loadNPCTextures();
     // Loads hero textures
     bool loadHeroTextures();
     // Loads background texture
@@ -69,6 +71,8 @@ class Engine
     
     // Draws Hero
     void drawHero();
+    // Draws NPCs
+    void drawNPCs();
     // Draws area background
     void drawAreaBackground();
     // Draws the HUD
@@ -87,6 +91,8 @@ class Engine
     TextureImage backgroundTexture[1];
     // Hero textures
     TextureImage heroTextures[12];
+    // NPC textures
+    vector<TextureImage> npcTextures;
     
     // Current area Mask
     CImg<int> mask;
