@@ -15,6 +15,8 @@ Area::Area()
     south = -1;
     east = -1;
     west = -1;
+    maxMonsterLevel = -1;
+    monsterFrequency = -1;
 }
 
 Area::Area(string mainText, string imMask, int n, int s, int e, int w)
@@ -25,6 +27,8 @@ Area::Area(string mainText, string imMask, int n, int s, int e, int w)
     south = s;
     east = e;
     west = w;
+    maxMonsterLevel = -1;
+    monsterFrequency = -1;
 }
 // Default destructor
 Area::~Area()
@@ -92,6 +96,20 @@ vector<NPC*> Area::getNPCs()
     return npcs;   
 }
 
+int Area::getMaxMonsterLevel()
+{
+    return maxMonsterLevel;
+}
+
+int Area::getMonsterFrequency()
+{
+    return monsterFrequency;
+}
+
+bool Area::hasMonsters()
+{
+    return (monsterFrequency != -1);
+}
 
 //setters
 void Area::setID(int i)
@@ -146,6 +164,16 @@ void Area::setMainTexture(string texture)
 void Area::setImageMask(string mask)
 {
     imageMask = mask;
+}
+
+void Area::setMonsterFrequency(int freq)
+{
+    monsterFrequency = freq;
+}
+
+void Area::setMaxMonsterLevel(int level)
+{
+    maxMonsterLevel = level;
 }
 
 //add an npc

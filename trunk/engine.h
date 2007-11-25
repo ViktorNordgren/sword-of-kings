@@ -88,6 +88,8 @@ class Engine
     // Draws the battle menu
     void drawBattleMenu();
     
+    // Returns a random int, given a maximum int
+    int getRandomInt(int);    
     
     // The current game state
     GameState* gameState;
@@ -112,10 +114,13 @@ class Engine
     
     //a boolean that sets if we are in a battle
     bool inBattle;
+    // Steps taken until next fight will occur
+    int stepsUntilNextBattle;
     
     //this tells you which menu option is selected in the battle menu
     int battleArrow; 
     
+    // Current enemy hero is fighting
     Enemy* currEnemy;
     
     // Current loaded backgrounnd texture
@@ -140,7 +145,7 @@ class Engine
     void moveHeroUp();
     void moveHeroDown();
     
-    // Function which determines if there is an npc to interact with 
+    // Function which determines if there is an npc to interact with (-1 if none)
     int canHeroInteractWithNPC();
     
     // When hero is moving, user inputs are disabled
