@@ -33,6 +33,7 @@ class Hero : public Character
 
     protected:
         bool hasSwordOfKings;
+        int expToNextLevel;
                
         
 };

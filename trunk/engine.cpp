@@ -46,6 +46,7 @@ Engine::Engine()
     loadArea(1);
     gameState = new GameState();
     inBattle = false;
+    currEnemy = new Enemy("Orc", 20, 2, 3, 5, "", ORC);
 }
 
 /*
@@ -809,11 +810,11 @@ void Engine::drawAreaBackground()
 {
     glBindTexture(GL_TEXTURE_2D, backgroundTexture[0].texID);
     
-    glBegin(GL_QUADS);
+    glBegin(GL_POLYGON);
         glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f, 0.0f,  0.0f);
-        glTexCoord2f(1.0f, 0.0f); glVertex3f(DEFAULT_WINDOW_WIDTH, 0.0f,  0.0f);
+        glTexCoord2f(1.0f, 0.0f); glVertex3f(DEFAULT_WINDOW_WIDTH, 0.0,  0.0f);
         glTexCoord2f(1.0f, 2.0f / 3.0f); glVertex3f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT,  0.0f);
-        glTexCoord2f(0.0f, 2.0f / 3.0f); glVertex3f(0.0f, DEFAULT_WINDOW_HEIGHT,  0.0f);
+        glTexCoord2f(0.0f, 2.0f / 3.0f); glVertex3f(0.0f, DEFAULT_WINDOW_HEIGHT, 0.0f);
     glEnd();
 }
 
@@ -1142,27 +1143,56 @@ void Engine::drawBattleMenu()
 	//display hero stats
 	stringstream ss1;
 	stringstream ss2;
+	stringstream ss5;
 	string remaining;
 	string total;
+	string level;
 	string healthLine = "HP: ";
 	ss1 << hero->getRemainingHitPoints();
 	ss1 >> remaining;
 	ss2 << hero->getTotalHitPoints();
 	ss2 >> total;
+	ss5 << hero->getLevel();
+	ss5 >> level;
+	level = "Lvl: " + level;
 	healthLine.append(remaining);
 	healthLine.append(" / ");
 	healthLine.append(total);
-	char heroHealth[9];
-	strcpy( heroHealth, healthLine.c_str() );
-	glColor3f( 1.0, 1.0, 1.0 );
-	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2, GLUT_BITMAP_TIMES_ROMAN_24, heroHealth);
 	char heroName[40];
 	string name = hero->getName();
     strcpy(heroName, name.c_str());
 	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT, GLUT_BITMAP_TIMES_ROMAN_24, heroName);
+	char heroLevel[10];
+	strcpy(heroLevel, level.c_str());
+	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2, GLUT_BITMAP_TIMES_ROMAN_24, heroLevel);
+	char heroHealth[20];
+	strcpy( heroHealth, healthLine.c_str() );
+	glColor3f( 1.0, 1.0, 1.0 );
+	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 3, GLUT_BITMAP_TIMES_ROMAN_24, heroHealth);
+	
 	
 	//display the enemy stats
-	
+	stringstream ss3;
+	stringstream ss4;
+	stringstream ss6;
+	string enemyRemaining;
+	string enemyTotal;
+	string enemyHealthLine = "HP: ";
+	ss3 << currEnemy->getRemainingHitPoints();
+	ss3 >> enemyRemaining;
+	ss4 << currEnemy->getTotalHitPoints();
+	ss4 >> enemyTotal;
+	enemyHealthLine.append(enemyRemaining);
+	enemyHealthLine.append(" / ");
+	enemyHealthLine.append(enemyTotal);
+	char enemyHealth[20];
+	strcpy( enemyHealth, enemyHealthLine.c_str() );
+	glColor3f( 1.0, 1.0, 1.0 );
+	drawString(600.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2, GLUT_BITMAP_TIMES_ROMAN_24, enemyHealth);
+	char enemyName[40];
+	name = currEnemy->getName();
+    strcpy(enemyName, name.c_str());
+	drawString(600.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT, GLUT_BITMAP_TIMES_ROMAN_24, enemyName);
 }
 
 

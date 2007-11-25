@@ -20,6 +20,7 @@ Hero::Hero()
     attack = DEFAULT_HERO_ATTACK;
     defense = DEFAULT_HERO_DEFENSE;
     level = DEFAULT_HERO_LEVEL;
+    expToNextLevel = DEFAULT_EXP_TO_NEXT_LEVEL;
 }
 
 /*
