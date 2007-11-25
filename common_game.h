@@ -39,6 +39,7 @@ static const int DEFAULT_HERO_HITPOINTS = 50;
 static const int DEFAULT_HERO_ATTACK = 5;
 static const int DEFAULT_HERO_DEFENSE = 5;
 static const int DEFAULT_HERO_LEVEL = 1;
+static const int DEFAULT_EXP_TO_NEXT_LEVEL = 40;
 static const string DEFAULT_HERO_NAME = "Joe Blow";
 static const string HERO_NORTH_NORMAL_TEXTURE = "textures/characters/hero/north_normal.tga";
 static const string HERO_NORTH_RIGHT_TEXTURE = "textures/characters/hero/north_right.tga";
@@ -78,7 +79,6 @@ static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 /*
 * Actions
 */
-static const string NOTHING = "NOTHING";
 static const string GET_SWORD = "GET_SWORD";
 
 /*
