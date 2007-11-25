@@ -10,6 +10,13 @@ enum EnemyType
     BOSS
 };
 
+enum BattleMenuChoice
+{
+    ATTACK = 0,
+    HEAL = 1,
+    RUN = 2
+};
+
 struct Point 
 { 
     int x; 
