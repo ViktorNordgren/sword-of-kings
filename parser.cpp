@@ -52,6 +52,10 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
                     enemy->setTotalHitPoints(atoi(tokens[1].c_str()));
                     enemy->setRemainingHitPoints(atoi(tokens[1].c_str()));
                 }
+                else if(name.compare("NAME") == 0)
+                {
+                    enemy->setName(tokens[1]);
+                }
                 else if(name.compare("ATTACK") == 0)
                 {
                     enemy->setAttack(atof(tokens[1].c_str()));
