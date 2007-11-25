@@ -14,7 +14,7 @@ Hero::Hero()
     hasSwordOfKings = false;
     height = DEFAULT_HERO_HEIGHT;
     width = DEFAULT_HERO_WIDTH;
-    name = "";
+    name = DEFAULT_HERO_NAME;
     totalHitPoints = DEFAULT_HERO_HITPOINTS;
     remainingHitPoints = totalHitPoints;
     attack = DEFAULT_HERO_ATTACK;

@@ -116,6 +116,8 @@ class Engine
     //this tells you which menu option is selected in the battle menu
     int battleArrow; 
     
+    Enemy* currEnemy;
+    
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];
     // Hero textures
