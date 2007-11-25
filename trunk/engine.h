@@ -64,6 +64,8 @@ class Engine
     bool loadHeroTextures();
     // Loads background texture
     bool loadBackgroundTexture();
+    // Loads current monster textures
+    bool loadMonsterTextures();
     
     // Loads current area's mask
     bool loadAreaMask();
@@ -136,6 +138,8 @@ class Engine
     TextureImage heroTextures[12];
     // NPC textures
     vector<TextureImage> npcTextures;
+    // Current monster textures
+    TextureImage monsterTextures[1];
     
     // Current area Mask
     CImg<int> mask;
