@@ -661,10 +661,10 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                         
                         if ( gameState->isConditionTrue(npcDialog.condition))
                         {
-                            textDialog = new TextDialog(npcDialog.text);
+                            textDialog = new TextDialog(npc->getName() + ": " + npcDialog.text);
                             speech = textDialog->getNextDialog();
                             displaySpeech = true;
-                            
+
                             break;
                         }
                     }
