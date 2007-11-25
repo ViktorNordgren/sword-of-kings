@@ -18,11 +18,13 @@ class SoundManager
         // Default destructor
         ~SoundManager();
         void playMusic();
+        void playBattleMusic();
         void stopMusic();
         void playSound(SoundEffect s);
         
     private:
         Mix_Music* music;
+        Mix_Music* battleMusic;
         vector<Mix_Chunk*> soundEffects;
 };
     

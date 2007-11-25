@@ -25,7 +25,9 @@ SoundManager::SoundManager()
     }
     
     music = Mix_LoadMUS(MUSIC_SOUND_FILE.c_str());
+    battleMusic = Mix_LoadMUS(BATTLE_MUSIC_SOUND_FILE.c_str());
     soundEffects.push_back(Mix_LoadWAV(STEP_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(MENU_BEEP_SOUND_FILE.c_str()));
     
     
 }
@@ -33,6 +35,7 @@ SoundManager::SoundManager()
 SoundManager::~SoundManager()
 {
     Mix_FreeMusic(music);
+    Mix_FreeMusic(battleMusic);
     for(int i = 0; i < MAX_SOUND_EFFECTS; i++)
     {
         Mix_FreeChunk(soundEffects[i]);
@@ -41,7 +44,14 @@ SoundManager::~SoundManager()
 
 void SoundManager::playMusic()
 {
-    Mix_PlayMusic(music, 0);
+    Mix_HaltMusic();
+    Mix_PlayMusic(music, -1);
+}
+
+void SoundManager::playBattleMusic()
+{
+    Mix_HaltMusic();
+    Mix_PlayMusic(battleMusic, -1);
 }
 
 void SoundManager::stopMusic()

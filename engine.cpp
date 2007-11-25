@@ -42,6 +42,7 @@ Engine::Engine()
     speech = "";
     loadArea(1);
     gameState = new GameState();
+    inBattle = false;
 }
 
 /*
@@ -608,80 +609,141 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Left arrow key
 		case 'a':
 		case 'A':
-            if (!displaySpeech &&canHeroMoveLeft())
+            if(inBattle)
             {
-               moveHeroLeft();
+                
+            }
+            else
+            {
+                if (!displaySpeech &&canHeroMoveLeft())
+                {
+                   moveHeroLeft();
+                }
             }
 			break;
 			
         // Equivalent to pressing Right arrow key
 		case 'd':
 		case 'D':
-            if (!displaySpeech && canHeroMoveRight())
+            if(inBattle)
             {
-               moveHeroRight();
+                
+            }
+            else
+            {
+                if (!displaySpeech && canHeroMoveRight())
+                {
+                   moveHeroRight();
+                }
             }
 			break;
 			
         // Equivalent to pressing Up arrow key
 		case 'w':
 		case 'W':
-            if (!displaySpeech && canHeroMoveUp())
+            if(inBattle)
             {
-                moveHeroUp();
+                if(battleArrow != 0)
+                {
+                    battleArrow--;
+                    soundManager->playSound(MENUBEEP);
+                }
+            }
+            else
+            {
+                if (!displaySpeech && canHeroMoveUp())
+                {
+                    moveHeroUp();
+                }
             }
             break;
 			
         // Equivalent to pressing Down arrow key
 		case 's':
 		case 'S':
-            if (!displaySpeech && canHeroMoveDown())
+            if(inBattle)
             {
-               moveHeroDown();
+                if(battleArrow != 2)
+                {
+                    battleArrow++;
+                    soundManager->playSound(MENUBEEP);
+                }
+            }
+            else
+            {
+                if (!displaySpeech && canHeroMoveDown())
+                {
+                   moveHeroDown();
+                }
             }
 			break;
+		case 'b':
+        case 'B':
+            inBattle = !inBattle;
+            if( inBattle )
+                soundManager->playBattleMusic();
+            else
+                soundManager->playMusic();
+            break;
 		//space bar is pressed
 		case 32:
-
-            int npcIndex = canHeroInteractWithNPC();
-            if (npcIndex != -1)
+            if(inBattle)
             {
-                if(!displaySpeech)
+                if(battleArrow == ATTACK)
                 {
-                    if (textDialog != NULL)
-                        delete textDialog;
-                        
-                    // Get the list of possible dialogs for the current NPC.
-                    NPC * npc = npcs.at(npcIndex);
-                    vector<Dialog> dialogs = npc->getDialogs();
-                    
-                    for (int i = 0; i < dialogs.size(); i++)
-                    {
-                        Dialog npcDialog = dialogs.at(i);
-                        
-                        if ( gameState->isConditionTrue(npcDialog.condition))
-                        {
-                            textDialog = new TextDialog(npc->getName() + ": " + npcDialog.text);
-                            speech = textDialog->getNextDialog();
-                            displaySpeech = true;
-
-                            break;
-                        }
-                    }
+                    //attack code goes here
                 }
-                else
+                if(battleArrow == HEAL)
                 {
-                    if(textDialog->moreDialogs())
+                    //heal code goes here
+                }
+                if(battleArrow == RUN)
+                {
+                    //run code goes here
+                }
+            }
+            else
+            {
+                int npcIndex = canHeroInteractWithNPC();
+                if (npcIndex != -1)
+                {
+                    if(!displaySpeech)
                     {
-                        speech = textDialog->getNextDialog();
+                        if (textDialog != NULL)
+                            delete textDialog;
+                            
+                        // Get the list of possible dialogs for the current NPC.
+                        NPC * npc = npcs.at(npcIndex);
+                        vector<Dialog> dialogs = npc->getDialogs();
+                        
+                        for (int i = 0; i < dialogs.size(); i++)
+                        {
+                            Dialog npcDialog = dialogs.at(i);
+                            
+                            if ( gameState->isConditionTrue(npcDialog.condition))
+                            {
+                                textDialog = new TextDialog(npc->getName() + ": " + npcDialog.text);
+                                speech = textDialog->getNextDialog();
+                                displaySpeech = true;
+    
+                                break;
+                            }
+                        }
                     }
                     else
                     {
-                        // DO ACTION
-                        displaySpeech = false;
+                        if(textDialog->moreDialogs())
+                        {
+                            speech = textDialog->getNextDialog();
+                        }
+                        else
+                        {
+                            // DO ACTION
+                            displaySpeech = false;
+                        }
                     }
                 }
-        }
+            }
             break;
     }
     
@@ -1001,6 +1063,49 @@ void Engine::drawSpeechBox()
     
 }
 
+//draw the battle system menu
+void Engine::drawBattleMenu()
+{
+    
+    //first draw the backround box
+    glDisable(GL_TEXTURE_2D);
+    glColor3f(0.5, 0.5, 0.5);
+    glBegin(GL_QUADS);
+        glVertex3f(0.0f, 0.0f,  0.0f);
+        glVertex3f(DEFAULT_WINDOW_WIDTH, 0.0f,  0.0f);
+        glVertex3f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT / 5,  0.0f);
+        glVertex3f(0.0f, DEFAULT_WINDOW_HEIGHT / 5,  0.0f);
+    glEnd();
+    char speechChar[100];
+	
+    glEnable(GL_TEXTURE_2D);
+    glColor3f(1.0, 1.0, 1.0);
+    //draw the 3 menu options
+    drawString(30.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT, GLUT_BITMAP_TIMES_ROMAN_24, "Attack" );
+    drawString(30.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2, GLUT_BITMAP_TIMES_ROMAN_24, "Heal" );
+    drawString(30.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 3, GLUT_BITMAP_TIMES_ROMAN_24, "Run" );
+    
+    
+    //draw the arrow
+    
+    glDisable(GL_TEXTURE_2D);
+    
+    glBegin(GL_POLYGON);
+		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT + 1.0 - battleArrow * LINE_HEIGHT);
+		glVertex2f(25.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 2 - battleArrow * LINE_HEIGHT);
+		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - 1.0 - battleArrow * LINE_HEIGHT);
+	glEnd();
+	glBegin(GL_POLYGON);
+		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 3 - battleArrow * LINE_HEIGHT);
+		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 3 - battleArrow * LINE_HEIGHT);
+		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
+		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+}
+
+
+
 //this is a method to make the output of strings much simpler
 void Engine::drawString(float x, float y, void *font, char *string)
 {  
@@ -1024,25 +1129,32 @@ void Engine::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	// Draw Background
-	drawAreaBackground();
-	
-    // Draw NPCs above hero
-    drawNPCsAboveHero();
-
-    // Draw hero
-    drawHero();
+	if( !inBattle )
+	{
+        // Draw Background
+    	drawAreaBackground();
+    	
+        // Draw NPCs above hero
+        drawNPCsAboveHero();
     
-	// Draw NPCs below hero
-	drawNPCsBelowHero();
-    
-    //Draw the heads up disply
-    drawHUD();
-    
-    //display the speech box
-    if( displaySpeech )
+        // Draw hero
+        drawHero();
+        
+    	// Draw NPCs below hero
+    	drawNPCsBelowHero();
+        
+        //Draw the heads up disply
+        drawHUD();
+        
+        //display the speech box
+        if( displaySpeech )
+        {
+            drawSpeechBox();
+        }
+    }
+    if( inBattle )
     {
-        drawSpeechBox();
+        drawBattleMenu();
     }
 
 	glutSwapBuffers();

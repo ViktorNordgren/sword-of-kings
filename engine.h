@@ -85,9 +85,12 @@ class Engine
     void drawSpeechBox();
     // Helper method to draw a string on the screen
     void drawString( float x, float y, void *font, char *string ); 
+    // Draws the battle menu
+    void drawBattleMenu();
+    
     
     // The current game state
-    GameState * gameState;
+    GameState* gameState;
     
     // The Hero
     Hero* hero;
@@ -105,7 +108,13 @@ class Engine
     TextDialog* textDialog;
     
     //boolean to say if someone is talking
-    bool displaySpeech;    
+    bool displaySpeech;   
+    
+    //a boolean that sets if we are in a battle
+    bool inBattle;
+    
+    //this tells you which menu option is selected in the battle menu
+    int battleArrow; 
     
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];
@@ -159,6 +168,7 @@ class Engine
     
     //sound effect manager
     SoundManager* soundManager;
+
     
     public:
         // Default constructor
