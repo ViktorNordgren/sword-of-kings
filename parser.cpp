@@ -17,29 +17,6 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
 	ifstream enemyFile(ENEMY_FILE_PATH.c_str());
     bool inWantedObject = false;
     
-    //first let's set the type of enemy, and return failure if this isn't a valid enemy
-    if(enemyName.compare("RAT") == 0)
-    {
-        enemy->setEnemyType(RAT);
-    }
-    else if(enemyName.compare("ORC") == 0)
-    {
-        enemy->setEnemyType(ORC);
-    }
-    else if(enemyName.compare("SOLDIER") == 0)
-    {
-        enemy->setEnemyType(SOLDIER);
-    }
-    else if(enemyName.compare("BOSS") == 0)
-    {
-        enemy->setEnemyType(BOSS);
-    }
-    else
-    {
-        //the specified enemy was not found
-        return false;
-    }
-    
     //now lets read the stats from the file
 	if (enemyFile.is_open())
 	{
@@ -47,15 +24,10 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
 		{
             //get the current line
 			getline(enemyFile, line);
-			
-			//tokenize the string
-            string buf; // Have a buffer string
-            stringstream ss(line); // Insert the string into a stream
+            
             vector<string> tokens; // Create vector to hold our words
+            tokenize(line, tokens);
             
-            
-            while (ss >> buf)
-                tokens.push_back(buf);
             string name = "";
             
             if(tokens.size() > 0)
@@ -78,6 +50,7 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
                 if(name.compare("TOTALHITPOINTS") == 0)
                 {
                     enemy->setTotalHitPoints(atoi(tokens[1].c_str()));
+                    enemy->setRemainingHitPoints(atoi(tokens[1].c_str()));
                 }
                 else if(name.compare("ATTACK") == 0)
                 {

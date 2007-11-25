@@ -46,7 +46,6 @@ Engine::Engine()
     loadArea(1);
     gameState = new GameState();
     inBattle = false;
-    currEnemy = new Enemy("Orc", 20, 2, 3, 5, "", ORC);
 }
 
 /*
@@ -223,6 +222,7 @@ void Engine::loadArea(int id)
     loadNPCTextures();
     loadAreaMask();
     stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
+    loadCurrentMonsterIDs();
 }
 
 /*
@@ -231,6 +231,27 @@ void Engine::loadArea(int id)
 int Engine::getRandomInt(int max)
 {
     return (rand() % max) + 1;
+}
+
+/*
+* Loads a list with valid monster IDs that may be chosen from for the current area
+*/
+void Engine::loadCurrentMonsterIDs()
+{
+    if (currentArea->hasMonsters())
+    {
+        currentAreaMonsterIDs.clear();
+        for (int i = 0; i < sizeof(MONSTER_IDS) / sizeof(MONSTER_IDS[0]); i++)
+        {
+            Enemy * enemy = new Enemy();
+            Parser::getEnemy(enemy, MONSTER_IDS[i]);
+            if (enemy->getLevel() <= currentArea->getMaxMonsterLevel())
+            {
+                currentAreaMonsterIDs.push_back(MONSTER_IDS[i]);
+            }
+            delete enemy;
+        }
+    }
 }
 
 /*
@@ -509,6 +530,21 @@ void Engine::moveHeroDown()
 }
 
 /*
+* Starts a random battle
+*/
+void Engine::startRandomBattle()
+{
+    stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
+    soundManager->playBattleMusic();
+    if (currEnemy != NULL)
+        delete currEnemy;
+    string randomMonsterID = currentAreaMonsterIDs.at(rand() % currentAreaMonsterIDs.size());
+    currEnemy = new Enemy();
+    Parser::getEnemy(currEnemy, randomMonsterID);
+    inBattle = true;
+}
+
+/*
 * Hero movement animation timer
 */
 void Engine::heroMovementTimer (int value)
@@ -618,9 +654,7 @@ void Engine::heroMovementTimer (int value)
     
     if (currentArea->hasMonsters() && stepsUntilNextBattle <= 0)
     {
-        stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
-        soundManager->playBattleMusic();
-        inBattle = true;
+        startRandomBattle();
     }
     
     glutPostRedisplay();
@@ -709,7 +743,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         case 'B':
             inBattle = !inBattle;
             if( inBattle )
-                soundManager->playBattleMusic();
+                startRandomBattle();
             else
                 soundManager->playMusic();
             break;

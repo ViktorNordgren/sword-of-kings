@@ -91,6 +91,11 @@ class Engine
     // Returns a random int, given a maximum int
     int getRandomInt(int);    
     
+    // Starts a battle with a random enemy
+    void startRandomBattle();
+    // Loads current area's valid monster ID list
+    void loadCurrentMonsterIDs();
+    
     // The current game state
     GameState* gameState;
     
@@ -122,6 +127,8 @@ class Engine
     
     // Current enemy hero is fighting
     Enemy* currEnemy;
+    // vector of monster IDs that are valid for current area
+    vector<string> currentAreaMonsterIDs;
     
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];

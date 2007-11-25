@@ -11,15 +11,15 @@ class Enemy : public Character
 {
     public:
         Enemy();
-        Enemy(string n, int hitpoints, double att, double def, int lev, string text, EnemyType enemType);
-        Enemy(string n, int lev, string text, EnemyType enemType);
+        Enemy(string n, int hitpoints, double att, double def, int lev, string text, string id);
+        Enemy(string n, int lev, string text, string id);
         //getters
-        EnemyType getEnemyType();
+        string getEnemyID();
         //setters
-        void setEnemyType(EnemyType enemType);
+        void setEnemyID(string);
 
     protected:
-        EnemyType enemyType;
+        string enemyID;
         
 };
 
