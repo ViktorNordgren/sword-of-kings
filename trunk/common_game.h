@@ -2,14 +2,6 @@
 #define _DEFINED_common_game
 using namespace std;
 
-enum EnemyType
-{
-    RAT,
-    ORC,
-    SOLDIER,
-    BOSS
-};
-
 enum BattleMenuChoice
 {
     ATTACK = 0,
@@ -80,6 +72,12 @@ static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 * Actions
 */
 static const string GET_SWORD = "GET_SWORD";
+static const string NOTHING = "NOTHING";
+
+/*
+* List of valid monster IDs
+*/
+static const string MONSTER_IDS [] = {"ORC"};
 
 /*
 * Settings for the speech box
