@@ -32,6 +32,7 @@ static const int DEFAULT_HERO_ATTACK = 5;
 static const int DEFAULT_HERO_DEFENSE = 5;
 static const int DEFAULT_HERO_LEVEL = 1;
 static const int DEFAULT_EXP_TO_NEXT_LEVEL = 40;
+static const int DEFAULT_NUM_POTIONS = 4;
 static const string DEFAULT_HERO_NAME = "Joe Blow";
 static const string HERO_NORTH_NORMAL_TEXTURE = "textures/characters/hero/north_normal.tga";
 static const string HERO_NORTH_RIGHT_TEXTURE = "textures/characters/hero/north_right.tga";
@@ -45,6 +46,8 @@ static const string HERO_EAST_LEFT_TEXTURE = "textures/characters/hero/east_left
 static const string HERO_WEST_NORMAL_TEXTURE = "textures/characters/hero/west_normal.tga";
 static const string HERO_WEST_RIGHT_TEXTURE = "textures/characters/hero/west_right.tga";
 static const string HERO_WEST_LEFT_TEXTURE = "textures/characters/hero/west_left.tga";
+
+static const int POTION_AMOUNT = 20;
 
 
 /*
