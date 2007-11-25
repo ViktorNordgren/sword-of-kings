@@ -1,7 +1,7 @@
 [Project]
 FileName=sword-of-kings.dev
 Name=sword-of-kings
-UnitCount=23
+UnitCount=25
 Type=1
 Ver=1
 ObjFiles=
@@ -269,6 +269,26 @@ BuildCmd=
 
 [Unit23]
 FileName=gamestate.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit24]
+FileName=textdialog.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=textdialog.cpp
 CompileCpp=1
 Folder=
 Compile=1

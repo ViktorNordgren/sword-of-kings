@@ -2,6 +2,9 @@
 * Parser.h
 */
 
+#ifndef _DEFINED_parser
+#define _DEFINED_parser
+
 #include "enemy.h"
 #include "area.h"
 #include "npc.h"
@@ -21,3 +24,5 @@ class Parser
         
         
 };
+
+#endif

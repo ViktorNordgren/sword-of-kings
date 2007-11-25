@@ -17,6 +17,7 @@ using namespace std;
 // Static variables need to be 'implemented' here to preferent undefined reference
 std::map<int, Engine*> Engine::engine_id_to_engine;
 const int Engine::ENGINE_ID;
+string teststring = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 /*
 * Default constructor
@@ -37,6 +38,8 @@ Engine::Engine()
     soundManager = new SoundManager();
     // Create and load default area
     currentArea = new Area();
+    displaySpeech = false;
+    speech = "";
     loadArea(1);
 }
 
@@ -49,6 +52,7 @@ Engine::~Engine()
     delete currentArea;
     npcTextures.clear();
     delete soundManager;
+    delete textDialog;
 }
 
 /*
@@ -571,6 +575,28 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                moveHeroDown();
             }
 			break;
+		//space bar is pressed
+		case 32:
+            
+            if(!displaySpeech)
+            {
+                textDialog = new TextDialog(teststring);
+                speech = textDialog->getNextDialog();
+                displaySpeech = true;
+            }
+            else
+            {
+                if(textDialog->moreDialogs())
+                {
+                    speech = textDialog->getNextDialog();
+                }
+                else
+                {
+                    displaySpeech = false;
+                }
+            }
+            
+            break;
     }
     
     glutPostRedisplay();
@@ -841,15 +867,63 @@ void Engine::drawHUD()
 	drawString(DEFAULT_WINDOW_WIDTH - 70, DEFAULT_WINDOW_HEIGHT - 50, GLUT_BITMAP_TIMES_ROMAN_24, health);
 }
 
+void Engine::drawSpeechBox()
+{
+    
+    glDisable(GL_TEXTURE_2D);
+    //first draw the backround box
+    glColor3f(0.5, 0.5, 0.5);
+    glBegin(GL_QUADS);
+        glVertex3f(0.0f, 0.0f,  0.0f);
+        glVertex3f(DEFAULT_WINDOW_WIDTH, 0.0f,  0.0f);
+        glVertex3f(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT / 5,  0.0f);
+        glVertex3f(0.0f, DEFAULT_WINDOW_HEIGHT / 5,  0.0f);
+    glEnd();
+    char speechChar[100];
+	
+    glEnable(GL_TEXTURE_2D);
+    vector<string> words;
+    vector<string> lines;
+      Parser::tokenize(speech, words);
+
+    int currLine = 0;
+    int currNumChars;
+    int LINE_LENGTH = 90; //length of line in chars
+    int LINE_HEIGHT = 25;
+    
+    string line;
+    for( int word = 0; word < words.size(); word++ )
+    {
+        if( line.length() + words[word].length() > LINE_LENGTH )
+        {
+            currLine++;
+            lines.push_back(line);
+            line = "";
+        }
+        line.append(" ");
+        line.append(words[word]);
+    }
+    lines.push_back(line);
+    glColor3f(1.0, 1.0, 1.0);
+    for( int i = 0; i < lines.size(); i++ )
+    {
+        char speechChar[100];
+        strcpy( speechChar, lines[i].c_str() );
+        drawString(10.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * (i + 1), GLUT_BITMAP_TIMES_ROMAN_24,speechChar );
+    }
+    
+    
+}
+
 //this is a method to make the output of strings much simpler
 void Engine::drawString(float x, float y, void *font, char *string)
 {  
-    // Enable texture mapping
+    
 	glDisable(GL_TEXTURE_2D);
 	char *currChar;
 	glRasterPos2f(x, y);
 	//loop through the string and output each char
-	for (currChar=string; *currChar != '\0'; currChar++) 
+	for (currChar=string; *currChar; currChar++) 
 	{
 		glutBitmapCharacter(font, *currChar);
 	}
@@ -876,7 +950,14 @@ void Engine::display()
 	// Draw NPCs below hero
 	drawNPCsBelowHero();
     
+    //Draw the heads up disply
     drawHUD();
+    
+    //display the speech box
+    if( displaySpeech )
+    {
+        drawSpeechBox();
+    }
 
 	glutSwapBuffers();
 }

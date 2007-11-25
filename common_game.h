@@ -64,5 +64,12 @@ static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 */
 static const string GET_SWORD = "GET_SWORD";
 
+/*
+* Settings for the speech box
+*/
+static const int LINE_LENGTH = 90; //length of line in chars
+static const int LINE_HEIGHT = 25; //height of a line in pixels
+static const int NUM_LINES = 5; //number of lines
+
 
 #endif
