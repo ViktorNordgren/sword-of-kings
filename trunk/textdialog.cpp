@@ -55,3 +55,13 @@ string TextDialog::getNextDialog()
     return dialogs[iterator++];   
 }
 
+string TextDialog::getAction()
+{
+    return action;
+}
+
+void TextDialog::setAction(string a)
+{
+    action = a;
+}
+
