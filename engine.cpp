@@ -27,6 +27,9 @@ Engine::Engine()
     // Create hero
     hero = new Hero(/*"Hero", 1, "heropicture.bmp"*/);
     
+	// Seed random number generator
+	srand ( time(NULL) );
+    
     heroPositionX = 0;
     heroPositionY = 0;
     heroAnimationY = 0;
@@ -218,6 +221,15 @@ void Engine::loadArea(int id)
     npcs = currentArea->getNPCs();
     loadNPCTextures();
     loadAreaMask();
+    stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
+}
+
+/*
+* Generates a random number between 1 and the number passed
+*/
+int Engine::getRandomInt(int max)
+{
+    return (rand() % max) + 1;
 }
 
 /*
@@ -520,6 +532,8 @@ void Engine::heroMovementTimer (int value)
                 nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
                 heroStance = NORMAL_STANCE;
                 heroPositionX++;
+                if (currentArea->hasMonsters())
+                    stepsUntilNextBattle--;
                 heroIsMoving = false;
                 heroAnimationX = 0;
             }
@@ -543,6 +557,8 @@ void Engine::heroMovementTimer (int value)
                 nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
                 heroStance = NORMAL_STANCE;
                 heroPositionX--;
+                if (currentArea->hasMonsters())
+                    stepsUntilNextBattle--;
                 heroIsMoving = false;
                 heroAnimationX = 0;
             }
@@ -566,6 +582,8 @@ void Engine::heroMovementTimer (int value)
                 nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
                 heroStance = NORMAL_STANCE;
                 heroPositionY++;
+                if (currentArea->hasMonsters())
+                    stepsUntilNextBattle--;
                 heroIsMoving = false;
                 heroAnimationY = 0;
             }
@@ -589,10 +607,19 @@ void Engine::heroMovementTimer (int value)
                 nextStance = ( heroStance == LEFT_STANCE ? RIGHT_STANCE : LEFT_STANCE);
                 heroStance = NORMAL_STANCE;
                 heroPositionY--;
+                if (currentArea->hasMonsters())
+                    stepsUntilNextBattle--;
                 heroIsMoving = false;
                 heroAnimationY = 0;
             }
             break;
+    }
+    
+    if (currentArea->hasMonsters() && stepsUntilNextBattle <= 0)
+    {
+        stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
+        soundManager->playBattleMusic();
+        inBattle = true;
     }
     
     glutPostRedisplay();

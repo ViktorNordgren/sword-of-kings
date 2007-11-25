@@ -32,6 +32,9 @@ class Area
         Point getEntryEast();
         Point getEntryWest();
         vector<NPC*> getNPCs();
+        int getMaxMonsterLevel();
+        int getMonsterFrequency();
+        bool hasMonsters();
                 
         //setters
         void setID(int i);
@@ -45,6 +48,8 @@ class Area
         void setEntryWest(Point entryW);
         void setMainTexture(string);
         void setImageMask(string);
+        void setMaxMonsterLevel(int);
+        void setMonsterFrequency(int);
         
         //add an npc
         void addNPC(NPC* npc);
@@ -58,6 +63,10 @@ class Area
     protected:
         //the id of this area
         int id;
+        // Max number of steps until a monster will be encountered
+        int monsterFrequency;
+        // Maximum level of spawned monsters
+        int maxMonsterLevel;
         //the main image to display
         string mainTexture;
         //invisible image to do collision

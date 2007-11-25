@@ -12,3 +12,4 @@ BG textures/area/2.tga
 MASK textures/area/mask/2.png
 SOUTH 1
 SOUTHENTRY 25 0
+MONSTERS FREQ 30 MAXLEVEL 1

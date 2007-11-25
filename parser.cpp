@@ -203,13 +203,6 @@ bool Parser::getArea(Area* area, int areaID)
                     entry.y = atoi(tokens[2].c_str());
                     area->setEntryWest(entry);
                 }
-                else if(name.compare("SPEECH") == 0)
-                {
-                    string test = tokens[1];
-                    string test2 = tokens[2];
-                    string test3 = tokens[3];
-                    cout << "TEST!" << endl;
-                }
                 else if(name.compare("NPC") == 0)
                 {
                     NPC* npc = new NPC();
@@ -220,9 +213,12 @@ bool Parser::getArea(Area* area, int areaID)
                     npc->setLocation(location);
                     area->addNPC(npc);
                 }
+                else if(name.compare("MONSTERS") == 0)
+                {
+                    area->setMonsterFrequency(atoi(tokens[2].c_str()));
+                    area->setMaxMonsterLevel(atoi(tokens[4].c_str()));
+                }
             }
-			
-			
 		}
 		areaFile.close();
 	}
