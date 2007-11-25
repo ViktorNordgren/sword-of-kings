@@ -77,6 +77,7 @@ static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 /*
 * Actions
 */
+static const string NOTHING = "NOTHING";
 static const string GET_SWORD = "GET_SWORD";
 
 /*

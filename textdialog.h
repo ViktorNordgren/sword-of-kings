@@ -23,12 +23,15 @@ class TextDialog
         void resetIterator();
         bool moreDialogs();
         string getNextDialog();
+        void setAction(string);
+        string getAction();
         
         
     private:
         string userString;
         vector<string> dialogs;
         int iterator; 
+        string action;
         
 };
 

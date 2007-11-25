@@ -4,6 +4,7 @@ BG textures/area/1.tga
 MASK textures/area/mask/1.png
 NORTH 2
 NORTHENTRY 31 25
+NPC MATT_H 20 10
 
 2
 ID 2
@@ -11,4 +12,3 @@ BG textures/area/2.tga
 MASK textures/area/mask/2.png
 SOUTH 1
 SOUTHENTRY 25 0
-NPC MATT_H 20 15

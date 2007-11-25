@@ -40,6 +40,10 @@ bool GameState::isConditionTrue(string cond)
 */
 void GameState::performAction(string action)
 {
+    if(action.compare(NOTHING) == 0)
+    {
+        return;
+    }
     if(action.compare(GET_SWORD) == 0)
     {
         sword_found = true;

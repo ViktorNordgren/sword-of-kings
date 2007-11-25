@@ -723,6 +723,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                             if ( gameState->isConditionTrue(npcDialog.condition))
                             {
                                 textDialog = new TextDialog(npc->getName() + ": " + npcDialog.text);
+                                textDialog->setAction(npcDialog.event);
                                 speech = textDialog->getNextDialog();
                                 displaySpeech = true;
     
@@ -738,7 +739,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                         }
                         else
                         {
-                            // DO ACTION
+                            gameState->performAction(textDialog->getAction());
                             displaySpeech = false;
                         }
                     }
