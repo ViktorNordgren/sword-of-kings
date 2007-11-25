@@ -1,3 +1,4 @@
 MATT_H
 NAME "Matthew Housser"
 TEXTURE textures/characters/npc/matth.tga
+DIALOG DEFAULT "Why are you touching me Grant, I'm a guy.." NOTHING

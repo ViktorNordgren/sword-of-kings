@@ -63,6 +63,11 @@ int NPC::getWidth()
     return width;
 }
 
+vector<Dialog> NPC::getDialogs()
+{
+    return dialogs;
+}
+
 // setters
 void NPC::setName(string n)
 {
@@ -88,3 +93,9 @@ void NPC::setWidth(int w)
 {
     width = w;
 }
+
+void NPC::addDialog(Dialog dialog)
+{
+    dialogs.push_back(dialog);
+}
+

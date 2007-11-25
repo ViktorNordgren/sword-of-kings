@@ -273,9 +273,15 @@ bool Parser::getNPC(NPC* npc, string npcName)
                 {
                     npc->setTexture(tokens[1].c_str());
                 }
+                else if(name.compare("DIALOG") == 0)
+                {
+                   Dialog newDialog;
+                   newDialog.condition = tokens[1];
+                   newDialog.text = tokens[2];
+                   newDialog.event = tokens[3];
+                   npc->addDialog(newDialog);
+                }
             }
-			
-			
 		}
 		npcFile.close();
 	}
