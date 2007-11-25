@@ -1,7 +1,8 @@
 /*
 * Area.h
 */
-
+#ifndef _DEFINED_area
+#define _DEFINED_area
 #include <vector>
 #include <string>
 #include "common_game.h"
@@ -77,3 +78,5 @@ class Area
         
         
 };
+
+#endif

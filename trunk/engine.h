@@ -13,6 +13,7 @@ using namespace cimg_library;
 #include "parser.h"
 #include "soundmanager.h"
 #include "common_sound.h"
+#include "textdialog.h"
 
 typedef struct
 {
@@ -79,17 +80,28 @@ class Engine
     void drawAreaBackground();
     // Draws the HUD
     void drawHUD();
+    // Draw an NPC's text box
+    void drawSpeechBox();
     // Helper method to draw a string on the screen
     void drawString( float x, float y, void *font, char *string ); 
     
     // The Hero
-    Hero * hero;
+    Hero* hero;
     
     // The current area
-    Area * currentArea;
+    Area* currentArea;
     
     // NPC's on the screen
     vector<NPC*> npcs;
+
+    //the current speech to output
+    string speech;
+    
+    //Text object
+    TextDialog* textDialog;
+    
+    //boolean to say if someone is talking
+    bool displaySpeech;    
     
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];
