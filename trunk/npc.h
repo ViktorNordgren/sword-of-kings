@@ -4,6 +4,7 @@
 #ifndef _DEFINED_npc
 #define _DEFINED_npc
 #include <string>
+#include <vector>
 #include "character.h"
 #include "common_game.h"
 using namespace std;
@@ -25,6 +26,7 @@ class NPC
         Point getLocation();
         int getWidth();
         int getHeight();
+        vector<Dialog> getDialogs();
         
         // setters
         void setName(string n);
@@ -32,6 +34,7 @@ class NPC
         void setLocation(Point loc);
         void setWidth(int);
         void setHeight(int);
+        void addDialog(Dialog);
 
     protected:
         string name;
@@ -39,5 +42,6 @@ class NPC
         Point location;
         int width;
         int height;
+        vector<Dialog> dialogs;
 };
 #endif

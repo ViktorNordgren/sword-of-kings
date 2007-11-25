@@ -14,6 +14,7 @@ using namespace cimg_library;
 #include "soundmanager.h"
 #include "common_sound.h"
 #include "textdialog.h"
+#include "gamestate.h"
 
 typedef struct
 {
@@ -85,6 +86,9 @@ class Engine
     // Helper method to draw a string on the screen
     void drawString( float x, float y, void *font, char *string ); 
     
+    // The current game state
+    GameState * gameState;
+    
     // The Hero
     Hero* hero;
     
@@ -124,6 +128,9 @@ class Engine
     void moveHeroLeft();
     void moveHeroUp();
     void moveHeroDown();
+    
+    // Function which determines if there is an npc to interact with 
+    int canHeroInteractWithNPC();
     
     // When hero is moving, user inputs are disabled
     bool heroIsMoving;

@@ -16,6 +16,13 @@ struct Point
     int y; 
 };
 
+struct Dialog
+{
+    string text;
+    string condition;
+    string event;
+};
+
 /*
 * Default Hero Stats
 */
@@ -56,6 +63,7 @@ static const int HERO_MOVEMENT_AMOUNT = 1;
 /*
 * Conditions
 */
+static const string DEFAULT = "DEFAULT";
 static const string SWORD_FOUND = "SWORD_FOUND";
 static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 

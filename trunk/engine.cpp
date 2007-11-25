@@ -41,6 +41,7 @@ Engine::Engine()
     displaySpeech = false;
     speech = "";
     loadArea(1);
+    gameState = new GameState();
 }
 
 /*
@@ -53,6 +54,7 @@ Engine::~Engine()
     npcTextures.clear();
     delete soundManager;
     delete textDialog;
+    delete gameState;
 }
 
 /*
@@ -217,6 +219,69 @@ void Engine::loadArea(int id)
     loadAreaMask();
 }
 
+/*
+* Determine if hero can interact with an NPC in the direction that he's facing.
+* Returns the index of the NPC in the npcs vector; returns -1 if no NPC available.
+*/
+int Engine::canHeroInteractWithNPC()
+{
+    NPC * npc;
+    
+    for (int i = 0; i < npcs.size(); i++)
+    {
+        npc = npcs.at(i);
+        Point npcPos;
+
+        switch (heroDirection)
+        {
+            case FACING_NORTH:
+                
+                // Check if an NPC is immediately to the north
+                npcPos = npc->getLocation();
+                if (heroPositionX < npcPos.x + npcs.at(i)->getWidth() && 
+                    heroPositionX + hero->getWidth() > npcPos.x &&
+                    heroPositionY + 1 == npcPos.y )
+                {
+                    return i;
+                }
+                break;
+                
+            case FACING_SOUTH:
+                
+                // Check if an NPC is immediately to the south
+                npcPos = npc->getLocation();
+                if (heroPositionX < npcPos.x + npcs.at(i)->getWidth() && 
+                    heroPositionX + hero->getWidth() > npcPos.x &&
+                    heroPositionY - 1 == npcPos.y )
+                {
+                    return i;
+                }
+                break;
+                
+            case FACING_EAST:
+
+                // Check if an NPC is immediately to the east
+                Point npcPos = npcs.at(i)->getLocation();
+                if ( heroPositionX + hero->getWidth() == npcPos.x && heroPositionY == npcPos.y )
+                {
+                    return i;
+                }
+                break;
+                
+            case FACING_WEST:
+                
+                // Check if an NPC is immediately to the west
+                npcPos = npc->getLocation();
+                if ( heroPositionX - 1 == npcPos.x + npcs.at(i)->getWidth() - 1 && heroPositionY == npcPos.y )
+                {
+                    return i;
+                }
+                break;
+        }
+    }
+
+    return -1;
+}
 /*
 * Determine if hero can move right
 */
@@ -543,7 +608,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Left arrow key
 		case 'a':
 		case 'A':
-            if (canHeroMoveLeft())
+            if (!displaySpeech &&canHeroMoveLeft())
             {
                moveHeroLeft();
             }
@@ -552,7 +617,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Right arrow key
 		case 'd':
 		case 'D':
-            if (canHeroMoveRight())
+            if (!displaySpeech && canHeroMoveRight())
             {
                moveHeroRight();
             }
@@ -561,7 +626,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Up arrow key
 		case 'w':
 		case 'W':
-            if (canHeroMoveUp())
+            if (!displaySpeech && canHeroMoveUp())
             {
                 moveHeroUp();
             }
@@ -570,32 +635,53 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Down arrow key
 		case 's':
 		case 'S':
-            if (canHeroMoveDown())
+            if (!displaySpeech && canHeroMoveDown())
             {
                moveHeroDown();
             }
 			break;
 		//space bar is pressed
 		case 32:
-            
-            if(!displaySpeech)
+
+            int npcIndex = canHeroInteractWithNPC();
+            if (npcIndex != -1)
             {
-                textDialog = new TextDialog(teststring);
-                speech = textDialog->getNextDialog();
-                displaySpeech = true;
-            }
-            else
-            {
-                if(textDialog->moreDialogs())
+                if(!displaySpeech)
                 {
-                    speech = textDialog->getNextDialog();
+                    if (textDialog != NULL)
+                        delete textDialog;
+                        
+                    // Get the list of possible dialogs for the current NPC.
+                    NPC * npc = npcs.at(npcIndex);
+                    vector<Dialog> dialogs = npc->getDialogs();
+                    
+                    for (int i = 0; i < dialogs.size(); i++)
+                    {
+                        Dialog npcDialog = dialogs.at(i);
+                        
+                        if ( gameState->isConditionTrue(npcDialog.condition))
+                        {
+                            textDialog = new TextDialog(npcDialog.text);
+                            speech = textDialog->getNextDialog();
+                            displaySpeech = true;
+                            
+                            break;
+                        }
+                    }
                 }
                 else
                 {
-                    displaySpeech = false;
+                    if(textDialog->moreDialogs())
+                    {
+                        speech = textDialog->getNextDialog();
+                    }
+                    else
+                    {
+                        // DO ACTION
+                        displaySpeech = false;
+                    }
                 }
-            }
-            
+        }
             break;
     }
     

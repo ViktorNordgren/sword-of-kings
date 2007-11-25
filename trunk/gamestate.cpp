@@ -21,6 +21,10 @@ GameState::GameState()
 */
 bool GameState::isConditionTrue(string cond)
 {
+    if(cond.compare(DEFAULT) == 0)
+    {
+        return true;
+    }
     if(cond.compare(SWORD_FOUND) == 0)
     {
         return sword_found;
