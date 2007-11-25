@@ -1004,7 +1004,7 @@ void Engine::drawHero()
 
 void Engine::drawHUD()
 {
-    //display the score
+    //display the life of the character
 	std::stringstream ss;
 	std::string str;
 	ss << hero->getRemainingHitPoints() << "/" << hero->getTotalHitPoints();
@@ -1102,7 +1102,40 @@ void Engine::drawBattleMenu()
 		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
 		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
 	glEnd();
+	
+	//draw dividing lines
+	glBegin(GL_LINES);
+		glVertex2f(125.0f, DEFAULT_WINDOW_HEIGHT / 5);
+		glVertex2f(125.0f, 0.0f);
+		glVertex2f(575.0f, DEFAULT_WINDOW_HEIGHT / 5);
+		glVertex2f(575.0f, 0.0f);
+	glEnd();
 	glEnable(GL_TEXTURE_2D);
+	
+	//display hero stats
+	stringstream ss1;
+	stringstream ss2;
+	string remaining;
+	string total;
+	string healthLine = "HP: ";
+	ss1 << hero->getRemainingHitPoints();
+	ss1 >> remaining;
+	ss2 << hero->getTotalHitPoints();
+	ss2 >> total;
+	healthLine.append(remaining);
+	healthLine.append(" / ");
+	healthLine.append(total);
+	char heroHealth[9];
+	strcpy( heroHealth, healthLine.c_str() );
+	glColor3f( 1.0, 1.0, 1.0 );
+	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2, GLUT_BITMAP_TIMES_ROMAN_24, heroHealth);
+	char heroName[40];
+	string name = hero->getName();
+    strcpy(heroName, name.c_str());
+	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT, GLUT_BITMAP_TIMES_ROMAN_24, heroName);
+	
+	//display the enemy stats
+	
 }
 
 
