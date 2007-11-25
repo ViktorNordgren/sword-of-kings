@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <cstdlib> 
+#include <ctime>
 
 using namespace std;
 
@@ -757,11 +759,28 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                 }
                 if(battleArrow == HEAL)
                 {
-                    //heal code goes here
+                    if(hero->usePotion())
+                    {
+                        soundManager->playSound(HEAL_SOUND);
+                    }
+                    else
+                    {
+                        soundManager->playSound(NO_POTION);  
+                    }
                 }
                 if(battleArrow == RUN)
                 {
-                    //run code goes here
+                    int random_integer = (rand()%5);
+                    if(random_integer == 4)
+                    {
+                        soundManager->playSound(NO_POTION);
+                    }
+                    else
+                    {
+                        soundManager->playSound(RUN_SOUND);
+                        inBattle = false;
+                        soundManager->playMusic();
+                    }
                 }
             }
             else
@@ -1178,9 +1197,12 @@ void Engine::drawBattleMenu()
 	stringstream ss1;
 	stringstream ss2;
 	stringstream ss5;
+	stringstream ss7;
 	string remaining;
 	string total;
 	string level;
+	string numPotionsLine = "Potions: ";
+	string numPotions;
 	string healthLine = "HP: ";
 	ss1 << hero->getRemainingHitPoints();
 	ss1 >> remaining;
@@ -1188,10 +1210,13 @@ void Engine::drawBattleMenu()
 	ss2 >> total;
 	ss5 << hero->getLevel();
 	ss5 >> level;
+	ss7 << hero->getNumPotions();
+	ss7 >> numPotions;
 	level = "Lvl: " + level;
 	healthLine.append(remaining);
 	healthLine.append(" / ");
 	healthLine.append(total);
+	numPotionsLine.append(numPotions);
 	char heroName[40];
 	string name = hero->getName();
     strcpy(heroName, name.c_str());
@@ -1203,6 +1228,9 @@ void Engine::drawBattleMenu()
 	strcpy( heroHealth, healthLine.c_str() );
 	glColor3f( 1.0, 1.0, 1.0 );
 	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 3, GLUT_BITMAP_TIMES_ROMAN_24, heroHealth);
+	char heroPotions[10];
+	strcpy(heroPotions, numPotionsLine.c_str());
+	drawString(150.0f,DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 4, GLUT_BITMAP_TIMES_ROMAN_24, heroPotions);
 	
 	
 	//display the enemy stats
@@ -1366,6 +1394,8 @@ void Engine::run(int argc, char** argv)
     loadAreaMask();
     
     soundManager->playMusic();
+    
+    srand((unsigned)time(0)); 
 
 	glutMainLoop();
 }

@@ -28,12 +28,16 @@ class Hero : public Character
         string getWestNormalTexture();
         string getWestRightTexture();
         string getWestLeftTexture();
+        int getNumPotions();
         //setters
         void setHasSwordOfKings(bool hasSword);
+        void incrementNumPotions();
+        bool usePotion();
 
     protected:
         bool hasSwordOfKings;
         int expToNextLevel;
+        int numPotions;
                
         
 };

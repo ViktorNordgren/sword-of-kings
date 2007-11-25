@@ -21,6 +21,7 @@ Hero::Hero()
     defense = DEFAULT_HERO_DEFENSE;
     level = DEFAULT_HERO_LEVEL;
     expToNextLevel = DEFAULT_EXP_TO_NEXT_LEVEL;
+    numPotions = DEFAULT_NUM_POTIONS;
 }
 
 /*
@@ -114,6 +115,10 @@ string Hero::getWestLeftTexture()
     return HERO_WEST_LEFT_TEXTURE;
 }
 
+int Hero::getNumPotions()
+{
+    return numPotions;   
+}
 
 /*
 * Setters
@@ -122,4 +127,30 @@ void Hero::setHasSwordOfKings(bool hasSword)
 {
     hasSwordOfKings = hasSword;
     attack = 1000 * level;
+}
+
+void Hero::incrementNumPotions()
+{
+    numPotions++;   
+}
+
+bool Hero::usePotion()
+{
+    if(numPotions == 0)
+    {
+        return false;
+    }
+    if(remainingHitPoints == totalHitPoints)
+    {
+        return false;
+    }
+    
+    remainingHitPoints += POTION_AMOUNT;
+    if(remainingHitPoints > totalHitPoints)
+    {
+        remainingHitPoints = totalHitPoints;
+    }
+    numPotions--;
+    return true;
+    
 }

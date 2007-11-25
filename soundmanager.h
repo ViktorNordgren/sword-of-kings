@@ -1,7 +1,8 @@
 /*
 * SoundManager.h
 */
-
+#ifndef _DEFINED_soundmanager
+#define _DEFINED_soundmanager
 #include <SDL/SDL.h>
 #include <SDL/SDL_audio.h>
 #include "SDL/SDL_mixer.h"
@@ -27,6 +28,7 @@ class SoundManager
         Mix_Music* battleMusic;
         vector<Mix_Chunk*> soundEffects;
 };
-    
+
+#endif
     
     

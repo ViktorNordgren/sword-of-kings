@@ -28,6 +28,9 @@ SoundManager::SoundManager()
     battleMusic = Mix_LoadMUS(BATTLE_MUSIC_SOUND_FILE.c_str());
     soundEffects.push_back(Mix_LoadWAV(STEP_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(MENU_BEEP_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(HEAL_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(RUN_SOUND_FILE.c_str()));
+     soundEffects.push_back(Mix_LoadWAV(NO_POTION_SOUND_FILE.c_str()));
     
     
 }
