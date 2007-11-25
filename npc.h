@@ -23,15 +23,21 @@ class NPC
         string getName();
         string getTexture();
         Point getLocation();
+        int getWidth();
+        int getHeight();
         
         // setters
         void setName(string n);
         void setTexture(string text);
         void setLocation(Point loc);
+        void setWidth(int);
+        void setHeight(int);
 
     protected:
         string name;
         string texture;
         Point location;
+        int width;
+        int height;
 };
 #endif

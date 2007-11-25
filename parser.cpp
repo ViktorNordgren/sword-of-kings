@@ -209,12 +209,15 @@ bool Parser::getArea(Area* area, int areaID)
                     string test2 = tokens[2];
                     string test3 = tokens[3];
                     cout << "TEST!" << endl;
-                    //cout << "SPEECH IS: " << tokens[1] << endl;
                 }
                 else if(name.compare("NPC") == 0)
                 {
                     NPC* npc = new NPC();
                     getNPC(npc, tokens[1].c_str());
+                    Point location;
+                    location.x = atoi(tokens[2].c_str());
+                    location.y = atoi(tokens[3].c_str());
+                    npc->setLocation(location);
                     area->addNPC(npc);
                 }
             }
@@ -269,13 +272,6 @@ bool Parser::getNPC(NPC* npc, string npcName)
                 else if(name.compare("TEXTURE") == 0)
                 {
                     npc->setTexture(tokens[1].c_str());
-                }
-                else if(name.compare("LOCATION") == 0)
-                {
-                    Point location;
-                    location.x = atoi(tokens[1].c_str());
-                    location.y = atoi(tokens[2].c_str());
-                    npc->setLocation(location);
                 }
             }
 			

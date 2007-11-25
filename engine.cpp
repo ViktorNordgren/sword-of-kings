@@ -47,6 +47,7 @@ Engine::~Engine()
 {
     delete hero;
     delete currentArea;
+    npcTextures.clear();
     delete soundManager;
 }
 
@@ -65,7 +66,26 @@ bool Engine::loadTextures()
 {
     loadHeroTextures();
     
-    return (loadBackgroundTexture());
+    loadBackgroundTexture();
+    
+    loadNPCTextures();
+    
+    return true;
+}
+
+/*
+* Loads NPC textures for current area
+*/
+bool Engine::loadNPCTextures()
+{
+    npcTextures.clear();
+    vector<NPC*> npcs = currentArea->getNPCs();
+    for (int i = 0; i < npcs.size(); i++)
+    {
+        TextureImage npcTexture;
+        loadTGA(&npcTexture, npcs.at(i)->getTexture());
+        npcTextures.push_back(npcTexture);
+    }
 }
 
 /*
@@ -188,6 +208,7 @@ void Engine::loadArea(int id)
     currentArea = new Area();
     Parser::getArea(currentArea, id);
     loadBackgroundTexture();
+    loadNPCTextures();
     loadAreaMask();
 }
 
@@ -548,6 +569,55 @@ void Engine::drawAreaBackground()
 }
 
 /*
+* Draws all NPCs in the current area
+*/
+void Engine::drawNPCs()
+{
+    // Make sure the number of npcTextures we have corresponds to the number
+    // of NPCs that are actually in the scene.
+    if (npcTextures.size() != currentArea->getNPCs().size())
+    {
+        return;
+    }
+    
+    for (int i = 0; i < npcTextures.size(); i++)
+    {
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+    	
+    	
+    	glLoadIdentity();
+    	
+    	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
+    
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        
+        glBindTexture(GL_TEXTURE_2D, npcTextures.at(i).texID);
+        
+        NPC * npc = currentArea->getNPCs().at(i);
+        
+        Point npcPosition = npc->getLocation();
+        int width = npc->getWidth();
+        int height = npc->getHeight();
+        
+    	glBegin(GL_POLYGON);
+    	   glTexCoord2f(0.0f, 0.0f);
+    		glVertex2f(npcPosition.x, npcPosition.y);
+    		glTexCoord2f(1.0f, 0.0f);
+    		glVertex2f(npcPosition.x + width, npcPosition.y);
+    		glTexCoord2f(1.0f, 1.0f);
+    		glVertex2f(npcPosition.x + width, npcPosition.y + height);
+    		glTexCoord2f(0.0f, 1.0f);
+    		glVertex2f(npcPosition.x, npcPosition.y + height);
+    	glEnd();
+    
+        glMatrixMode(GL_PROJECTION);
+    	glPopMatrix(); 
+    }
+}
+
+/*
 * Draws the hero
 */
 void Engine::drawHero()
@@ -693,6 +763,9 @@ void Engine::display()
 
     // Draw hero
     drawHero();
+    
+    // Draw NPCs
+    drawNPCs();
     
     drawHUD();
 

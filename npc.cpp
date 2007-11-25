@@ -17,6 +17,8 @@
 NPC::NPC()
 {
     name = "";
+    height = 5;
+    width = 3;
 }
 
 NPC::NPC(string n)
@@ -48,7 +50,17 @@ string NPC::getTexture()
 
 Point NPC::getLocation()
 {
-    return location;    
+    return location;
+}
+
+int NPC::getHeight()
+{
+    return height;
+}
+
+int NPC::getWidth()
+{
+    return width;
 }
 
 // setters
@@ -65,4 +77,14 @@ void NPC::setTexture(string text)
 void NPC::setLocation(Point loc)
 {
     location = loc;
+}
+
+void NPC::setHeight(int h)
+{
+    height = h;
+}
+
+void NPC::setWidth(int w)
+{
+    width = w;
 }
