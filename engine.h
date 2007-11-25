@@ -71,8 +71,10 @@ class Engine
     
     // Draws Hero
     void drawHero();
-    // Draws NPCs
-    void drawNPCs();
+    // Draws NPCs above hero
+    void drawNPCsAboveHero();
+    // Draws NPCs below hero
+    void drawNPCsBelowHero();
     // Draws area background
     void drawAreaBackground();
     // Draws the HUD
@@ -86,6 +88,8 @@ class Engine
     // The current area
     Area * currentArea;
     
+    // NPC's on the screen
+    vector<NPC*> npcs;
     
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];

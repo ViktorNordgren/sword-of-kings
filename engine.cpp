@@ -79,7 +79,6 @@ bool Engine::loadTextures()
 bool Engine::loadNPCTextures()
 {
     npcTextures.clear();
-    vector<NPC*> npcs = currentArea->getNPCs();
     for (int i = 0; i < npcs.size(); i++)
     {
         TextureImage npcTexture;
@@ -208,6 +207,8 @@ void Engine::loadArea(int id)
     currentArea = new Area();
     Parser::getArea(currentArea, id);
     loadBackgroundTexture();
+    npcs.clear();
+    npcs = currentArea->getNPCs();
     loadNPCTextures();
     loadAreaMask();
 }
@@ -219,10 +220,21 @@ bool Engine::canHeroMoveRight()
 {
     heroDirection = FACING_EAST;
 
-    // The grid block to the right is solid, cannot walk past it.
     int newRightPosition = heroPositionX + hero->getWidth();
+    
+    // The grid block to the right is solid, cannot walk past it.
     if ((int)(mask.pix4d (newRightPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
-        return false; 
+        return false;
+        
+    // Check if an NPC is blocking the way
+    for (int i = 0; i < npcs.size(); i++)
+    {
+        Point npcPos = npcs.at(i)->getLocation();
+        if ( newRightPosition == npcPos.x && heroPositionY == npcPos.y )
+        {
+            return false;
+        }
+    }
     
     return true;
 }
@@ -234,10 +246,21 @@ bool Engine::canHeroMoveLeft()
 {       
     heroDirection = FACING_WEST;
 
-    // The grid block to the left is solid, cannot walk past it.
     int newLeftPosition = heroPositionX - 1;
+
+    // The grid block to the left is solid, cannot walk past it.
     if ((int)(mask.pix4d (newLeftPosition, GRID_HEIGHT - heroPositionY - 1, 0, 0, 255)) <= 0)
-        return false; 
+        return false;
+        
+    // Check if an NPC is blocking the way
+    for (int i = 0; i < npcs.size(); i++)
+    {
+        Point npcPos = npcs.at(i)->getLocation();
+        if ( newLeftPosition == npcPos.x + npcs.at(i)->getWidth() - 1 && heroPositionY == npcPos.y )
+        {
+            return false;
+        }
+    }
     
     return true;
 }
@@ -249,10 +272,23 @@ bool Engine::canHeroMoveUp()
 {
     heroDirection = FACING_NORTH;    
 
-    // The grid block above is solid, cannot walk past it.
     int newUpPosition = heroPositionY + 1;
+
+    // The grid block above is solid, cannot walk past it.
     if ((int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newUpPosition - 1, 0, 0, 255)) <= 0)
-        return false; 
+        return false;
+        
+    // Check if an NPC is blocking the way
+    for (int i = 0; i < npcs.size(); i++)
+    {
+        Point npcPos = npcs.at(i)->getLocation();
+        if (heroPositionX < npcPos.x + npcs.at(i)->getWidth() && 
+            heroPositionX + hero->getWidth() > npcPos.x &&
+            newUpPosition == npcPos.y )
+        {
+            return false;
+        }
+    }
         
     return true;
 }
@@ -264,12 +300,23 @@ bool Engine::canHeroMoveDown()
 {
     heroDirection = FACING_SOUTH;    
 
-    // The grid block below is solid, cannot walk past it.
     int newDownPosition = heroPositionY - 1;
-    //cout << "new down position: " << newDownPosition << endl;
-    //cout << "colour at new position: " << (int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0, 255)) << endl;
+
+    // The grid block below is solid, cannot walk past it.
     if ((int)(mask.pix4d (heroPositionX, GRID_HEIGHT - newDownPosition - 1, 0, 0, 255)) <= 0)
-        return false; 
+        return false;
+        
+    // Check if an NPC is blocking the way
+    for (int i = 0; i < npcs.size(); i++)
+    {
+        Point npcPos = npcs.at(i)->getLocation();
+        if (heroPositionX < npcPos.x + npcs.at(i)->getWidth() && 
+            heroPositionX + hero->getWidth() > npcPos.x &&
+            newDownPosition == npcPos.y )
+        {
+            return false;
+        }
+    }
         
     return true;
 }
@@ -569,19 +616,27 @@ void Engine::drawAreaBackground()
 }
 
 /*
-* Draws all NPCs in the current area
+* Draws all NPCs in the current area below the hero
 */
-void Engine::drawNPCs()
+void Engine::drawNPCsBelowHero()
 {
     // Make sure the number of npcTextures we have corresponds to the number
     // of NPCs that are actually in the scene.
-    if (npcTextures.size() != currentArea->getNPCs().size())
+    if (npcTextures.size() != npcs.size())
     {
         return;
     }
     
     for (int i = 0; i < npcTextures.size(); i++)
     {
+        NPC * npc = npcs.at(i);
+        Point npcPosition = npc->getLocation();
+        
+        if (npcPosition.y  >= heroPositionY)
+        {
+                continue;
+        }
+        
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
     	
@@ -595,9 +650,60 @@ void Engine::drawNPCs()
         
         glBindTexture(GL_TEXTURE_2D, npcTextures.at(i).texID);
         
-        NPC * npc = currentArea->getNPCs().at(i);
+        int width = npc->getWidth();
+        int height = npc->getHeight();
         
+    	glBegin(GL_POLYGON);
+    	   glTexCoord2f(0.0f, 0.0f);
+    		glVertex2f(npcPosition.x, npcPosition.y);
+    		glTexCoord2f(1.0f, 0.0f);
+    		glVertex2f(npcPosition.x + width, npcPosition.y);
+    		glTexCoord2f(1.0f, 1.0f);
+    		glVertex2f(npcPosition.x + width, npcPosition.y + height);
+    		glTexCoord2f(0.0f, 1.0f);
+    		glVertex2f(npcPosition.x, npcPosition.y + height);
+    	glEnd();
+    
+        glMatrixMode(GL_PROJECTION);
+    	glPopMatrix(); 
+    }
+}
+
+/*
+* Draws all NPCs in the current area above the hero
+*/
+void Engine::drawNPCsAboveHero()
+{
+    // Make sure the number of npcTextures we have corresponds to the number
+    // of NPCs that are actually in the scene.
+    if (npcTextures.size() != npcs.size())
+    {
+        return;
+    }
+    
+    for (int i = 0; i < npcTextures.size(); i++)
+    {
+        NPC * npc = npcs.at(i);
         Point npcPosition = npc->getLocation();
+        
+        if (npcPosition.y  < heroPositionY)
+        {
+                continue;
+        }
+        
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+    	
+    	
+    	glLoadIdentity();
+    	
+    	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
+    
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        
+        glBindTexture(GL_TEXTURE_2D, npcTextures.at(i).texID);
+        
         int width = npc->getWidth();
         int height = npc->getHeight();
         
@@ -760,12 +866,15 @@ void Engine::display()
 	
 	// Draw Background
 	drawAreaBackground();
+	
+    // Draw NPCs above hero
+    drawNPCsAboveHero();
 
     // Draw hero
     drawHero();
     
-    // Draw NPCs
-    drawNPCs();
+	// Draw NPCs below hero
+	drawNPCsBelowHero();
     
     drawHUD();
 
