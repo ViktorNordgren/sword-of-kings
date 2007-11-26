@@ -22,6 +22,7 @@ class Area
         //getters
         int getID();
         string getMainTexture();
+        string getBattleTexture();
         string getImageMask();
         int getNorth();
         int getWest();
@@ -47,6 +48,7 @@ class Area
         void setEntryEast(Point entryE);
         void setEntryWest(Point entryW);
         void setMainTexture(string);
+        void setBattleTexture(string);
         void setImageMask(string);
         void setMaxMonsterLevel(int);
         void setMonsterFrequency(int);
@@ -69,6 +71,8 @@ class Area
         int maxMonsterLevel;
         //the main image to display
         string mainTexture;
+        //the battle texture for this area
+        string battleTexture;
         //invisible image to do collision
         string imageMask;
         //id to images around this one

@@ -136,6 +136,16 @@ bool Engine::loadBackgroundTexture()
 }
 
 /*
+* Loads current area's battle background texture
+*/
+bool Engine::loadBattleBackgroundTexture()
+{
+    loadTGA(&backgroundTexture[0], currentArea->getBattleTexture());
+    
+    return true;
+}
+
+/*
 * Loads a TGA texture
 */
 bool Engine::loadTGA(TextureImage* texture, string filename)
@@ -546,6 +556,7 @@ void Engine::startRandomBattle()
     string randomMonsterID = currentAreaMonsterIDs.at(rand() % currentAreaMonsterIDs.size());
     currEnemy = new Enemy();
     Parser::getEnemy(currEnemy, randomMonsterID);
+    loadBattleBackgroundTexture();
     inBattle = true;
 }
 
@@ -612,6 +623,7 @@ void Engine::endBattleVictory()
     soundManager->playSound(VICTORY);
     Sleep(6000);
     soundManager->playMusic();
+    loadBackgroundTexture();
 }
 /*
 * Hero movement animation timer
@@ -1368,12 +1380,12 @@ void Engine::drawString(float x, float y, void *font, char *string)
 void Engine::display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Draw Background
+    drawAreaBackground();
 	
 	if( !inBattle )
-	{
-        // Draw Background
-    	drawAreaBackground();
-    	
+	{	
         // Draw NPCs above hero
         drawNPCsAboveHero();
     
