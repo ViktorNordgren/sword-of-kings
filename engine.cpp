@@ -680,9 +680,8 @@ void Engine::enemyAttackTimer(int value)
 
 void Engine::enemyAttack()
 {
-    //int attack = (int)currEnemy->getAttack() - getRandomInt((int)(currEnemy->getAttack() * 0.3));
-    //int attack = (int)currEnemy->getAttack();
-    int attack = 25;
+    int attack = (int)currEnemy->getAttack() - getRandomInt((int)(currEnemy->getAttack() * 0.3));
+
     soundManager->playSound(HIT);
     if(hero->doDamage((int)(attack - hero->getDefense())))
     {
