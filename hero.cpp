@@ -115,6 +115,11 @@ string Hero::getWestLeftTexture()
     return HERO_WEST_LEFT_TEXTURE;
 }
 
+string Hero::getFightNormalTexture()
+{
+    return HERO_FIGHT_NORMAL_TEXTURE;
+}
+
 int Hero::getNumPotions()
 {
     return numPotions;   
