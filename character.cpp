@@ -151,3 +151,19 @@ void Character::setWidth(int w)
     width = w;
 }
 
+/*
+* Does the specified damage.  returns true if character dies.
+*/
+bool Character::doDamage(int amount)
+{
+    remainingHitPoints -= amount;   
+    if( remainingHitPoints <= 0 )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+

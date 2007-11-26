@@ -127,6 +127,8 @@ class Engine
     //this tells you which menu option is selected in the battle menu
     int battleArrow; 
     
+    bool yourTurn;
+    
     // Current enemy hero is fighting
     Enemy* currEnemy;
     // vector of monster IDs that are valid for current area
@@ -161,6 +163,11 @@ class Engine
     
     // When hero is moving, user inputs are disabled
     bool heroIsMoving;
+    
+    //perform your attack
+    void doAttack();
+    
+    void endBattleVictory();
     
     // Possible hero orientations
     enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };
