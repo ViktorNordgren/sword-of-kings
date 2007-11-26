@@ -91,6 +91,10 @@ class Engine
     void drawString( float x, float y, void *font, char *string ); 
     // Draws the battle menu
     void drawBattleMenu();
+    // Draws the enemy in a fight
+    void drawEnemy();
+    // Draws the hero in a fight
+    void drawHeroBattle();
     
     // Returns a random int, given a maximum int
     int getRandomInt(int);    
@@ -139,7 +143,7 @@ class Engine
     // Current loaded backgrounnd texture
     TextureImage backgroundTexture[1];
     // Hero textures
-    TextureImage heroTextures[12];
+    TextureImage heroTextures[13];
     // NPC textures
     vector<TextureImage> npcTextures;
     // Current monster textures

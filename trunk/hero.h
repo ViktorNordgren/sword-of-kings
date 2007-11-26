@@ -28,6 +28,7 @@ class Hero : public Character
         string getWestNormalTexture();
         string getWestRightTexture();
         string getWestLeftTexture();
+        string getFightNormalTexture();
         int getNumPotions();
         //setters
         void setHasSwordOfKings(bool hasSword);

@@ -102,6 +102,16 @@ bool Engine::loadNPCTextures()
 }
 
 /*
+* Loads current monster's texture
+*/
+bool Engine::loadMonsterTextures()
+{
+    loadTGA(&monsterTextures[0], currEnemy->getTexture());
+    
+    return true;
+}
+
+/*
 * Loads hero textures
 */
 bool Engine::loadHeroTextures()
@@ -118,6 +128,7 @@ bool Engine::loadHeroTextures()
     loadTGA(&heroTextures[9], hero->getWestNormalTexture());
     loadTGA(&heroTextures[10], hero->getWestRightTexture());
     loadTGA(&heroTextures[11], hero->getWestLeftTexture());
+    loadTGA(&heroTextures[12], hero->getFightNormalTexture());
 
     return true;
 }
@@ -557,6 +568,7 @@ void Engine::startRandomBattle()
     currEnemy = new Enemy();
     Parser::getEnemy(currEnemy, randomMonsterID);
     loadBattleBackgroundTexture();
+    loadMonsterTextures();
     inBattle = true;
 }
 
@@ -1045,7 +1057,6 @@ void Engine::drawNPCsAboveHero()
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
     	
-    	
     	glLoadIdentity();
     	
     	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
@@ -1079,13 +1090,11 @@ void Engine::drawNPCsAboveHero()
 */
 void Engine::drawHero()
 {
-    
     // To draw the hero, as with all characters, use the Grid system as our
     // 2D orthogonal view (since we deal with the grid when drawing characters,
     // not actual pixel dimentions.)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
-	
 	
 	glLoadIdentity();
 	
@@ -1093,9 +1102,7 @@ void Engine::drawHero()
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
-    // The hero's direction and footing determines which texture we shall use.
-    // There are 12 possible textures, stored in the heroTextures array.
+
     switch (heroDirection)
     {
         case FACING_SOUTH:
@@ -1162,8 +1169,8 @@ void Engine::drawHero()
             }
             break;
     }
-
-	glBegin(GL_POLYGON);
+    
+    glBegin(GL_POLYGON);
 	   glTexCoord2f(0.0f, 0.0f);
 		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY);
 		glTexCoord2f(1.0f, 0.0f);
@@ -1173,6 +1180,37 @@ void Engine::drawHero()
 		glTexCoord2f(0.0f, 1.0f);
 		glVertex2f(heroPositionX + heroAnimationX, heroPositionY + heroAnimationY + hero->getHeight());
 	glEnd();
+
+    glMatrixMode(GL_PROJECTION);
+	glPopMatrix(); 
+}
+/*
+* Draws the hero while in battle mode
+*/
+void Engine::drawHeroBattle()
+{
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+	
+	glLoadIdentity();
+	
+	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    glBindTexture(GL_TEXTURE_2D, heroTextures[12].texID);
+
+    glBegin(GL_POLYGON);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2f(8, 10);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex2f(8 + hero->getWidth(), 10);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex2f(8 + hero->getWidth(), 10 + hero->getHeight());
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex2f(8, 10 + hero->getHeight());
+    glEnd();
 
     glMatrixMode(GL_PROJECTION);
 	glPopMatrix(); 
@@ -1238,6 +1276,38 @@ void Engine::drawSpeechBox()
     }
     
     
+}
+
+/*
+* Draws the enemy in a battle screen
+*/
+void Engine::drawEnemy()
+{
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+	
+	glLoadIdentity();
+	
+	gluOrtho2D(0.0, GRID_WIDTH, 0.0, GRID_HEIGHT);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    
+    glBindTexture(GL_TEXTURE_2D, monsterTextures[0].texID);
+    
+    glBegin(GL_POLYGON);
+	   glTexCoord2f(0.0f, 0.0f);
+		glVertex2f(30, 10);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(30 + currEnemy->getWidth(), 10);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(30 + currEnemy->getWidth(), 10 + currEnemy->getHeight());
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(30, 10 + currEnemy->getHeight());
+	glEnd();
+
+    glMatrixMode(GL_PROJECTION);
+	glPopMatrix(); 
 }
 
 //draw the battle system menu
@@ -1388,7 +1458,7 @@ void Engine::display()
 	{	
         // Draw NPCs above hero
         drawNPCsAboveHero();
-    
+        
         // Draw hero
         drawHero();
         
@@ -1407,6 +1477,10 @@ void Engine::display()
     if( inBattle )
     {
         drawBattleMenu();
+        
+        drawHeroBattle();
+        
+        drawEnemy();
     }
 
 	glutSwapBuffers();
