@@ -613,6 +613,7 @@ void Engine::attackTimer(int value)
                 if(doAttack())
                 {
                     endBattleVictory();
+                    heroBattleAnimationX = 0;
                 }
                 else
                     glutTimerFunc(BATTLE_ANIMATION_DELAY, attackTimerDispatch, MOVING_LEFT);
