@@ -37,6 +37,8 @@ Engine::Engine()
     heroPositionY = 0;
     heroAnimationY = 0;
     heroAnimationX = 0;
+    heroBattleAnimationX = 0;
+    enemyBattleAnimationX = 0;
     heroDirection = FACING_SOUTH;
     heroStance = NORMAL_STANCE;
     nextStance = RIGHT_STANCE;
@@ -573,24 +575,13 @@ void Engine::startRandomBattle()
 }
 
 /*
-* Perform an attack
+* Perform an attack, return true if enemy killed
 */
-void Engine::doAttack()
+bool Engine::doAttack()
 {
     int attack = (int)hero->getAttack() - getRandomInt((int)(hero->getAttack() * 0.3));
     soundManager->playSound(SWORD_HIT);
-    if(currEnemy->doDamage((int)(attack - currEnemy->getDefense())))
-    {
-        glutPostRedisplay();
-        endBattleVictory();
-    }
-    else
-    {
-        yourTurn = false;
-        glutPostRedisplay();
-        glutTimerFunc(500,enemyAttackTimerDispatch,0);
-    }
-    
+    return currEnemy->doDamage((int)(attack - currEnemy->getDefense()));
 }
 
 /*
@@ -598,7 +589,43 @@ void Engine::doAttack()
 */
 void Engine::attackTimer(int value)
 {
-    doAttack();
+    switch(value)
+    {
+        case MOVING_LEFT:
+            
+            if (heroBattleAnimationX <= 0.0)
+            {
+                yourTurn = false;
+                heroBattleAnimationX = 0;
+                glutTimerFunc(0, enemyAttackTimerDispatch, MOVING_LEFT);
+            }
+            else
+            {
+                heroBattleAnimationX -= 0.1;
+                glutTimerFunc(BATTLE_ANIMATION_DELAY, attackTimerDispatch, MOVING_LEFT);
+            }
+            break;
+            
+        case MOVING_RIGHT:
+            
+            if (heroBattleAnimationX >= 1.0)
+            {
+                if(doAttack())
+                {
+                    endBattleVictory();
+                }
+                else
+                    glutTimerFunc(BATTLE_ANIMATION_DELAY, attackTimerDispatch, MOVING_LEFT);
+            }
+            else
+            {
+                glutTimerFunc(BATTLE_ANIMATION_DELAY, attackTimerDispatch, MOVING_RIGHT);
+                heroBattleAnimationX += 0.1;
+            }
+            break;
+    }
+    
+    glutPostRedisplay();
 }
 
 /*
@@ -606,7 +633,38 @@ void Engine::attackTimer(int value)
 */
 void Engine::enemyAttackTimer(int value)
 {
-    enemyAttack();   
+    switch(value)
+    {
+        case MOVING_RIGHT:
+            
+            if (enemyBattleAnimationX <= 0.0)
+            {
+                enemyBattleAnimationX = 0;
+                yourTurn = true;
+            }
+            else
+            {
+                enemyBattleAnimationX -= 0.1;
+                glutTimerFunc(BATTLE_ANIMATION_DELAY, enemyAttackTimerDispatch, MOVING_RIGHT);
+            }
+            break;
+            
+        case MOVING_LEFT:
+            
+            if (enemyBattleAnimationX >= 1.0)
+            {
+                enemyAttack();
+                glutTimerFunc(BATTLE_ANIMATION_DELAY, enemyAttackTimerDispatch, MOVING_RIGHT);
+            }
+            else
+            {
+                enemyBattleAnimationX += 0.1;
+                glutTimerFunc(BATTLE_ANIMATION_DELAY, enemyAttackTimerDispatch, MOVING_LEFT);
+            }
+            break;
+    }
+    
+    glutPostRedisplay();
 }
 
 void Engine::enemyAttack()
@@ -619,7 +677,7 @@ void Engine::enemyAttack()
     }
     else
     {
-        yourTurn = true;
+        //yourTurn = true;
     } 
     glutPostRedisplay();
 }
@@ -856,7 +914,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                     if(battleArrow == ATTACK)
                     {
                         yourTurn = false;
-                        glutTimerFunc(250, attackTimerDispatch, 0);
+                        glutTimerFunc(0, attackTimerDispatch, MOVING_RIGHT);
                     }
                     if(battleArrow == HEAL)
                     {
@@ -886,8 +944,6 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                             endBattleVictory();
                         }
                     }
-                    
-                    
                 }
             }
             else
@@ -1203,13 +1259,13 @@ void Engine::drawHeroBattle()
 
     glBegin(GL_POLYGON);
         glTexCoord2f(0.0f, 0.0f);
-        glVertex2f(8, 10);
+        glVertex2f(8 + heroBattleAnimationX * 15, 10);
         glTexCoord2f(1.0f, 0.0f);
-        glVertex2f(8 + hero->getWidth(), 10);
+        glVertex2f(8 + heroBattleAnimationX * 15 + hero->getWidth(), 10);
         glTexCoord2f(1.0f, 1.0f);
-        glVertex2f(8 + hero->getWidth(), 10 + hero->getHeight());
+        glVertex2f(8 + heroBattleAnimationX * 15 + hero->getWidth(), 10 + hero->getHeight());
         glTexCoord2f(0.0f, 1.0f);
-        glVertex2f(8, 10 + hero->getHeight());
+        glVertex2f(8 + heroBattleAnimationX * 15, 10 + hero->getHeight());
     glEnd();
 
     glMatrixMode(GL_PROJECTION);
@@ -1297,13 +1353,13 @@ void Engine::drawEnemy()
     
     glBegin(GL_POLYGON);
 	   glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(30, 10);
+		glVertex2f(30 - (enemyBattleAnimationX * 15), 10);
 		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(30 + currEnemy->getWidth(), 10);
+		glVertex2f(30 - (enemyBattleAnimationX * 15) + currEnemy->getWidth(), 10);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(30 + currEnemy->getWidth(), 10 + currEnemy->getHeight());
+		glVertex2f(30 - (enemyBattleAnimationX * 15) + currEnemy->getWidth(), 10 + currEnemy->getHeight());
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(30, 10 + currEnemy->getHeight());
+		glVertex2f(30 - (enemyBattleAnimationX * 15), 10 + currEnemy->getHeight());
 	glEnd();
 
     glMatrixMode(GL_PROJECTION);
@@ -1431,7 +1487,6 @@ void Engine::drawBattleMenu()
 //this is a method to make the output of strings much simpler
 void Engine::drawString(float x, float y, void *font, char *string)
 {  
-    
 	glDisable(GL_TEXTURE_2D);
 	char *currChar;
 	glRasterPos2f(x, y);
