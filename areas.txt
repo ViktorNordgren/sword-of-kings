@@ -12,5 +12,16 @@ BG textures/area/2.tga
 BATTLEBG textures/area/battle/forest.tga
 MASK textures/area/mask/2.png
 SOUTH 1
+NORTH 3
 SOUTHENTRY 25 0
-MONSTERS FREQ 30 MAXLEVEL 1
+NORTHENTRY 25 25
+#MONSTERS FREQ 30 MAXLEVEL 1
+
+3
+ID 3
+BG textures/area/3.tga
+BATTLEBG textures/area/battle/forest.tga
+MASK textures/area/mask/3.png
+SOUTH 2
+SOUTHENTRY 25 0
+#MONSTERS FREQ 30 MAXLEVEL 1
