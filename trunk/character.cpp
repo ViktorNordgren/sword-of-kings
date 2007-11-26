@@ -159,6 +159,7 @@ bool Character::doDamage(int amount)
     remainingHitPoints -= amount;   
     if( remainingHitPoints <= 0 )
     {
+        remainingHitPoints = 0;
         return true;
     }
     else

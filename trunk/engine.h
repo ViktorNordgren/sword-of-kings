@@ -68,6 +68,8 @@ class Engine
     bool loadBattleBackgroundTexture();
     // Loads current monster textures
     bool loadMonsterTextures();
+    // Loads Game Over Texture
+    bool loadGameOverTexture();
     
     // Loads current area's mask
     bool loadAreaMask();
@@ -127,6 +129,10 @@ class Engine
     
     //a boolean that sets if we are in a battle
     bool inBattle;
+    
+    //boolean that states if the game is over
+    bool gameOver;
+    
     // Steps taken until next fight will occur
     int stepsUntilNextBattle;
     
@@ -190,6 +196,18 @@ class Engine
     
     //end the battle in victory
     void endBattleVictory();
+    
+    //generic end battle
+    void endBattle();
+    
+    //run away
+    void endBattleRun();
+    
+    //you lose
+    void endBattleDead();
+    
+    // Static endBattle dispatcher
+    static void endBattle(int value);
     
     // Possible hero orientations
     enum HeroDirection { FACING_NORTH, FACING_SOUTH, FACING_EAST, FACING_WEST };

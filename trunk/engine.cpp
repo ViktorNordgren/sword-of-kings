@@ -52,6 +52,7 @@ Engine::Engine()
     gameState = new GameState();
     inBattle = false;
     yourTurn = true;
+    gameOver = false;
 }
 
 /*
@@ -155,6 +156,15 @@ bool Engine::loadBattleBackgroundTexture()
 {
     loadTGA(&backgroundTexture[0], currentArea->getBattleTexture());
     
+    return true;
+}
+
+/*
+* Loads the Game Over texture
+*/
+bool Engine::loadGameOverTexture()
+{
+    loadTGA(&backgroundTexture[0], GAME_OVER_TEXTURE);
     return true;
 }
 
@@ -670,11 +680,13 @@ void Engine::enemyAttackTimer(int value)
 
 void Engine::enemyAttack()
 {
-    int attack = (int)currEnemy->getAttack() - getRandomInt((int)(currEnemy->getAttack() * 0.3));
+    //int attack = (int)currEnemy->getAttack() - getRandomInt((int)(currEnemy->getAttack() * 0.3));
+    //int attack = (int)currEnemy->getAttack();
+    int attack = 25;
     soundManager->playSound(HIT);
     if(hero->doDamage((int)(attack - hero->getDefense())))
     {
-        //endBattleVictory();
+        glutTimerFunc(1,endBattle,2);
     }
     else
     {
@@ -683,18 +695,51 @@ void Engine::enemyAttack()
     glutPostRedisplay();
 }
 
+void Engine::endBattle(int value) 
+{ 
+    if(value==0) engine_id_to_engine[ENGINE_ID]->endBattleVictory(); 
+    if(value==1) engine_id_to_engine[ENGINE_ID]->endBattleRun();
+    if(value==2) engine_id_to_engine[ENGINE_ID]->endBattleDead();
+}
+
 /*
 * Victory!
 */
 void Engine::endBattleVictory()
 {
-    yourTurn = true;
-    inBattle = false;
     soundManager->stopMusic();
     soundManager->playSound(VICTORY);
     Sleep(6000);
+    endBattle();
+
+}
+
+void Engine::endBattle()
+{
+    yourTurn = true;
+    inBattle = false;
     soundManager->playMusic();
     loadBackgroundTexture();
+    glutPostRedisplay();
+}
+
+void Engine::endBattleRun()
+{
+
+    soundManager->stopMusic();
+    soundManager->playSound(RUN_SOUND);
+    Sleep(2000);
+    endBattle();
+}
+
+void Engine::endBattleDead()
+{
+    yourTurn = true;
+    inBattle = false;
+    gameOver = true;
+    soundManager->stopMusic();
+    loadGameOverTexture();
+    glutPostRedisplay();
 }
 /*
 * Hero movement animation timer
@@ -824,6 +869,9 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Left arrow key
 		case 'a':
 		case 'A':
+            if(gameOver)
+            {}
+            else
             if(inBattle)
             {
                 
@@ -840,6 +888,9 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Right arrow key
 		case 'd':
 		case 'D':
+            if(gameOver)
+            {}
+            else
             if(inBattle)
             {
                 
@@ -856,6 +907,9 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Up arrow key
 		case 'w':
 		case 'W':
+            if(gameOver)
+            {}
+            else
             if(inBattle)
             {
                 if(yourTurn)
@@ -879,6 +933,9 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
         // Equivalent to pressing Down arrow key
 		case 's':
 		case 'S':
+            if(gameOver)
+            {}
+            else
             if(inBattle)
             {
                 if(yourTurn)
@@ -900,14 +957,31 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 			break;
 		case 'b':
         case 'B':
-            inBattle = !inBattle;
-            if( inBattle )
-                startRandomBattle();
+            if(gameOver)
+            {}
             else
-                soundManager->playMusic();
+            {
+                inBattle = !inBattle;
+                if( inBattle )
+                    startRandomBattle();
+                else
+                    soundManager->playMusic();
+            }
             break;
 		//space bar is pressed
 		case 32:
+            if(gameOver)
+            {
+                delete hero;
+                hero = new Hero();
+                loadArea(1);  
+                gameOver = false; 
+                soundManager->playMusic();
+                heroPositionX = 0;
+                heroPositionY = 0;
+
+                
+            }
             if(inBattle)
             {
                 if(yourTurn)
@@ -941,8 +1015,8 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                         }
                         else
                         {
-                            soundManager->playSound(RUN_SOUND);
-                            endBattleVictory();
+                            
+                            endBattleRun();
                         }
                     }
                 }
@@ -1510,33 +1584,36 @@ void Engine::display()
     // Draw Background
     drawAreaBackground();
 	
-	if( !inBattle )
-	{	
-        // Draw NPCs above hero
-        drawNPCsAboveHero();
-        
-        // Draw hero
-        drawHero();
-        
-    	// Draw NPCs below hero
-    	drawNPCsBelowHero();
-        
-        //Draw the heads up disply
-        drawHUD();
-        
-        //display the speech box
-        if( displaySpeech )
-        {
-            drawSpeechBox();
+	if(!gameOver)
+	{
+    	if( !inBattle )
+    	{	
+            // Draw NPCs above hero
+            drawNPCsAboveHero();
+            
+            // Draw hero
+            drawHero();
+            
+        	// Draw NPCs below hero
+        	drawNPCsBelowHero();
+            
+            //Draw the heads up disply
+            drawHUD();
+            
+            //display the speech box
+            if( displaySpeech )
+            {
+                drawSpeechBox();
+            }
         }
-    }
-    if( inBattle )
-    {
-        drawBattleMenu();
-        
-        drawHeroBattle();
-        
-        drawEnemy();
+        if( inBattle )
+        {
+            drawBattleMenu();
+            
+            drawHeroBattle();
+            
+            drawEnemy();
+        }
     }
 
 	glutSwapBuffers();

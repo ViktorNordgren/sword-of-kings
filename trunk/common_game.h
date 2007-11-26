@@ -91,5 +91,10 @@ static const int LINE_LENGTH = 90; //length of line in chars
 static const int LINE_HEIGHT = 25; //height of a line in pixels
 static const int NUM_LINES = 5; //number of lines
 
+/*
+* Game Over background
+*/
+
+static const string GAME_OVER_TEXTURE = "textures/game_over.tga";
 
 #endif
