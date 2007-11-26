@@ -1,0 +1,39 @@
+[Game starts off in little stupid village.]
+
+Geoffrey: Hey Lance, want to come play swords with us? Oh, wait.. where's your sword?
+Cornelius: Is that a piece of cardboard you're holding?
+Geoffrey: No, I think it's a soggy branch!
+
+Lance: Shutup guys, you know it's my sword! That's it, I've had enough, I will voyage to the ends of the earth to obtain the mythical Sword of Kings! Legends say that the Sword of Kings lies far to the north...
+
+[Walk 2 paths to the north]
+
+[Arrive in the 'enchanted' forest]
+
+Ardgar the Crafty Illusionist: Welcome to the Enchanted Forest, Lance. Yes, I know who you are, and I think you'll find it quite impossible to leave this place. The Sword of Kings shall never be yours!
+
+[NPC] Ragged Man: I've been here for fifteen years... I simply can't figure out how to get out of this forest... help me...
+
+[Go right.. then do a 90 degree bend in the path to go north..]
+
+[Map with Beastor blocking the path]
+
+Beastor: This is where your journey ends, Lance. The Sword of Kings shall be mine, for it is only fitting that such a terrifying blade be wielded by one with swordsmanship such as I! I challenge you!
+
+[Beastor dies]
+
+[Go into the cave/building]
+
+[Pick up Sword of Kings (NPC)]
+
+[Action = you get the sword of kings, big boss blocks the door out. NPC, have to talk to him.]
+
+[Ancient Chimera Guardian: You dare disturb my slumber by entering these holy grounds? You-- Wait, what's this? You have taken the Sword of Kings? Few mortals know of its existence, even fewer have made it this far, but it is said that only one hero may break the barrier holding the Sword to this place - you are that hero. At last, a being worthy of battling. With the Sword of Kings by your side, attack me!
+
+[Kill chimera]
+
+[go home]
+
+Cornelius: Whoa, nice sword Lance! Geoffery's is still nicer though.
+
+[THE END]

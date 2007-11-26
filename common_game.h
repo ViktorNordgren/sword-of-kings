@@ -50,6 +50,7 @@ static const string HERO_FIGHT_NORMAL_TEXTURE = "textures/characters/hero/fight_
 
 static const int POTION_AMOUNT = 20;
 
+static const int BATTLE_ANIMATION_DELAY = 20;
 
 /*
 * Locations of File Names to read in

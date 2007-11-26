@@ -170,8 +170,8 @@ class Engine
     // When hero is moving, user inputs are disabled
     bool heroIsMoving;
     
-    //perform your attack
-    void doAttack();
+    //perform your attack, return true if enemy killed.
+    bool doAttack();
     
     //enemy attacks
     void enemyAttack();
@@ -205,6 +205,10 @@ class Engine
     
     // Fractional grid location of Hero, used in movement animation between cells
     double heroAnimationX, heroAnimationY;
+    // Fractional grid locations used for animating battles
+    double heroBattleAnimationX, enemyBattleAnimationX;
+    // Enum describing movement of currently moving character in battle screen
+    enum BattleAnimationDirection { MOVING_RIGHT, MOVING_LEFT };
     
     // Initilize openGL settings
     void initializeOpenGLSettings();
