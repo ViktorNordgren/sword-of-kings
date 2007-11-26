@@ -30,7 +30,11 @@ SoundManager::SoundManager()
     soundEffects.push_back(Mix_LoadWAV(MENU_BEEP_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(HEAL_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(RUN_SOUND_FILE.c_str()));
-     soundEffects.push_back(Mix_LoadWAV(NO_POTION_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(NO_POTION_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(HIT_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(DRAW_SWORD_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(SWORD_HIT_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(VICTORY_SOUND_FILE.c_str()));
     
     
 }
