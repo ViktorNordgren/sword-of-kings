@@ -51,6 +51,7 @@ Engine::Engine()
     loadArea(1);
     gameState = new GameState();
     inBattle = false;
+    yourTurn = true;
 }
 
 /*
@@ -561,6 +562,25 @@ void Engine::startRandomBattle()
 }
 
 /*
+* Perform an attack
+*/
+void Engine::doAttack()
+{
+    if(currEnemy->doDamage(hero->getAttack()-currEnemy->getDefense()))
+    {
+        endBattleVictory();
+    }
+}
+
+/*
+* Victory!
+*/
+void Engine::endBattleVictory()
+{
+    inBattle = false;
+    soundManager->playMusic();
+}
+/*
 * Hero movement animation timer
 */
 void Engine::heroMovementTimer (int value)
@@ -721,10 +741,13 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 'W':
             if(inBattle)
             {
-                if(battleArrow != 0)
+                if(yourTurn)
                 {
-                    battleArrow--;
-                    soundManager->playSound(MENUBEEP);
+                    if(battleArrow != 0)
+                    {
+                        battleArrow--;
+                        soundManager->playSound(MENUBEEP);
+                    }
                 }
             }
             else
@@ -741,10 +764,13 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 'S':
             if(inBattle)
             {
-                if(battleArrow != 2)
+                if(yourTurn)
                 {
-                    battleArrow++;
-                    soundManager->playSound(MENUBEEP);
+                    if(battleArrow != 2)
+                    {
+                        battleArrow++;
+                        soundManager->playSound(MENUBEEP);
+                    }
                 }
             }
             else
@@ -767,33 +793,35 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
 		case 32:
             if(inBattle)
             {
-                if(battleArrow == ATTACK)
+                if(yourTurn)
                 {
-                    //attack code goes here
-                }
-                if(battleArrow == HEAL)
-                {
-                    if(hero->usePotion())
+                    if(battleArrow == ATTACK)
                     {
-                        soundManager->playSound(HEAL_SOUND);
+                        doAttack();
                     }
-                    else
+                    if(battleArrow == HEAL)
                     {
-                        soundManager->playSound(NO_POTION);  
+                        if(hero->usePotion())
+                        {
+                            soundManager->playSound(HEAL_SOUND);
+                        }
+                        else
+                        {
+                            soundManager->playSound(NO_POTION);  
+                        }
                     }
-                }
-                if(battleArrow == RUN)
-                {
-                    int random_integer = (rand()%5);
-                    if(random_integer == 4)
+                    if(battleArrow == RUN)
                     {
-                        soundManager->playSound(NO_POTION);
-                    }
-                    else
-                    {
-                        soundManager->playSound(RUN_SOUND);
-                        inBattle = false;
-                        soundManager->playMusic();
+                        int random_integer = (rand()%5);
+                        if(random_integer == 4)
+                        {
+                            soundManager->playSound(NO_POTION);
+                        }
+                        else
+                        {
+                            soundManager->playSound(RUN_SOUND);
+                            endBattleVictory();
+                        }
                     }
                 }
             }
@@ -1183,29 +1211,31 @@ void Engine::drawBattleMenu()
     
     
     //draw the arrow
-    
-    glDisable(GL_TEXTURE_2D);
-    
-    glBegin(GL_POLYGON);
-		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT + 1.0 - battleArrow * LINE_HEIGHT);
-		glVertex2f(25.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 2 - battleArrow * LINE_HEIGHT);
-		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - 1.0 - battleArrow * LINE_HEIGHT);
-	glEnd();
-	glBegin(GL_POLYGON);
-		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 3 - battleArrow * LINE_HEIGHT);
-		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 3 - battleArrow * LINE_HEIGHT);
-		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
-		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
-	glEnd();
-	
-	//draw dividing lines
-	glBegin(GL_LINES);
-		glVertex2f(125.0f, DEFAULT_WINDOW_HEIGHT / 5);
-		glVertex2f(125.0f, 0.0f);
-		glVertex2f(575.0f, DEFAULT_WINDOW_HEIGHT / 5);
-		glVertex2f(575.0f, 0.0f);
-	glEnd();
-	glEnable(GL_TEXTURE_2D);
+    if( yourTurn )
+    {
+        glDisable(GL_TEXTURE_2D);
+        
+        glBegin(GL_POLYGON);
+    		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT + 1.0 - battleArrow * LINE_HEIGHT);
+    		glVertex2f(25.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 2 - battleArrow * LINE_HEIGHT);
+    		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - 1.0 - battleArrow * LINE_HEIGHT);
+    	glEnd();
+    	glBegin(GL_POLYGON);
+    		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 3 - battleArrow * LINE_HEIGHT);
+    		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT / 3 - battleArrow * LINE_HEIGHT);
+    		glVertex2f(6.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
+    		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
+    	glEnd();
+    	
+    	//draw dividing lines
+    	glBegin(GL_LINES);
+    		glVertex2f(125.0f, DEFAULT_WINDOW_HEIGHT / 5);
+    		glVertex2f(125.0f, 0.0f);
+    		glVertex2f(575.0f, DEFAULT_WINDOW_HEIGHT / 5);
+    		glVertex2f(575.0f, 0.0f);
+    	glEnd();
+    	glEnable(GL_TEXTURE_2D);
+    }
 	
 	//display hero stats
 	stringstream ss1;

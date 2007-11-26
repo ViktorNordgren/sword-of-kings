@@ -40,6 +40,9 @@ class Character
         void setTexture(string text);
         void setHeight(int h);
         void setWidth(int w);
+        
+        //do some damage.  returns true if character dies
+        bool doDamage(int amount);
        
     protected:
         
