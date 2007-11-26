@@ -9,6 +9,7 @@ NPC MATT_H 20 10
 2
 ID 2
 BG textures/area/2.tga
+BATTLEBG textures/area/battle/forest.tga
 MASK textures/area/mask/2.png
 SOUTH 1
 SOUTHENTRY 25 0

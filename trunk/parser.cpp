@@ -132,6 +132,10 @@ bool Parser::getArea(Area* area, int areaID)
                 {
                     area->setMainTexture(tokens[1]);
                 }
+                else if(name.compare("BATTLEBG") == 0)
+                {
+                    area->setBattleTexture(tokens[1]);
+                }
                 else if(name.compare("MASK") == 0)
                 {
                     area->setImageMask(tokens[1]);

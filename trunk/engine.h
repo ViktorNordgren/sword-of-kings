@@ -64,6 +64,8 @@ class Engine
     bool loadHeroTextures();
     // Loads background texture
     bool loadBackgroundTexture();
+    // Loads the background battle texture
+    bool loadBattleBackgroundTexture();
     // Loads current monster textures
     bool loadMonsterTextures();
     

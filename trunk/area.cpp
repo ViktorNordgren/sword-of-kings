@@ -46,6 +46,11 @@ string Area::getMainTexture()
     return mainTexture;
 }
 
+string Area::getBattleTexture()
+{
+    return battleTexture;
+}
+
 string Area::getImageMask()
 {
     return imageMask;
@@ -159,6 +164,11 @@ void Area::setEntryWest(Point entryW)
 void Area::setMainTexture(string texture)
 {
     mainTexture = texture;
+}
+
+void Area::setBattleTexture(string texture)
+{
+    battleTexture = texture;
 }
 
 void Area::setImageMask(string mask)
