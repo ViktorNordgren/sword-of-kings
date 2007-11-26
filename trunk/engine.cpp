@@ -1001,7 +1001,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                             soundManager->playSound(NO_POTION);  
                         }
                         yourTurn = false;
-                        glutTimerFunc(250, enemyAttackTimerDispatch, 0);
+                        glutTimerFunc(250, enemyAttackTimerDispatch, MOVING_LEFT);
                     }
                     if(battleArrow == RUN)
                     {
@@ -1010,7 +1010,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                         {
                             soundManager->playSound(NO_POTION);
                             yourTurn = false;
-                            glutTimerFunc(250, enemyAttackTimerDispatch, 0);
+                            glutTimerFunc(250, enemyAttackTimerDispatch, MOVING_LEFT);
                         }
                         else
                         {
