@@ -11,6 +11,10 @@ enum SoundEffect
     HEAL_SOUND,
     RUN_SOUND,
     NO_POTION,
+    HIT,
+    DRAW_SWORD,
+    SWORD_HIT,
+    VICTORY,
     MAX_SOUND_EFFECTS 
 };
 
@@ -21,5 +25,9 @@ static const string MENU_BEEP_SOUND_FILE = "sounds/menuBeep.wav";
 static const string HEAL_SOUND_FILE = "sounds/heal.wav";
 static const string RUN_SOUND_FILE = "sounds/run.wav";
 static const string NO_POTION_SOUND_FILE = "sounds/nopotion.wav";
+static const string HIT_SOUND_FILE = "sounds/hit.wav";
+static const string DRAW_SWORD_SOUND_FILE = "sounds/swordraw.wav";
+static const string SWORD_HIT_SOUND_FILE = "sounds/steelsword.wav";
+static const string VICTORY_SOUND_FILE = "sounds/victory.wav";
 
 #endif

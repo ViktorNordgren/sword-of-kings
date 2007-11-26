@@ -9,6 +9,7 @@
 #include <sstream>
 #include <cstdlib> 
 #include <ctime>
+#include <windows.h>
 
 using namespace std;
 
@@ -19,16 +20,13 @@ using namespace std;
 // Static variables need to be 'implemented' here to preferent undefined reference
 std::map<int, Engine*> Engine::engine_id_to_engine;
 const int Engine::ENGINE_ID;
+string teststring = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.";
 
 /*
 * Default constructor
 */
 Engine::Engine()
 {
-    currEnemy = NULL;
-    currentArea = NULL;
-    textDialog =  NULL;
-    
     // Create hero
     hero = new Hero(/*"Hero", 1, "heropicture.bmp"*/);
     
@@ -101,16 +99,6 @@ bool Engine::loadNPCTextures()
         loadTGA(&npcTexture, npcs.at(i)->getTexture());
         npcTextures.push_back(npcTexture);
     }
-}
-
-/*
-* Loads current monster texture
-*/
-bool Engine::loadMonsterTextures()
-{
-    loadTGA(&monsterTextures[0], currEnemy->getTexture());
-    
-    return true;
 }
 
 /*
@@ -552,12 +540,12 @@ void Engine::startRandomBattle()
 {
     stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
     soundManager->playBattleMusic();
+    soundManager->playSound(DRAW_SWORD);
     if (currEnemy != NULL)
         delete currEnemy;
     string randomMonsterID = currentAreaMonsterIDs.at(rand() % currentAreaMonsterIDs.size());
     currEnemy = new Enemy();
     Parser::getEnemy(currEnemy, randomMonsterID);
-    loadMonsterTextures();
     inBattle = true;
 }
 
@@ -566,10 +554,51 @@ void Engine::startRandomBattle()
 */
 void Engine::doAttack()
 {
-    if(currEnemy->doDamage(hero->getAttack()-currEnemy->getDefense()))
+    int attack = (int)hero->getAttack() - getRandomInt((int)(hero->getAttack() * 0.3));
+    soundManager->playSound(SWORD_HIT);
+    if(currEnemy->doDamage((int)(attack - currEnemy->getDefense())))
     {
+        glutPostRedisplay();
         endBattleVictory();
     }
+    else
+    {
+        yourTurn = false;
+        glutPostRedisplay();
+        glutTimerFunc(500,enemyAttackTimerDispatch,0);
+    }
+    
+}
+
+/*
+* This is the timer that gets called when you attack
+*/
+void Engine::attackTimer(int value)
+{
+    doAttack();
+}
+
+/*
+* This is the timer that gets called for the enemy to attack
+*/
+void Engine::enemyAttackTimer(int value)
+{
+    enemyAttack();   
+}
+
+void Engine::enemyAttack()
+{
+    int attack = (int)currEnemy->getAttack() - getRandomInt((int)(currEnemy->getAttack() * 0.3));
+    soundManager->playSound(HIT);
+    if(hero->doDamage((int)(attack - hero->getDefense())))
+    {
+        //endBattleVictory();
+    }
+    else
+    {
+        yourTurn = true;
+    } 
+    glutPostRedisplay();
 }
 
 /*
@@ -577,7 +606,11 @@ void Engine::doAttack()
 */
 void Engine::endBattleVictory()
 {
+    yourTurn = true;
     inBattle = false;
+    soundManager->stopMusic();
+    soundManager->playSound(VICTORY);
+    Sleep(6000);
     soundManager->playMusic();
 }
 /*
@@ -696,6 +729,7 @@ void Engine::heroMovementTimer (int value)
     glutPostRedisplay();
 }
 
+
 /*
 * Process normal keyboard inputs
 */
@@ -797,7 +831,8 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                 {
                     if(battleArrow == ATTACK)
                     {
-                        doAttack();
+                        yourTurn = false;
+                        glutTimerFunc(250, attackTimerDispatch, 0);
                     }
                     if(battleArrow == HEAL)
                     {
@@ -809,6 +844,8 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                         {
                             soundManager->playSound(NO_POTION);  
                         }
+                        yourTurn = false;
+                        glutTimerFunc(250, enemyAttackTimerDispatch, 0);
                     }
                     if(battleArrow == RUN)
                     {
@@ -816,6 +853,8 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                         if(random_integer == 4)
                         {
                             soundManager->playSound(NO_POTION);
+                            yourTurn = false;
+                            glutTimerFunc(250, enemyAttackTimerDispatch, 0);
                         }
                         else
                         {
@@ -823,6 +862,8 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                             endBattleVictory();
                         }
                     }
+                    
+                    
                 }
             }
             else
@@ -1209,11 +1250,11 @@ void Engine::drawBattleMenu()
     drawString(30.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2, GLUT_BITMAP_TIMES_ROMAN_24, "Heal" );
     drawString(30.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 3, GLUT_BITMAP_TIMES_ROMAN_24, "Run" );
     
-    
+    glDisable(GL_TEXTURE_2D);
     //draw the arrow
     if( yourTurn )
     {
-        glDisable(GL_TEXTURE_2D);
+        
         
         glBegin(GL_POLYGON);
     		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT + 1.0 - battleArrow * LINE_HEIGHT);
@@ -1227,16 +1268,18 @@ void Engine::drawBattleMenu()
     		glVertex2f(18.0f, DEFAULT_WINDOW_HEIGHT / 5 - LINE_HEIGHT * 2/3 - battleArrow * LINE_HEIGHT);
     	glEnd();
     	
-    	//draw dividing lines
-    	glBegin(GL_LINES);
-    		glVertex2f(125.0f, DEFAULT_WINDOW_HEIGHT / 5);
-    		glVertex2f(125.0f, 0.0f);
-    		glVertex2f(575.0f, DEFAULT_WINDOW_HEIGHT / 5);
-    		glVertex2f(575.0f, 0.0f);
-    	glEnd();
-    	glEnable(GL_TEXTURE_2D);
+    	
     }
-	
+	//draw dividing lines
+	glBegin(GL_LINES);
+		glVertex2f(125.0f, DEFAULT_WINDOW_HEIGHT / 5);
+		glVertex2f(125.0f, 0.0f);
+		glVertex2f(575.0f, DEFAULT_WINDOW_HEIGHT / 5);
+		glVertex2f(575.0f, 0.0f);
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+    	
+    	
 	//display hero stats
 	stringstream ss1;
 	stringstream ss2;

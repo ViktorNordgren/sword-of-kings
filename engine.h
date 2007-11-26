@@ -167,6 +167,22 @@ class Engine
     //perform your attack
     void doAttack();
     
+    //enemy attacks
+    void enemyAttack();
+    
+    // Static attack dispacher
+    static void attackTimerDispatch (int value) { engine_id_to_engine[ENGINE_ID]->attackTimer(value); };
+    
+    //this is your attack timer.  
+    void attackTimer(int value);
+    
+    // Static attack dispacher
+    static void enemyAttackTimerDispatch (int value) { engine_id_to_engine[ENGINE_ID]->enemyAttackTimer(value); };
+    
+    //this is the enemyAttackTimer
+    void enemyAttackTimer(int value);
+    
+    //end the battle in victory
     void endBattleVictory();
     
     // Possible hero orientations
