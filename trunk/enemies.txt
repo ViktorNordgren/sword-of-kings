@@ -2,7 +2,7 @@ ORC
 NAME Orc
 TOTALHITPOINTS 150
 LEVEL 1
-ATTACK 5
+ATTACK 15
 DEFENSE 1
 TEXTURE textures/characters/monsters/orc.tga
 HEIGHT 7
