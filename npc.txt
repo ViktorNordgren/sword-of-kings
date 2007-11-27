@@ -1,4 +1,4 @@
-MATT_H
-NAME "Matthew Housser"
-TEXTURE textures/characters/npc/matth.tga
-DIALOG DEFAULT "STFU n00b.." NOTHING
+GEOFFREY
+NAME "Geoffrey"
+TEXTURE textures/characters/npc/geoffrey.tga
+DIALOG DEFAULT "Nice sword, Lance. Did you borrow that from your little sister?" NOTHING
