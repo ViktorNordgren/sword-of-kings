@@ -6,7 +6,7 @@ ATTACK 12
 DEFENSE 5
 TEXTURE textures/characters/monsters/orc.tga
 HEIGHT 8
-WIDTH 4
+WIDTH 8
 EXP 20
 
 RAT
