@@ -38,10 +38,20 @@ string Enemy::getEnemyID()
     return enemyID;
 }
 
+int Enemy::getExp()
+{
+    return exp;
+}
+
 /*
 * Setters
 */
 void Enemy::setEnemyID(string id)
 {
     enemyID = id;
+}
+
+void Enemy::setExp(int e)
+{
+    exp = e;
 }

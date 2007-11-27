@@ -4,6 +4,8 @@
 
 #include "hero.h"
 #include "common_game.h"
+#include <iostream>
+using namespace std;
 
 /*
 * Class Hero
@@ -158,4 +160,27 @@ bool Hero::usePotion()
     numPotions--;
     return true;
     
+}
+
+void Hero::increaseExp(int exp)
+{
+
+    expToNextLevel -= exp;
+    
+    if(expToNextLevel <= 0)
+    {
+    
+        incrementLevel();
+        expToNextLevel += 20 + level * 15; 
+    }  
+
+}
+
+void Hero::incrementLevel()
+{
+    level++;
+    totalHitPoints += level * 5;
+    remainingHitPoints = totalHitPoints;
+    attack += 5 + (int)(level * 0.5);
+    defense += (int)(level * 0.5);
 }

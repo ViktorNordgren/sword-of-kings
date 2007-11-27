@@ -629,7 +629,8 @@ void Engine::attackTimer(int value)
             {
                 if(doAttack())
                 {
-                    endBattleVictory();
+                    glutPostRedisplay();
+                    glutTimerFunc(1,endBattle,0);
                     heroBattleAnimationX = 0;
                 }
                 else
@@ -688,9 +689,13 @@ void Engine::enemyAttackTimer(int value)
 void Engine::enemyAttack()
 {
     int attack = (int)currEnemy->getAttack() - getRandomInt((int)(currEnemy->getAttack() * 0.3));
-
+    int totalDmg = (int)(attack - hero->getDefense());
+    if(totalDmg <= 0)
+    {
+        totalDmg = 1;
+    }
     soundManager->playSound(HIT);
-    if(hero->doDamage((int)(attack - hero->getDefense())))
+    if(hero->doDamage(totalDmg))
     {
         glutTimerFunc(1,endBattle,2);
     }
@@ -714,6 +719,13 @@ void Engine::endBattle(int value)
 void Engine::endBattleVictory()
 {
     soundManager->stopMusic();
+    cout << currEnemy->getExp();
+    hero->increaseExp(currEnemy->getExp());
+    int getPotion = getRandomInt(4);
+    if(getPotion == 3)
+    {
+        hero->incrementNumPotions();   
+    }
     soundManager->playSound(VICTORY);
     Sleep(6000);
     endBattle();

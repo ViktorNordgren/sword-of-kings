@@ -19,7 +19,7 @@ class GameState
 
     protected:
         bool sword_found;
-        bool talked_to_geoffery;   
+        bool talked_to_geoffery;  
         void * engine;
         
 };

@@ -30,6 +30,8 @@ class Hero : public Character
         string getWestLeftTexture();
         string getFightNormalTexture();
         int getNumPotions();
+        void increaseExp(int exp);
+        void incrementLevel();
         //setters
         void setHasSwordOfKings(bool hasSword);
         void incrementNumPotions();

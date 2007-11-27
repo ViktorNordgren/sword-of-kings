@@ -83,7 +83,7 @@ static const string START_GAME = "START_GAME";
 /*
 * List of valid monster IDs
 */
-static const string MONSTER_IDS [] = {"ORC"};
+static const string MONSTER_IDS [] = {"ORC", "NINJA","RAT"};
 
 /*
 * Settings for the speech box
