@@ -4,7 +4,7 @@ BG textures/area/1.tga
 MASK textures/area/mask/1.png
 NORTH 2
 NORTHENTRY 31 25
-NPC MATT_H 20 10
+NPC GEOFFREY 20 10
 
 2
 ID 2
