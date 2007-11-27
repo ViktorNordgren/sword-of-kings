@@ -258,6 +258,14 @@ bool Parser::getNPC(NPC* npc, string npcName)
                    newDialog.event = tokens[3];
                    npc->addDialog(newDialog);
                 }
+                else if(name.compare("HEIGHT") == 0)
+                {
+                    npc->setHeight(atoi(tokens[1].c_str()));
+                }
+                else if(name.compare("WIDTH") == 0)
+                {
+                    npc->setWidth(atoi(tokens[1].c_str()));
+                }
             }
 		}
 		npcFile.close();
