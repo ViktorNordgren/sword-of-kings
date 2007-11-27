@@ -9,3 +9,10 @@ TEXTURE textures/characters/npc/wizard.tga
 DIALOG DEFAULT "AHAHAHAHAHA! Stuck in forest, etc!" NOTHING
 WIDTH 5
 HEIGHT 8
+
+SWORD
+NAME "Sword of Kings"
+TEXTURE textures/characters/npc/swordofkings.tga
+DIALOG DEFAULT "[You pick up the Sword of Kings...]" NOTHING
+WIDTH 5
+HEIGHT 5
