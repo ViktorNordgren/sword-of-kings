@@ -250,6 +250,8 @@ class Engine
         ~Engine();
         // Start Engine
         void run(int, char**);
+        // Display text
+        void displayDialog(string, string);
 };
 
 #endif

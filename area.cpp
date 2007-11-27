@@ -17,6 +17,7 @@ Area::Area()
     west = -1;
     maxMonsterLevel = -1;
     monsterFrequency = -1;
+    hasActionBeenSet = false;
 }
 
 Area::Area(string mainText, string imMask, int n, int s, int e, int w)
@@ -29,6 +30,7 @@ Area::Area(string mainText, string imMask, int n, int s, int e, int w)
     west = w;
     maxMonsterLevel = -1;
     monsterFrequency = -1;
+    hasActionBeenSet = false;
 }
 // Default destructor
 Area::~Area()
@@ -99,6 +101,11 @@ Point Area::getEntryWest()
 vector<NPC*> Area::getNPCs()
 {
     return npcs;   
+}
+
+string Area::getAction()
+{
+    return action;
 }
 
 int Area::getMaxMonsterLevel()
@@ -186,6 +193,12 @@ void Area::setMaxMonsterLevel(int level)
     maxMonsterLevel = level;
 }
 
+void Area::setAction(string act)
+{
+    action = act;
+    hasActionBeenSet = true;
+}
+
 //add an npc
 void Area::addNPC(NPC* npc)
 {
@@ -213,3 +226,7 @@ bool Area::canMoveWest()
     return west != -1;   
 }
 
+bool Area::hasAction()
+{
+    return hasActionBeenSet;
+}

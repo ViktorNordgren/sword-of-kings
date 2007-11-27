@@ -1,5 +1,5 @@
-#ifndef _DEFINED_game_engine
-#define _DEFINED_game_engine
+#ifndef _DEFINED_game_state
+#define _DEFINED_game_state
 #include <string>
 
 /*
@@ -12,7 +12,7 @@
 class GameState
 {
     public:
-        GameState();
+        GameState(void*);
         
         bool isConditionTrue(string cond);
         void performAction(string action);
@@ -20,6 +20,7 @@ class GameState
     protected:
         bool sword_found;
         bool talked_to_geoffery;   
+        void * engine;
         
 };
 

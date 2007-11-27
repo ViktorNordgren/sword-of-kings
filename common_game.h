@@ -78,6 +78,7 @@ static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 */
 static const string GET_SWORD = "GET_SWORD";
 static const string NOTHING = "NOTHING";
+static const string START_GAME = "START_GAME";
 
 /*
 * List of valid monster IDs
@@ -96,5 +97,12 @@ static const int NUM_LINES = 5; //number of lines
 */
 
 static const string GAME_OVER_TEXTURE = "textures/game_over.tga";
+
+/*
+* Story dialog
+*/
+static const string GEOFFREY_DIALOG_1 = "Geoffrey: Hey Lance, want to come play swords with us? Oh, wait.. where's your sword?";
+static const string CORNELIUS_DIALOG_1 = "Cornelius: Is that a piece of cardboard you're holding?";
+static const string GEOFFREY_DIALOG_2 = "No, I think it's a soggy branch!";
 
 #endif
