@@ -4,9 +4,9 @@ TEXTURE textures/characters/npc/geoffrey.tga
 DIALOG DEFAULT "Nice sword, Lance. Did you borrow that from your little sister?" NOTHING
 
 WIZARD
-NAME "Whatever the hell it was"
+NAME "Ardgar the Crafty Illusionist"
 TEXTURE textures/characters/npc/wizard.tga
-DIALOG DEFAULT "AHAHAHAHAHA! Stuck in forest, etc!" NOTHING
+DIALOG DEFAULT "Welcome to the Enchanted Forest, Lance. Yes, I know who you are, and I think you'll find it quite impossible to leave this place. The Sword of Kings shall never be yours!" NOTHING
 WIDTH 5
 HEIGHT 8
 
