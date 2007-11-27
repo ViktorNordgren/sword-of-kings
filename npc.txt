@@ -14,5 +14,5 @@ SWORD
 NAME "Sword of Kings"
 TEXTURE textures/characters/npc/swordofkings.tga
 DIALOG DEFAULT "[You pick up the Sword of Kings...]" NOTHING
-WIDTH 5
-HEIGHT 5
+WIDTH 4
+HEIGHT 6

@@ -73,5 +73,5 @@ BATTLEBG textures/area/battle/forest.tga
 MASK textures/area/mask/7.png
 SOUTH 6
 SOUTHENTRY 20 0
-NPC SWORD 19 20
+NPC SWORD 18 20
 #MONSTERS FREQ 30 MAXLEVEL 1
