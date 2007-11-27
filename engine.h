@@ -252,6 +252,12 @@ class Engine
         void run(int, char**);
         // Display text
         void displayDialog(string, string);
+        // Start a fight with a specific enemy
+        void startBattle(string);
+        // Delete an NPC from the area by index
+        void removeNPC(int);
+        // Adds an NPC to the area by ID
+        void addNPC(string, int, int);
 };
 
 #endif

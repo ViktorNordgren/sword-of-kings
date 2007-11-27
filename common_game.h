@@ -70,13 +70,13 @@ static const int HERO_MOVEMENT_AMOUNT = 1;
 * Conditions
 */
 static const string DEFAULT = "DEFAULT";
-static const string SWORD_FOUND = "SWORD_FOUND";
+static const string HAS_SWORD_OF_KINGS = "HAS_SWORD_OF_KINGS";
 static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 
 /*
 * Actions
 */
-static const string GET_SWORD = "GET_SWORD";
+static const string PICKED_UP_SWORD_OF_KINGS = "PICKED_UP_SWORD_OF_KINGS";
 static const string NOTHING = "NOTHING";
 static const string START_GAME = "START_GAME";
 
