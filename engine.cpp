@@ -37,8 +37,8 @@ Engine::Engine()
 	
 	textDialog = NULL;
     
-    heroPositionX = 0;
-    heroPositionY = 0;
+    heroPositionX = 25;
+    heroPositionY = 7;
     heroAnimationY = 0;
     heroAnimationX = 0;
     heroBattleAnimationX = 0;
@@ -1035,8 +1035,8 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                 loadArea(1);  
                 gameOver = false; 
                 soundManager->playMusic();
-                heroPositionX = 0;
-                heroPositionY = 0;
+                heroPositionX = 25;
+                heroPositionY = 7;
 
                 
             }

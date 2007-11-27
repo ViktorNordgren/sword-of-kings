@@ -3,7 +3,7 @@ ID 1
 BG textures/area/1.tga
 MASK textures/area/mask/1.png
 NORTH 2
-NORTHENTRY 31 25
+NORTHENTRY 20 25
 NPC GEOFFREY 20 10
 ACTION START_GAME
 
