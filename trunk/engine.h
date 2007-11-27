@@ -1,3 +1,7 @@
+
+#ifndef _DEFINED_engine
+#define _DEFINED_engine
+
 /*
 * Engine.h
 */
@@ -247,3 +251,5 @@ class Engine
         // Start Engine
         void run(int, char**);
 };
+
+#endif
