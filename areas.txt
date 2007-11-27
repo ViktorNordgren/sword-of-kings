@@ -22,7 +22,7 @@ MONSTERS FREQ 30 MAXLEVEL 1
 3
 ID 3
 BG textures/area/3.tga
-BATTLEBG textures/area/battle/forest.tga
+BATTLEBG textures/area/battle/dungeon.tga
 MASK textures/area/mask/3.png
 SOUTH 2
 NORTH 4
