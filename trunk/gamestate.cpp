@@ -25,7 +25,7 @@ bool GameState::isConditionTrue(string cond)
     {
         return true;
     }
-    if(cond.compare(SWORD_FOUND) == 0)
+    if(cond.compare(HAS_SWORD_OF_KINGS) == 0)
     {
         return sword_found;
     }
@@ -56,8 +56,9 @@ void GameState::performAction(string action)
     {
         ((Engine*)engine)->displayDialog(GEOFFREY_DIALOG_2, NOTHING);
     }
-    if(action.compare(GET_SWORD) == 0)
+    if(action.compare(PICKED_UP_SWORD_OF_KINGS) == 0)
     {
         sword_found = true;
+        ((Engine*)engine)->addNPC("GEOFFREY", 19, 10);
     }
 }

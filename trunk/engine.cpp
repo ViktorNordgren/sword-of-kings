@@ -270,6 +270,30 @@ void Engine::loadArea(int id)
 }
 
 /*
+* Removes an npc from the area by index
+*/
+void Engine::removeNPC(int index)
+{
+    npcs.erase(npcs.begin() + index);
+    loadNPCTextures();
+}
+
+/*
+* Adds an npc to the area by ID to the given position in the area
+*/
+void Engine::addNPC(string id, int x, int y)
+{
+    NPC* npc = new NPC();
+    Parser::getNPC(npc, id);
+    Point location;
+    location.x = x;
+    location.y = y;
+    npc->setLocation(location);
+    npcs.push_back(npc);
+    loadNPCTextures();
+}
+
+/*
 * Generates a random number between 1 and the number passed
 */
 int Engine::getRandomInt(int max)
@@ -586,6 +610,22 @@ void Engine::startRandomBattle()
     string randomMonsterID = currentAreaMonsterIDs.at(rand() % currentAreaMonsterIDs.size());
     currEnemy = new Enemy();
     Parser::getEnemy(currEnemy, randomMonsterID);
+    loadBattleBackgroundTexture();
+    loadMonsterTextures();
+    inBattle = true;
+}
+
+/*
+* Starts a battle with the enemy referenced by ID
+*/
+void Engine::startBattle(string id)
+{
+    soundManager->playBattleMusic();
+    soundManager->playSound(DRAW_SWORD);
+    if (currEnemy != NULL)
+        delete currEnemy;
+    currEnemy = new Enemy();
+    Parser::getEnemy(currEnemy, id);
     loadBattleBackgroundTexture();
     loadMonsterTextures();
     inBattle = true;
