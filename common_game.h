@@ -103,6 +103,6 @@ static const string GAME_OVER_TEXTURE = "textures/game_over.tga";
 */
 static const string GEOFFREY_DIALOG_1 = "Geoffrey: Hey Lance, want to come play swords with us? Oh, wait.. where's your sword?";
 static const string CORNELIUS_DIALOG_1 = "Cornelius: Is that a piece of cardboard you're holding?";
-static const string GEOFFREY_DIALOG_2 = "No, I think it's a soggy branch!";
+static const string GEOFFREY_DIALOG_2 = "Geoffrey: No, I think it's a soggy branch!";
 
 #endif
