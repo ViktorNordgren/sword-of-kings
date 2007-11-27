@@ -59,6 +59,7 @@ void GameState::performAction(string action)
     if(action.compare(PICKED_UP_SWORD_OF_KINGS) == 0)
     {
         sword_found = true;
+        ((Engine*)engine)->removeNPC(0);
         ((Engine*)engine)->addNPC("GEOFFREY", 19, 10);
     }
 }
