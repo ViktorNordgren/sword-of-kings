@@ -16,3 +16,10 @@ TEXTURE textures/characters/npc/swordofkings.tga
 DIALOG DEFAULT "[You pick up the Sword of Kings...]" NOTHING
 WIDTH 4
 HEIGHT 6
+
+BEGGER
+NAME "Begger"
+TEXTURE textures/characters/npc/begger.tga
+DIALOG DEFAULT "Ugh..That damn wizard trapped me 'n' shit." NOTHING
+WIDTH 6
+HEIGHT 6
