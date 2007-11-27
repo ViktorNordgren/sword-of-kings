@@ -13,8 +13,8 @@ BATTLEBG textures/area/battle/forest.tga
 MASK textures/area/mask/2.png
 SOUTH 1
 NORTH 3
-SOUTHENTRY 25 0
-NORTHENTRY 25 25
+SOUTHENTRY 20 0
+NORTHENTRY 20 25
 #MONSTERS FREQ 30 MAXLEVEL 1
 
 3
@@ -23,5 +23,42 @@ BG textures/area/3.tga
 BATTLEBG textures/area/battle/forest.tga
 MASK textures/area/mask/3.png
 SOUTH 2
-SOUTHENTRY 25 0
+NORTH 4
+SOUTHENTRY 20 0
+NORTHENTRY 20 25
+#MONSTERS FREQ 30 MAXLEVEL 1
+
+4
+ID 4
+BG textures/area/4.tga
+BATTLEBG textures/area/battle/forest.tga
+MASK textures/area/mask/4.png
+SOUTH 4
+NORTH 4
+EAST 5
+SOUTHENTRY 20 0
+NORTHENTRY 20 25
+EASTENTRY 27 18
+#MONSTERS FREQ 30 MAXLEVEL 1
+
+5
+ID 5
+BG textures/area/5.tga
+BATTLEBG textures/area/battle/forest.tga
+MASK textures/area/mask/5.png
+WEST 4
+NORTH 6
+WESTENTRY 0 18
+SOUTHENTRY 20 0
+NORTHENTRY 20 25
+#MONSTERS FREQ 30 MAXLEVEL 1
+
+6
+ID 6
+BG textures/area/6.tga
+BATTLEBG textures/area/battle/forest.tga
+MASK textures/area/mask/6.png
+SOUTH 5
+SOUTHENTRY 20 0
+NORTHENTRY 20 25
 #MONSTERS FREQ 30 MAXLEVEL 1
