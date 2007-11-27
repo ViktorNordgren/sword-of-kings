@@ -1,3 +1,7 @@
+#ifndef _DEFINED_game_engine
+#define _DEFINED_game_engine
+#include <string>
+
 /*
 * GameState.h
 */
@@ -18,3 +22,5 @@ class GameState
         bool talked_to_geoffery;   
         
 };
+
+#endif
