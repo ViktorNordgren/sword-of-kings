@@ -15,12 +15,15 @@ class Enemy : public Character
         Enemy(string n, int lev, string text, string id);
         //getters
         string getEnemyID();
+        int getExp();
         //setters
         void setEnemyID(string);
+        void setExp(int e);
+        
 
     protected:
         string enemyID;
-        
+        int exp;
 };
 
 #endif

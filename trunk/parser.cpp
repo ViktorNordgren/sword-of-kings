@@ -80,6 +80,10 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
                 {
                     enemy->setWidth(atoi(tokens[1].c_str()));
                 }
+                else if(name.compare("EXP") == 0)
+                {
+                    enemy->setExp(atoi(tokens[1].c_str()));
+                }
             }
 			
 			
