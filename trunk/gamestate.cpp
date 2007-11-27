@@ -2,18 +2,18 @@
 * GameState.cpp
 */
 
+#include "engine.h"
 #include "gamestate.h"
-
 
 /*
 * Class GameState
 */
 
-GameState::GameState()
+GameState::GameState(void* eng)
 {
     sword_found = false;
     talked_to_geoffery = false;
-    
+    engine = eng;
 }
 
 /*
@@ -43,6 +43,18 @@ void GameState::performAction(string action)
     if(action.compare(NOTHING) == 0)
     {
         return;
+    }
+    if(action.compare(START_GAME) == 0)
+    {
+        ((Engine*)engine)->displayDialog(GEOFFREY_DIALOG_1, CORNELIUS_DIALOG_1);
+    }
+    if(action.compare(CORNELIUS_DIALOG_1) == 0)
+    {
+        ((Engine*)engine)->displayDialog(CORNELIUS_DIALOG_1, GEOFFREY_DIALOG_2);
+    }
+    if(action.compare(GEOFFREY_DIALOG_2) == 0)
+    {
+        ((Engine*)engine)->displayDialog(GEOFFREY_DIALOG_2, NOTHING);
     }
     if(action.compare(GET_SWORD) == 0)
     {

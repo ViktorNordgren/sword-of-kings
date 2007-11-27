@@ -27,11 +27,15 @@ string teststring = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, s
 */
 Engine::Engine()
 {
+    gameState = new GameState((void*)this);
+    
     // Create hero
     hero = new Hero(/*"Hero", 1, "heropicture.bmp"*/);
     
 	// Seed random number generator
 	srand ( time(NULL) );
+	
+	textDialog = NULL;
     
     heroPositionX = 0;
     heroPositionY = 0;
@@ -49,7 +53,6 @@ Engine::Engine()
     displaySpeech = false;
     speech = "";
     loadArea(1);
-    gameState = new GameState();
     inBattle = false;
     yourTurn = true;
     gameOver = false;
@@ -260,6 +263,10 @@ void Engine::loadArea(int id)
     loadAreaMask();
     stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
     loadCurrentMonsterIDs();
+    if (currentArea->hasAction())
+    {
+        gameState->performAction(currentArea->getAction());
+    }
 }
 
 /*
@@ -1022,44 +1029,45 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
             }
             else
             {
-                int npcIndex = canHeroInteractWithNPC();
-                if (npcIndex != -1)
+                
+                if(!displaySpeech)
                 {
-                    if(!displaySpeech)
+                    int npcIndex = canHeroInteractWithNPC();
+                    if (npcIndex != -1)
                     {
-                        if (textDialog != NULL)
-                            delete textDialog;
+                            if (textDialog != NULL)
+                                delete textDialog;
+                                
+                            // Get the list of possible dialogs for the current NPC.
+                            NPC * npc = npcs.at(npcIndex);
+                            vector<Dialog> dialogs = npc->getDialogs();
                             
-                        // Get the list of possible dialogs for the current NPC.
-                        NPC * npc = npcs.at(npcIndex);
-                        vector<Dialog> dialogs = npc->getDialogs();
-                        
-                        for (int i = 0; i < dialogs.size(); i++)
-                        {
-                            Dialog npcDialog = dialogs.at(i);
-                            
-                            if ( gameState->isConditionTrue(npcDialog.condition))
+                            for (int i = 0; i < dialogs.size(); i++)
                             {
-                                textDialog = new TextDialog(npc->getName() + ": " + npcDialog.text);
-                                textDialog->setAction(npcDialog.event);
-                                speech = textDialog->getNextDialog();
-                                displaySpeech = true;
-    
-                                break;
+                                Dialog npcDialog = dialogs.at(i);
+                                
+                                if ( gameState->isConditionTrue(npcDialog.condition))
+                                {
+                                    textDialog = new TextDialog(npc->getName() + ": " + npcDialog.text);
+                                    textDialog->setAction(npcDialog.event);
+                                    speech = textDialog->getNextDialog();
+                                    displaySpeech = true;
+        
+                                    break;
+                                }
                             }
-                        }
+                    }
+                }
+                else
+                {
+                    if(textDialog->moreDialogs())
+                    {
+                        speech = textDialog->getNextDialog();
                     }
                     else
                     {
-                        if(textDialog->moreDialogs())
-                        {
-                            speech = textDialog->getNextDialog();
-                        }
-                        else
-                        {
-                            gameState->performAction(textDialog->getAction());
-                            displaySpeech = false;
-                        }
+                        displaySpeech = false;
+                        gameState->performAction(textDialog->getAction());
                     }
                 }
             }
@@ -1091,6 +1099,20 @@ void Engine::processSpecialKeys(int key, int x, int y)
 			processNormalKeys('s', x, y);
 			break;
 	}
+}
+
+/*
+* Outputs dialog to the screen
+*/
+void Engine::displayDialog(string dialog, string action)
+{
+    if (textDialog != NULL)
+        delete textDialog;
+        
+    textDialog = new TextDialog(dialog);
+    textDialog->setAction(action);
+    speech = textDialog->getNextDialog();
+    displaySpeech = true;
 }
 
 /*

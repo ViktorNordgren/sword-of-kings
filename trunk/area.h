@@ -32,6 +32,7 @@ class Area
         Point getEntrySouth();
         Point getEntryEast();
         Point getEntryWest();
+        string getAction();
         vector<NPC*> getNPCs();
         int getMaxMonsterLevel();
         int getMonsterFrequency();
@@ -52,6 +53,7 @@ class Area
         void setImageMask(string);
         void setMaxMonsterLevel(int);
         void setMonsterFrequency(int);
+        void setAction(string);
         
         //add an npc
         void addNPC(NPC* npc);
@@ -61,6 +63,9 @@ class Area
         bool canMoveSouth();
         bool canMoveEast();
         bool canMoveWest();
+        
+        // see if area has action to execute
+        bool hasAction();
 
     protected:
         //the id of this area
@@ -75,6 +80,9 @@ class Area
         string battleTexture;
         //invisible image to do collision
         string imageMask;
+        // Action to perform when loading
+        string action;
+        bool hasActionBeenSet;
         //id to images around this one
         int north;
         int west;

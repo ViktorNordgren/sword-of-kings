@@ -1,3 +1,6 @@
+#ifndef _DEFINED_common
+#define _DEFINED_common
+
 /*
 * Common.h
 *
@@ -14,3 +17,5 @@ const int DEFAULT_WINDOW_HEIGHT = 786;
 // Width and height of the playing area in grid units
 const int GRID_WIDTH = 40;
 const int GRID_HEIGHT = 30;
+
+#endif

@@ -140,6 +140,10 @@ bool Parser::getArea(Area* area, int areaID)
                 {
                     area->setImageMask(tokens[1]);
                 }
+                else if(name.compare("ACTION") == 0)
+                {
+                    area->setAction(tokens[1]);
+                }
                 else if(name.compare("NORTH") == 0)
                 {
                     area->setNorth(atoi(tokens[1].c_str()));
