@@ -1407,13 +1407,13 @@ void Engine::drawHeroBattle()
 
     glBegin(GL_POLYGON);
         glTexCoord2f(0.0f, 0.0f);
-        glVertex2f(8 + heroBattleAnimationX * 15, 10);
+        glVertex2f(6 + heroBattleAnimationX * 17, 10);
         glTexCoord2f(1.0f, 0.0f);
-        glVertex2f(8 + heroBattleAnimationX * 15 + hero->getWidth(), 10);
+        glVertex2f(8 + heroBattleAnimationX * 17 + hero->getWidth(), 10);
         glTexCoord2f(1.0f, 1.0f);
-        glVertex2f(8 + heroBattleAnimationX * 15 + hero->getWidth(), 10 + hero->getHeight());
+        glVertex2f(8 + heroBattleAnimationX * 17 + hero->getWidth(), 10 + hero->getHeight());
         glTexCoord2f(0.0f, 1.0f);
-        glVertex2f(8 + heroBattleAnimationX * 15, 10 + hero->getHeight());
+        glVertex2f(6 + heroBattleAnimationX * 17, 10 + hero->getHeight());
     glEnd();
 
     glMatrixMode(GL_PROJECTION);
@@ -1501,13 +1501,13 @@ void Engine::drawEnemy()
     
     glBegin(GL_POLYGON);
 	   glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 15), 10);
+		glVertex2f(30 - (enemyBattleAnimationX * 17), 10);
 		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 15) + currEnemy->getWidth(), 10);
+		glVertex2f(30 - (enemyBattleAnimationX * 17) + currEnemy->getWidth(), 10);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 15) + currEnemy->getWidth(), 10 + currEnemy->getHeight());
+		glVertex2f(30 - (enemyBattleAnimationX * 17) + currEnemy->getWidth(), 10 + currEnemy->getHeight());
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 15), 10 + currEnemy->getHeight());
+		glVertex2f(30 - (enemyBattleAnimationX * 17), 10 + currEnemy->getHeight());
 	glEnd();
 
     glMatrixMode(GL_PROJECTION);

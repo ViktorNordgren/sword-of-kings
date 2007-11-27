@@ -54,7 +54,11 @@ void GameState::performAction(string action)
     }
     if(action.compare(GEOFFREY_DIALOG_2) == 0)
     {
-        ((Engine*)engine)->displayDialog(GEOFFREY_DIALOG_2, NOTHING);
+        ((Engine*)engine)->displayDialog(GEOFFREY_DIALOG_2, LANCE_DIALOG_1);
+    }
+    if(action.compare(LANCE_DIALOG_1) == 0)
+    {
+        ((Engine*)engine)->displayDialog(LANCE_DIALOG_1, NOTHING);
     }
     if(action.compare(PICKED_UP_SWORD_OF_KINGS) == 0)
     {
