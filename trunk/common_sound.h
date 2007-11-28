@@ -15,6 +15,7 @@ enum SoundEffect
     DRAW_SWORD,
     SWORD_HIT,
     VICTORY,
+    ROAR,
     MAX_SOUND_EFFECTS 
 };
 
@@ -29,5 +30,7 @@ static const string HIT_SOUND_FILE = "sounds/hit.wav";
 static const string DRAW_SWORD_SOUND_FILE = "sounds/swordraw.wav";
 static const string SWORD_HIT_SOUND_FILE = "sounds/steelsword.wav";
 static const string VICTORY_SOUND_FILE = "sounds/victory.wav";
+static const string ROAR_SOUND_FILE = "sounds/roar.wav";
+static const string BOSS_MUSIC_SOUND_FILE = "sounds/bossMusic.ogg";
 
 #endif

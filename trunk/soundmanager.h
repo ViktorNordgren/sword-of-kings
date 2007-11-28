@@ -20,12 +20,14 @@ class SoundManager
         ~SoundManager();
         void playMusic();
         void playBattleMusic();
+        void playBossMusic();
         void stopMusic();
         void playSound(SoundEffect s);
         
     private:
         Mix_Music* music;
         Mix_Music* battleMusic;
+        Mix_Music* bossMusic;
         vector<Mix_Chunk*> soundEffects;
 };
 

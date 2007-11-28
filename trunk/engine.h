@@ -258,6 +258,8 @@ class Engine
         void removeNPC(int);
         // Adds an NPC to the area by ID
         void addNPC(string, int, int);
+        //start boss battle
+        void startBossBattle();
 };
 
 #endif

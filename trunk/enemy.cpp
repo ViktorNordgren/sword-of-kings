@@ -11,7 +11,8 @@
 
 Enemy::Enemy()
 {
-    
+    pos.x = 30;
+    pos.y = 8;
 }
 
 /*
@@ -43,6 +44,11 @@ int Enemy::getExp()
     return exp;
 }
 
+Point Enemy::getPos()
+{
+    return pos;
+}
+
 /*
 * Setters
 */
@@ -54,4 +60,9 @@ void Enemy::setEnemyID(string id)
 void Enemy::setExp(int e)
 {
     exp = e;
+}
+
+void Enemy::setPos(Point p)
+{
+    pos = p;
 }

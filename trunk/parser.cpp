@@ -84,6 +84,13 @@ bool Parser::getEnemy(Enemy* enemy, string enemyName)
                 {
                     enemy->setExp(atoi(tokens[1].c_str()));
                 }
+                else if(name.compare("POS") == 0)
+                {
+                    Point p;
+                    p.x = atoi(tokens[1].c_str());
+                    p.y = atoi(tokens[2].c_str());
+                    enemy->setPos(p);
+                }
             }
 			
 			

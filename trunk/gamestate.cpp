@@ -64,6 +64,10 @@ void GameState::performAction(string action)
     {
         sword_found = true;
         ((Engine*)engine)->removeNPC(0);
-        ((Engine*)engine)->addNPC("GEOFFREY", 19, 10);
+        ((Engine*)engine)->addNPC("BOSS", 19, 10);
+    }
+    if(action.compare(FIGHT_BOSS) == 0)
+    {
+        ((Engine*)engine)->startBossBattle();
     }
 }
