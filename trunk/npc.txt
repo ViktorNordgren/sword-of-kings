@@ -1,7 +1,7 @@
 GEOFFREY
 NAME "Geoffrey"
 TEXTURE textures/characters/npc/geoffrey.tga
-DIALOG HAS_SWORD_OF_KINGS "Whoa.  Cool sword.  Mine's still better." NOTHING
+DIALOG HAS_SWORD_OF_KINGS "You've really over-reacted, Lance. We weren't actually going to invite you to play swords anyway..." NOTHING
 DIALOG DEFAULT "Nice sword, Lance. Did you borrow that from your little sister?" NOTHING
 
 WIZARD
@@ -19,16 +19,16 @@ WIDTH 4
 HEIGHT 6
 
 BEGGER
-NAME "Begger"
+NAME "Ragged Man"
 TEXTURE textures/characters/npc/begger.tga
-DIALOG DEFAULT "Ugh..That damn wizard trapped me 'n' shit." NOTHING
+DIALOG DEFAULT "I've been here for fifteen years... I simply can't figure out how to get out of this forest... help me..." NOTHING
 WIDTH 6
 HEIGHT 6
 
 BOSS
-NAME "Boss"
+NAME "Ancient Chimera Guardian"
 TEXTURE textures/characters/monsters/boss.tga
-DIALOG DEFAULT "Let's fight." FIGHT_BOSS
+DIALOG DEFAULT "You dare disturb my slumber by entering these holy grounds? You-- Wait, what's this? You have taken the Sword of Kings? Few mortals know of its existence, even fewer have made it this far, but it is said that only one hero may break the barrier holding the Sword to this place - you are that hero. At last, a being worthy of battling. With the Sword of Kings by your side, attack me!" FIGHT_BOSS
 WIDTH 6
 HEIGHT 6
 
@@ -38,4 +38,3 @@ TEXTURE textures/characters/npc/beastor.tga
 DIALOG DEFAULT "This is where your journey ends, Lance. The Sword of Kings shall be mine, for it is only fitting that such a terrifying blade be wielded by one with swordsmanship such as I! I challenge you!" FIGHT_BEASTOR
 WIDTH 4
 HEIGHT 8
-
