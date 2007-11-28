@@ -23,3 +23,10 @@ TEXTURE textures/characters/npc/begger.tga
 DIALOG DEFAULT "Ugh..That damn wizard trapped me 'n' shit." NOTHING
 WIDTH 6
 HEIGHT 6
+
+BEASTOR
+NAME "Beastor"
+TEXTURE textures/characters/npc/beastor.tga
+DIALOG DEFAULT "This is where your journey ends, Lance. The Sword of Kings shall be mine, for it is only fitting that such a terrifying blade be wielded by one with swordsmanship such as I! I challenge you!" NOTHING
+WIDTH 4
+HEIGHT 8
