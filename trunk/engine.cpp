@@ -1453,8 +1453,8 @@ void Engine::drawHUD()
 	char health[9];
 	strcpy( health, str.c_str() );
 	glColor3f( 1.0, 1.0, 1.0 );
-	drawString(DEFAULT_WINDOW_WIDTH - 70, DEFAULT_WINDOW_HEIGHT - 20, GLUT_BITMAP_TIMES_ROMAN_24, "Life:");
-	drawString(DEFAULT_WINDOW_WIDTH - 70, DEFAULT_WINDOW_HEIGHT - 50, GLUT_BITMAP_TIMES_ROMAN_24, health);
+	drawString(DEFAULT_WINDOW_WIDTH - 85, DEFAULT_WINDOW_HEIGHT - 20, GLUT_BITMAP_TIMES_ROMAN_24, "Life:");
+	drawString(DEFAULT_WINDOW_WIDTH - 85, DEFAULT_WINDOW_HEIGHT - 50, GLUT_BITMAP_TIMES_ROMAN_24, health);
 }
 
 void Engine::drawSpeechBox()
