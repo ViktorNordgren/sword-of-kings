@@ -4,6 +4,12 @@ TEXTURE textures/characters/npc/geoffrey.tga
 DIALOG HAS_SWORD_OF_KINGS "You've really over-reacted, Lance. We weren't actually going to invite you to play swords anyway..." NOTHING
 DIALOG DEFAULT "Nice sword, Lance. Did you borrow that from your little sister?" NOTHING
 
+CORNELIUS
+NAME "Cornelius"
+TEXTURE textures/characters/npc/cornelius.tga
+DIALOG HAS_SWORD_OF_KINGS "Whoa, nice sword Lance! Geoffery's is still nicer though." NOTHING
+DIALOG DEFAULT "You'll need a sword to play swords, Lance. That rusted, bent thing you're holding won't do." NOTHING
+
 WIZARD
 NAME "Ardgar the Crafty Illusionist"
 TEXTURE textures/characters/npc/wizard.tga
