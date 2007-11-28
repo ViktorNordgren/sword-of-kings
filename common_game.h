@@ -79,6 +79,7 @@ static const string TALKED_TO_GEOFFERY = "TALKED_TO_GEOFFERY";
 static const string PICKED_UP_SWORD_OF_KINGS = "PICKED_UP_SWORD_OF_KINGS";
 static const string NOTHING = "NOTHING";
 static const string START_GAME = "START_GAME";
+static const string FIGHT_BOSS = "FIGHT_BOSS";
 
 /*
 * List of valid monster IDs

@@ -616,6 +616,25 @@ void Engine::startRandomBattle()
 }
 
 /*
+* Start the boss battle
+*/
+
+void Engine::startBossBattle()
+{
+    if (currEnemy != NULL)
+        delete currEnemy;
+    currEnemy = new Enemy();
+    Parser::getEnemy(currEnemy, "BOSS");
+    soundManager->playBossMusic();
+    loadBattleBackgroundTexture();
+    loadMonsterTextures();
+    inBattle = true;
+    soundManager->playSound(DRAW_SWORD);
+    soundManager->playSound(ROAR);
+    
+}
+
+/*
 * Starts a battle with the enemy referenced by ID
 */
 void Engine::startBattle(string id)
@@ -1498,16 +1517,17 @@ void Engine::drawEnemy()
     glLoadIdentity();
     
     glBindTexture(GL_TEXTURE_2D, monsterTextures[0].texID);
-    
+    int x = currEnemy->getPos().x;
+    int y = currEnemy->getPos().y;
     glBegin(GL_POLYGON);
 	   glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 17), 8);
+		glVertex2f(x - (enemyBattleAnimationX * 17), y);
 		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 17) + currEnemy->getWidth(), 8);
+		glVertex2f(x - (enemyBattleAnimationX * 17) + currEnemy->getWidth(), y);
 		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 17) + currEnemy->getWidth(), 8 + currEnemy->getHeight());
+		glVertex2f(x - (enemyBattleAnimationX * 17) + currEnemy->getWidth(), y + currEnemy->getHeight());
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(30 - (enemyBattleAnimationX * 17), 8 + currEnemy->getHeight());
+		glVertex2f(x - (enemyBattleAnimationX * 17), y + currEnemy->getHeight());
 	glEnd();
 
     glMatrixMode(GL_PROJECTION);

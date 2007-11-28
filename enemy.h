@@ -16,14 +16,17 @@ class Enemy : public Character
         //getters
         string getEnemyID();
         int getExp();
+        Point getPos();
         //setters
         void setEnemyID(string);
         void setExp(int e);
+        void setPos(Point p);
         
 
     protected:
         string enemyID;
         int exp;
+        Point pos;
 };
 
 #endif

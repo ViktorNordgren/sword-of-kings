@@ -30,3 +30,15 @@ TEXTURE textures/characters/monsters/ninja.tga
 HEIGHT 9
 WIDTH 9
 EXP 25
+
+BOSS
+NAME Chimera
+TOTALHITPOINTS 1000
+LEVEL 3
+ATTACK 20
+DEFENSE 15
+TEXTURE textures/characters/monsters/boss.tga
+HEIGHT 20
+WIDTH 20
+POS 22 8
+EXP 200

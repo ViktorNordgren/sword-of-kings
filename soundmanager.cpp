@@ -26,6 +26,7 @@ SoundManager::SoundManager()
     
     music = Mix_LoadMUS(MUSIC_SOUND_FILE.c_str());
     battleMusic = Mix_LoadMUS(BATTLE_MUSIC_SOUND_FILE.c_str());
+    bossMusic = Mix_LoadMUS(BOSS_MUSIC_SOUND_FILE.c_str());
     soundEffects.push_back(Mix_LoadWAV(STEP_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(MENU_BEEP_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(HEAL_SOUND_FILE.c_str()));
@@ -35,6 +36,7 @@ SoundManager::SoundManager()
     soundEffects.push_back(Mix_LoadWAV(DRAW_SWORD_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(SWORD_HIT_SOUND_FILE.c_str()));
     soundEffects.push_back(Mix_LoadWAV(VICTORY_SOUND_FILE.c_str()));
+    soundEffects.push_back(Mix_LoadWAV(ROAR_SOUND_FILE.c_str()));
     
     
 }
@@ -59,6 +61,12 @@ void SoundManager::playBattleMusic()
 {
     Mix_HaltMusic();
     Mix_PlayMusic(battleMusic, -1);
+}
+
+void SoundManager::playBossMusic()
+{
+    Mix_HaltMusic();
+    Mix_PlayMusic(bossMusic, -1);
 }
 
 void SoundManager::stopMusic()
