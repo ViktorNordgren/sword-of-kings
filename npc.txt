@@ -26,7 +26,7 @@ HEIGHT 6
 
 BOSS
 NAME "Boss"
-TEXTURE textures/characters/npc/wizard.tga
+TEXTURE textures/characters/monsters/boss.tga
 DIALOG DEFAULT "Let's fight." FIGHT_BOSS
 WIDTH 6
 HEIGHT 6

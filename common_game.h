@@ -48,7 +48,7 @@ static const string HERO_WEST_RIGHT_TEXTURE = "textures/characters/hero/west_rig
 static const string HERO_WEST_LEFT_TEXTURE = "textures/characters/hero/west_left.tga";
 static const string HERO_FIGHT_NORMAL_TEXTURE = "textures/characters/hero/fight_normal.tga";
 
-static const int POTION_AMOUNT = 20;
+static const int POTION_AMOUNT = 40;
 
 static const int BATTLE_ANIMATION_DELAY = 20;
 
