@@ -260,6 +260,8 @@ class Engine
         void addNPC(string, int, int);
         //start boss battle
         void startBossBattle();
+        //start beastor battle
+        void startBeastorBattle();
 };
 
 #endif

@@ -80,6 +80,7 @@ static const string PICKED_UP_SWORD_OF_KINGS = "PICKED_UP_SWORD_OF_KINGS";
 static const string NOTHING = "NOTHING";
 static const string START_GAME = "START_GAME";
 static const string FIGHT_BOSS = "FIGHT_BOSS";
+static const string FIGHT_BEASTOR = "FIGHT_BEASTOR";
 
 /*
 * List of valid monster IDs

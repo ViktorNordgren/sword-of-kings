@@ -47,6 +47,7 @@ void GameState::performAction(string action)
     if(action.compare(START_GAME) == 0)
     {
         ((Engine*)engine)->displayDialog(GEOFFREY_DIALOG_1, CORNELIUS_DIALOG_1);
+        talked_to_geoffery = true;
     }
     if(action.compare(CORNELIUS_DIALOG_1) == 0)
     {
@@ -69,5 +70,9 @@ void GameState::performAction(string action)
     if(action.compare(FIGHT_BOSS) == 0)
     {
         ((Engine*)engine)->startBossBattle();
+    }
+    if(action.compare(FIGHT_BEASTOR) == 0)
+    {
+        ((Engine*)engine)->startBeastorBattle();
     }
 }
