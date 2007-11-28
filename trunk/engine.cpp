@@ -787,6 +787,10 @@ void Engine::endBattleVictory()
     }
     soundManager->playSound(VICTORY);
     Sleep(6000);
+    if(currEnemy->getName().compare("Chimera") == 0)
+    {
+        removeNPC(0);
+    }
     endBattle();
 
 }
@@ -1084,7 +1088,7 @@ void Engine::processNormalKeys(unsigned char key, int x, int y)
                     if(battleArrow == RUN)
                     {
                         int random_integer = (rand()%5);
-                        if(random_integer == 4)
+                        if(random_integer == 4 || currEnemy->getName().compare("Chimera") == 0)
                         {
                             soundManager->playSound(NO_POTION);
                             yourTurn = false;
