@@ -263,7 +263,7 @@ void Engine::loadArea(int id)
     loadAreaMask();
     stepsUntilNextBattle = getRandomInt(currentArea->getMonsterFrequency());
     loadCurrentMonsterIDs();
-    if (currentArea->hasAction())
+    if (currentArea->hasAction() && !gameState->isConditionTrue(TALKED_TO_GEOFFERY))
     {
         gameState->performAction(currentArea->getAction());
     }
@@ -635,6 +635,21 @@ void Engine::startBossBattle()
 }
 
 /*
+* Start the Beastor Battle
+*/
+void Engine::startBeastorBattle()
+{
+    if (currEnemy != NULL)
+        delete currEnemy;
+    currEnemy = new Enemy();
+    Parser::getEnemy(currEnemy, "BEASTOR");
+    soundManager->playBattleMusic();
+    loadBattleBackgroundTexture();
+    loadMonsterTextures();
+    inBattle = true;
+    soundManager->playSound(DRAW_SWORD);  
+}
+/*
 * Starts a battle with the enemy referenced by ID
 */
 void Engine::startBattle(string id)
@@ -788,6 +803,11 @@ void Engine::endBattleVictory()
     soundManager->playSound(VICTORY);
     Sleep(6000);
     if(currEnemy->getName().compare("Chimera") == 0)
+    {
+        removeNPC(0);
+        currentArea->setSouth(1);
+    }
+    if(currEnemy->getName().compare("Beastor") == 0)
     {
         removeNPC(0);
     }

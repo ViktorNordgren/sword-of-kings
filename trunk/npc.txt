@@ -1,6 +1,7 @@
 GEOFFREY
 NAME "Geoffrey"
 TEXTURE textures/characters/npc/geoffrey.tga
+DIALOG HAS_SWORD_OF_KINGS "Whoa.  Cool sword.  Mine's still better." NOTHING
 DIALOG DEFAULT "Nice sword, Lance. Did you borrow that from your little sister?" NOTHING
 
 WIZARD
@@ -34,7 +35,7 @@ HEIGHT 6
 BEASTOR
 NAME "Beastor"
 TEXTURE textures/characters/npc/beastor.tga
-DIALOG DEFAULT "This is where your journey ends, Lance. The Sword of Kings shall be mine, for it is only fitting that such a terrifying blade be wielded by one with swordsmanship such as I! I challenge you!" NOTHING
+DIALOG DEFAULT "This is where your journey ends, Lance. The Sword of Kings shall be mine, for it is only fitting that such a terrifying blade be wielded by one with swordsmanship such as I! I challenge you!" FIGHT_BEASTOR
 WIDTH 4
 HEIGHT 8
 
