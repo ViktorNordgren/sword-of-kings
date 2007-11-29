@@ -1498,8 +1498,8 @@ void Engine::drawSpeechBox()
 
     int currLine = 0;
     int currNumChars;
-    int LINE_LENGTH = 90; //length of line in chars
-    int LINE_HEIGHT = 25;
+   /* int LINE_LENGTH = 90; //length of line in chars
+    int LINE_HEIGHT = 25;*/
     
     string line;
     for( int word = 0; word < words.size(); word++ )
@@ -1685,11 +1685,39 @@ void Engine::drawString(float x, float y, void *font, char *string)
 	//loop through the string and output each char
 	for (currChar=string; *currChar; currChar++) 
 	{
-		glutBitmapCharacter(font, *currChar);
+		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *currChar);
 	}
-	glEnable(GL_TEXTURE_2D);
+	/*char *p;
+    
+    glPushMatrix();
+    glTranslatef(x, y, 0);
+    for (p = text; *p; p++)
+    {
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+    }
+    glPopMatrix();*/
+    glEnable(GL_TEXTURE_2D);
+    /*int i, len;
+    glPushMatrix();
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    glLoadIdentity();
+    //glTranslatef(0.0f, 0.0f, -5.0f);
+    glRasterPos2f(x, y);
+    
+    glDisable(GL_TEXTURE);
+    glDisable(GL_TEXTURE_2D);
+    for (i = 0, len = strlen(string); i < len; i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, (int)string[i]);
+    }
+    glEnable(GL_TEXTURE);
+    glEnable(GL_TEXTURE_2D);
+    glPopMatrix();*/
         
 }
+
+
 
 /*
 *	The main display function.
