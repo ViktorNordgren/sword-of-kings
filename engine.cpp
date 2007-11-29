@@ -1679,43 +1679,36 @@ void Engine::drawBattleMenu()
 //this is a method to make the output of strings much simpler
 void Engine::drawString(float x, float y, void *font, char *string)
 {  
+   
 	glDisable(GL_TEXTURE_2D);
-	char *currChar;
+	/*char *currChar;
 	glRasterPos2f(x, y);
 	//loop through the string and output each char
 	for (currChar=string; *currChar; currChar++) 
 	{
-		glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *currChar);
-	}
-	/*char *p;
+		glutBitmapCharacter(font, *currChar);
+	}*/
+	char *p;
     
     glPushMatrix();
+    
     glTranslatef(x, y, 0);
-    for (p = text; *p; p++)
+    glScalef(0.12,0.12,0.12);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glEnable(GL_LINE_SMOOTH);
+    glLineWidth(2.0);
+    for (p = string; *p; p++)
     {
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
     }
-    glPopMatrix();*/
+    glPopMatrix();
+
     glEnable(GL_TEXTURE_2D);
-    /*int i, len;
-    glPushMatrix();
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
-    glLoadIdentity();
-    //glTranslatef(0.0f, 0.0f, -5.0f);
-    glRasterPos2f(x, y);
-    
-    glDisable(GL_TEXTURE);
-    glDisable(GL_TEXTURE_2D);
-    for (i = 0, len = strlen(string); i < len; i++)
-    {
-        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, (int)string[i]);
-    }
-    glEnable(GL_TEXTURE);
-    glEnable(GL_TEXTURE_2D);
-    glPopMatrix();*/
-        
 }
+
+
 
 
 
