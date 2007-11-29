@@ -90,8 +90,8 @@ static const string MONSTER_IDS [] = {"ORC", "NINJA","RAT"};
 /*
 * Settings for the speech box
 */
-static const int LINE_LENGTH = 100/*90*/; //length of line in chars
-static const int LINE_HEIGHT = 15/*25*/; //height of a line in pixels
+static const int LINE_LENGTH = 90; //length of line in chars
+static const int LINE_HEIGHT = 25; //height of a line in pixels
 static const int NUM_LINES = 5; //number of lines
 
 /*
