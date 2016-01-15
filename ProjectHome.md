@@ -1,0 +1,1 @@
+A small RPG written in c++ using openGL. This is a university assignment for a multimedia course.
